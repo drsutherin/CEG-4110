@@ -1,4 +1,4 @@
-# CEG-4110
+# (Baby Got) Blood and Ashes Checkers
 The group project for CEG 4110: Intro to Software Engineering
 
 ## Team Members
