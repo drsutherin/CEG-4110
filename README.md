@@ -12,11 +12,17 @@ Develop a checkers game playing client in Java. The software will communicate wi
 
 # Packages
 
-This document defines the packages/modules the BAAC client will implement.
+This document defines the packages/modules the BAAC client will implement. Large
+headings are packages, while smaller headings are classes.  Packages without
+any classes listed will just have one with the same name.
 
-**Note:** All classes will need to implement an inbox for messages from the ServerInterface
+(I've also added some thoughts/notes about implementation in italics as things to
+think about as we go forward -Dave)
 
-*Question:* Should all classes be subclasses of a GameClient? Would that make message passing easier?
+*Will all classes need to implement an inbox for messages from the ServerInterface,
+or can we just call functions directly?*
+
+*Should all classes be subclasses of a GameClient? Would that make message passing easier?*
 
 ## GameClient
 * Serves as the primary class
@@ -27,7 +33,7 @@ This document defines the packages/modules the BAAC client will implement.
   * a LobbyChat instance (only updated while user is ```in_lobby```)
   * a list of PrivateChat instances (if any)
   * a Menu instance (different types of menus depending on player status)
-  * an LobbyUsersList
+  * an ActiveUsersList
   * an ActiveTablesList
   * a Game instance (if playing/observing)
   * a Voce SpeechInterface instance (for voice recognition)
@@ -77,7 +83,7 @@ This document defines the packages/modules the BAAC client will implement.
 ## Toolbars
 * The Toolbars module will be the base for all toolbars:
   * ActiveTablesList
-  * LobbyUsersList
+  * ActiveUsersList
   * InGameToolbar
 * Toolbars will display information, but will not initiate actions
 * Abstract Toolbars class (?)
@@ -91,8 +97,9 @@ This document defines the packages/modules the BAAC client will implement.
   * ```in_progress```: There are two players on the board and they are playing
   * *These will depend on how server responds to ```109: ASK_TBL_STATUS```, i.e. what ```207: BOARD_STATE``` returns*
 
-#### LobbyUsersList
-* Will maintain a list of all users in the lobby
+#### ActiveUsersList
+* Will maintain a list of **all** users active on the server (i.e. any user than
+  could receive a private message)
 
 #### InGameToolbar
 * Viewable while on a table (waiting/playing/observing)
@@ -104,7 +111,7 @@ This document defines the packages/modules the BAAC client will implement.
   * Status (active, waiting_for_opponent, waiting_for_server)
   * Turn
   * Board state *(make sure it matches the server's board state for easy checking)*
-* Handles player's moves
+* Handles players' moves
   * Select piece
   * Move to location
 * Handles responses from server
@@ -121,3 +128,4 @@ This document defines the packages/modules the BAAC client will implement.
   * Chats
   * Tables/Game boards
   * Toolbars
+* GUI module will also contain the controller for the UI
