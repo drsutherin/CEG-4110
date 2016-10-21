@@ -42,7 +42,19 @@ or can we just call functions directly?*
   * player info: ```username```
   * player status enum: ```in_lobby```, ```on_board```, ```playing_game```
 
-## ServerInterface
+#### Game
+  * Will contain information regarding the current game:
+    * Players
+    * Status (active, waiting_for_opponent, waiting_for_server)
+    * Turn
+    * Board state *(make sure it matches the server's board state for easy checking)*
+  * Handles players' moves
+    * Select piece
+    * Move to location
+  * Handles responses from server
+    * Valid vs. invalid moves
+
+#### ServerInterface
 * Constantly active
 * Communicates with server
 * Parses messages from server
@@ -107,18 +119,6 @@ or can we just call functions directly?*
 #### InGameToolbar
 * Viewable while on a table (waiting/playing/observing)
 * Will show users playing and turn (if user is playing)
-
-## Game
-* Will contain information regarding the current game:
-  * Players
-  * Status (active, waiting_for_opponent, waiting_for_server)
-  * Turn
-  * Board state *(make sure it matches the server's board state for easy checking)*
-* Handles players' moves
-  * Select piece
-  * Move to location
-* Handles responses from server
-  * Valid vs. invalid moves
 
 ## Voce
 * The Voce module will contain the source code from Voce for voice recognition
