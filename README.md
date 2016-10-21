@@ -24,11 +24,9 @@ or can we just call functions directly?*
 
 *Should all classes be subclasses of a GameClient? Would that make message passing easier?*
 
-## GameClient
-* Serves as the primary class
-* Will contain:
-  * player info (username)
-  * player status (enum: ```in_lobby```, ```on_board```, ```playing_game```)
+## baac
+* Contains ```Main.java```
+* ```Main.java``` will create:
   * a ServerInterface instance
   * a LobbyChat instance (only updated while user is ```in_lobby```)
   * a list of PrivateChat instances (if any)
@@ -38,6 +36,11 @@ or can we just call functions directly?*
   * a Game instance (if playing/observing)
   * a Voce SpeechInterface instance (for voice recognition)
   * a GUI instance
+
+#### Player
+* Simple class containing:
+  * player info: ```username```
+  * player status enum: ```in_lobby```, ```on_board```, ```playing_game```
 
 ## ServerInterface
 * Constantly active
