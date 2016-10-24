@@ -1,4 +1,4 @@
-package serverInterface;
+package baac;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,11 +22,13 @@ import java.net.UnknownHostException;
  */
 public class ServerInterface implements Runnable {
 
+	BAAC client;
 	/**
 	 * Default constructor
 	 */
-	public ServerInterface()	{
-		
+	public ServerInterface(BAAC baac)	{
+		client = baac;
+		this.run();
 	}
 
 	/**
