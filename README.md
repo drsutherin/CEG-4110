@@ -20,7 +20,7 @@ any classes listed will just have one with the same name.
 think about as we go forward -Dave)
 
 ## Package Interaction
-Since Java is a pass-by-reference language, all classes will be passed the BAAC instance, allowing them to pass messages by calling functions of other classes.  For example, when a user types a message in a chat window, the 'Send' button event handler will be able to call a ServerInterface method to compose and transmit a message.
+Since Java is a pass-by-reference language, all classes will be passed the BAAC instance, allowing them to pass messages by calling functions of other classes.  For example, when a user types a message in a chat window, the 'Send' button event handler will be able add the message to the chat's message list (which can in turn call a ServerInterface method to compose and transmit the message).
 
 
 ## baac
@@ -28,7 +28,7 @@ Since Java is a pass-by-reference language, all classes will be passed the BAAC 
 * ```Main.java``` will create a BAAC instance which will, in turn, create all other necessary classes
 
 #### BAAC
-* There will be **only one** instance of the BAAC class, which will be created by Main.java when the client is launched.
+* There will be **only one** instance of the BAAC class, which will be created by Main.java when the client is launched.http://voce.sourceforge.net/
 * The BAAC class will create:
   * a ServerInterface instance
   * a LobbyChat instance (only updated while user is ```in_lobby```)
@@ -36,17 +36,19 @@ Since Java is a pass-by-reference language, all classes will be passed the BAAC 
   * a Game instance (if playing/observing)
   * a Voce SpeechInterface instance (for voice recognition)
   * a GUI instance
+* BAAC will also contain several data structures:
+  * ActiveUsersList
+    * Will maintain a list of **all** users active on the server (i.e. any user than
+    could receive a private message)
+  * ActiveTablesList
+    * Will maintain a list of all tables on the server
+    * Table statuses will depend on how server responds to ```109: ASK_TBL_STATUS```, i.e. what ```207: BOARD_STATE``` returns
 
 #### Player
 * Simple class containing:
   * player info: ```username```
   * player status enum: ```in_lobby```, ```on_board```, ```playing_game```
-  * ActiveUsersList
-    * Will maintain a list of **all** users active on the server (i.e. any user than
-    could receive a private message)
-  * ActiveUsersList
-    * Will maintain a list of all tables on the server
-    * Table statuses will depend on how server responds to ```109: ASK_TBL_STATUS```, i.e. what ```207: BOARD_STATE``` returns
+
 
 #### Game
 * Will contain information regarding the current game:
