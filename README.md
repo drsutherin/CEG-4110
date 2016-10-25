@@ -19,14 +19,17 @@ any classes listed will just have one with the same name.
 (I've also added some thoughts/notes about implementation in italics as things to
 think about as we go forward -Dave)
 
-*Will all classes need to implement an inbox for messages from the ServerInterface,
-or can we just call functions directly?*
+## Package Interaction
+Since Java is a pass-by-reference language, all classes will be passed the BAAC instance, allowing them to pass messages by calling functions of other classes.  For example, when a user types a message in a chat window, the 'Send' button event handler will be able to call a ServerInterface method to compose and transmit a message.
 
-*Should all classes be subclasses of a GameClient? Would that make message passing easier?*
 
 ## baac
-* Contains ```Main.java```
-* ```Main.java``` will create:
+* Contains ```Main.java```, and the BAAC, Player, ServerInterface, and Game classes.
+* ```Main.java``` will create a BAAC instance which will, in turn, create all other necessary classes
+
+#### BAAC
+* There will be **only one** instance of the BAAC class, which will be created by Main.java when the client is launched.
+* The BAAC class will create:
   * a ServerInterface instance
   * a LobbyChat instance (only updated while user is ```in_lobby```)
   * a list of PrivateChat instances (if any)
