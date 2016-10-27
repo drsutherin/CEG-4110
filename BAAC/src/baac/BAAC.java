@@ -12,7 +12,7 @@ import gui.*;
   * a Game instance (if playing/observing)
   * a Voce SpeechInterface instance (for voice recognition)
   * a GUI instance
-  * 
+  *
  * @author reuintern
  *
  */
@@ -24,13 +24,14 @@ public class BAAC implements Runnable {
 	Player you;
 	// Voce speechInterface;
 	// Stage gui_background;
-	
+
 	public BAAC()	{
-		serverInterface = new ServerInterface(this);
+		ServerInterface serverInterface = null;
+		serverInterface = new ServerInterface("mchlrtkwski.tk", 45322);
 	}
 
 	public void run() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

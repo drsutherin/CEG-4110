@@ -1,78 +1,188 @@
 package baac;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
+import java.io.*;
 
-/**
- * The ServerInterface class was designed to be implemented within the 
- * GameClient class for the CEG 4410 project (Baby Got) Blood and Ashes
- * Checkers client. It handles all communications with the game server.
- * 
+/***************************************************************************
+ * The ServerInterface class was designed to be implemented within the
+ * GameClient class for the CEG 4410 project (Baby Got) Blood and Ashes Checkers
+ * client. It handles all communications with the game server.
+ *
  * It implements Runnable so it can run as an independent thread.
- * 
+ *
  * @author Z. Rhodes
- * @author J. Rosen 
+ * @author J. Rosen
  * @author M. Rutkowski
  * @author D. Sutherin
  *
- */
+ *Source of Multithreading Material found at:
+ *http://pirate.shu.edu/~wachsmut/Teaching/CSAS2214/Virtual/Lectures/chat-client-server.html
+ *Needed Largely edited due to deprecated methods
+ *Things to do:
+ *	Store Messages in at thread-safe Vector in order for use. *class attribute*
+ *	Create push and pop methods to implement a stack on the Vector
+ *	Move catch statement prints to Error Log
+ ***************************************************************************/
 public class ServerInterface implements Runnable {
 
-	BAAC client;
-	/**
-	 * Default constructor
-	 */
-	public ServerInterface(BAAC baac)	{
-		client = baac;
-		this.run();
+	private Socket socket = null;
+	private Thread thread = null;
+	private InputStreamReader console = null;
+	private BufferedReader consoleBuffer = null;
+	private PrintWriter streamOut = null;
+	private ServerInterfaceThread client = null;
+
+	/***************************************************************************
+	*
+	*
+	***************************************************************************/
+	public ServerInterface(String serverName, int serverPort) {
+		System.out.println("Establishing connection. Please wait ...");
+		try {
+			socket = new Socket(serverName, serverPort);
+			System.out.println("Connected: " + socket);
+			start();
+		} catch (UnknownHostException uhe) {
+			System.out.println("Host unknown: " + uhe.getMessage());
+		} catch (IOException ioe) {
+			System.out.println("Unexpected exception: " + ioe.getMessage());
+		}
 	}
 
-	/**
-	 * The run method defines the functions of the ServerInterface
-	 * while the client is active  
-	 */
+	/***************************************************************************
+	*
+	*
+	***************************************************************************/
 	public void run() {
-		  String serverHostname = new String("24.166.20.116");
+		while (thread != null) {
+			try {
+				streamOut.println(consoleBuffer.readLine());
+				streamOut.flush();
+			} catch (IOException ioe) {
+				System.out.println("Sending error: " + ioe.getMessage());
+				stop();
+			}
+		}
+	}
 
-//	        if (args.length > 0) {
-//	            serverHostname = args[0];
-//	        }
-	        System.out.println("Attemping to connect to host "
-	                + serverHostname + " on port 45322.");
+	/***************************************************************************
+	 *
+	 *
+	 *
+	 * ************************************************************************/
 
-	        Socket socketTest = null;
-	        PrintWriter out = null;
-	        BufferedReader in = null;
+	public void handle(String msg) {
+		if (msg.equals(".bye")) {
+			System.out.println("Good bye. Press RETURN to exit ...");
+			stop();
+		} else {
+			System.out.println(msg);
+		}
+	}
 
-	        try {
-	            // echoSocket = new Socket("taranis", 7);
-	            socketTest = new Socket(serverHostname, 45322);
-	            out = new PrintWriter(socketTest.getOutputStream(), true);
-	            in = new BufferedReader(new InputStreamReader(
-	                    socketTest.getInputStream()));
-	        } catch (UnknownHostException e) {
-	            System.err.println("Don't know about host: " + serverHostname);
-	            System.exit(1);
-	        } catch (IOException e) {
-	            System.err.println("Couldn't get I/O for "
-	                    + "the connection to: " + serverHostname);
-	            System.exit(1);
-	        }
+	/***************************************************************************
+	 *
+	 *
+	 *
+	 * ************************************************************************/
+	public void start() throws IOException {
+		console = new InputStreamReader(System.in);
+		consoleBuffer = new BufferedReader(console);
+		streamOut = new PrintWriter(socket.getOutputStream());
+		if (thread == null) {
+			client = new ServerInterfaceThread(this, socket);
+			thread = new Thread(this);
+			thread.start();
+		}
+	}
 
-	        BufferedReader stdIn = new BufferedReader(
-	                new InputStreamReader(System.in));
-	        String userInput;
-	        try {
-		        while ((userInput = stdIn.readLine()) != null) {
-		            out.println(userInput);
-		            System.out.println("echo: " + in.readLine());
-		        }
-	        } catch (IOException e) {
-	        	System.out.println("IOException: " + e);
-	        }
+	/***************************************************************************
+	 *
+	 *
+	 *
+	 * ************************************************************************/
+	public void stop() {
+		if (thread != null) {
+			thread.stop();
+			thread = null;
+		}
+		try {
+			if (console != null) {
+				console.close();
+			}
+			if (streamOut != null) {
+				streamOut.close();
+			}
+			if (socket != null) {
+				socket.close();
+			}
+		} catch (IOException ioe) {
+			System.out.println("Error closing ...");
+		}
+		client.close();
+		client.stop();
+	}
+
+	/***************************************************************************
+	 *
+	 *
+	 *
+	 * ************************************************************************/
+	public class ServerInterfaceThread extends Thread {
+		private Socket socket = null;
+		private ServerInterface client = null;
+		private BufferedReader streamIn = null;
+
+		/***************************************************************************
+		 *
+		 *
+		 *
+		 * ************************************************************************/
+		public ServerInterfaceThread(ServerInterface _client, Socket _socket) {
+			client = _client;
+			socket = _socket;
+			open();
+			start();
+		}
+
+		public void open() {
+			try {
+				streamIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				;
+			} catch (IOException ioe) {
+				System.out.println("Error getting input stream: " + ioe);
+				client.stop();
+			}
+		}
+
+		/***************************************************************************
+		 *
+		 *
+		 *
+		 * ************************************************************************/
+		public void close() {
+			try {
+				if (streamIn != null)
+					streamIn.close();
+			} catch (IOException ioe) {
+				System.out.println("Error closing input stream: " + ioe);
+			}
+		}
+
+		/***************************************************************************
+		 *
+		 *
+		 *
+		 * ************************************************************************/
+		public void run() {
+			while (true) {
+				try {
+					client.handle(streamIn.readLine());
+				} catch (IOException ioe) {
+					System.out.println("Listening error: " + ioe.getMessage());
+					client.stop();
+				}
+			}
+		}
 	}
 }
