@@ -33,6 +33,11 @@ public class ServerInterface implements Runnable {
 	private ServerInterfaceThread client = null;
 
 	/***************************************************************************
+	*METHOD:
+	*DESCRIPTION:
+	*PARAMETERS:
+	*RETURNS:
+	*DESCRIPTION:
 	*
 	*
 	***************************************************************************/
@@ -50,6 +55,11 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
+	*METHOD:
+	*DESCRIPTION:
+	*PARAMETERS:
+	*RETURNS:
+	*DESCRIPTION:
 	*
 	*
 	***************************************************************************/
@@ -66,7 +76,11 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
-	 *
+	 *METHOD:
+	*DESCRIPTION:
+	*PARAMETERS:
+	*RETURNS:
+	*DESCRIPTION:
 	 *
 	 *
 	 * ************************************************************************/
@@ -81,7 +95,11 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
-	 *
+		*METHOD:
+	*DESCRIPTION:
+	*PARAMETERS:
+	*RETURNS:
+	*DESCRIPTION:
 	 *
 	 *
 	 * ************************************************************************/
@@ -97,7 +115,11 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
-	 *
+	 	*METHOD:
+	*DESCRIPTION:
+	*PARAMETERS:
+	*RETURNS:
+	*DESCRIPTION:
 	 *
 	 *
 	 * ************************************************************************/
@@ -124,7 +146,11 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
-	 *
+	 	*METHOD:
+	*DESCRIPTION:
+	*PARAMETERS:
+	*RETURNS:
+	*DESCRIPTION:
 	 *
 	 *
 	 * ************************************************************************/
@@ -134,7 +160,11 @@ public class ServerInterface implements Runnable {
 		private BufferedReader streamIn = null;
 
 		/***************************************************************************
-		 *
+		 	*METHOD:
+	*DESCRIPTION:
+	*PARAMETERS:
+	*RETURNS:
+	*DESCRIPTION:
 		 *
 		 *
 		 * ************************************************************************/
@@ -156,7 +186,11 @@ public class ServerInterface implements Runnable {
 		}
 
 		/***************************************************************************
-		 *
+		 	*METHOD:
+	*DESCRIPTION:
+	*PARAMETERS:
+	*RETURNS:
+	*DESCRIPTION:
 		 *
 		 *
 		 * ************************************************************************/
@@ -170,14 +204,20 @@ public class ServerInterface implements Runnable {
 		}
 
 		/***************************************************************************
-		 *
+		 	*METHOD:
+	*DESCRIPTION:
+	*PARAMETERS:
+	*RETURNS:
+	*DESCRIPTION:
 		 *
 		 *
 		 * ************************************************************************/
 		public void run() {
 			while (true) {
 				try {
-					client.handle(streamIn.readLine());
+					char[] cbuf = new char[100];
+					streamIn.read(cbuf);
+						client.handle(String.valueOf(cbuf).replaceAll("\n", "").replace("<EOM>", "<EOM>\n"));
 				} catch (IOException ioe) {
 					System.out.println("Listening error: " + ioe.getMessage());
 					client.stop();
