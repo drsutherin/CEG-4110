@@ -100,20 +100,6 @@ public class ServerInterface implements Runnable {
 	 * ************************************************************************/
 
 	public void handle(String msg) {
-<<<<<<< HEAD
-		if (msg.equals(".bye")) {
-			System.out.println("Good bye. Press RETURN to exit ...");
-			stop();
-		} else {
-			System.out.println(msg);
-			String[] split = msg.split("<EOM>");
-			for (int i = 0; i < split.length; i++){
-				System.out.println(i + ": " + split[i]);
-			}
-			if (split[0] == "101")	{
-				System.out.println("I hear you");
-			}
-=======
 		//System.out.println(msg);
 		String[] allMessages = msg.split("#");
 		Vector<String> messagesToAdd = new Vector<String>(Arrays.asList(allMessages));
@@ -121,7 +107,7 @@ public class ServerInterface implements Runnable {
 			if ((messagesToAdd.get(i).length() > 3)){
 				this.pushReceiveMessage((messagesToAdd.get(i)));
 			}
-				
+
 		}
 		while (!this.receiveVector.isEmpty()){
 			String messageToPerform = this.popRecieveMessage();
@@ -155,9 +141,8 @@ public class ServerInterface implements Runnable {
 	                     break;
 	            default: monthString = "Invalid month";
 	                    break;
-			
-		}
->>>>>>> da5c4e528160a38d51c7e645e5962bdc0fa688e3
+
+	        }
 		}
 		//if (msg.equals(".bye")) {
 		//	System.out.println("Good bye. Press RETURN to exit ...");
@@ -227,7 +212,7 @@ public class ServerInterface implements Runnable {
 		String message = this.sendVector.get(0);
 		this.sendVector.remove(0);
 		return message;
-	
+
 	}
 
 	/***************************************************************************
@@ -273,7 +258,7 @@ public class ServerInterface implements Runnable {
 		private ServerInterface client = null;
 		private BufferedReader streamIn = null;
 
-		
+
 
 		/***************************************************************************
 		 	*METHOD:
@@ -334,7 +319,7 @@ public class ServerInterface implements Runnable {
 					char[] cbuf = new char[100];
 					streamIn.read(cbuf);
 						client.handle(String.valueOf(cbuf).replaceAll("\n", "").replace("<EOM>", "<EOM>#"));
-						
+
 				} catch (IOException ioe) {
 					System.out.println("Listening error: " + ioe.getMessage());
 					client.stop();
