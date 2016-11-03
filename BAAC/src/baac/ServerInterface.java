@@ -2,6 +2,7 @@ package baac;
 
 import java.net.*;
 import java.io.*;
+import baac.BAAC;
 
 /***************************************************************************
  * The ServerInterface class was designed to be implemented within the
@@ -31,14 +32,16 @@ public class ServerInterface implements Runnable {
 	private BufferedReader consoleBuffer = null;
 	private PrintWriter streamOut = null;
 	private ServerInterfaceThread client = null;
+	private BAAC baac;
 
 	/***************************************************************************
 	*
 	*
 	***************************************************************************/
-	public ServerInterface(String serverName, int serverPort) {
+	public ServerInterface(String serverName, int serverPort, BAAC b) {
 		System.out.println("Establishing connection. Please wait ...");
 		try {
+			baac = b;
 			socket = new Socket(serverName, serverPort);
 			System.out.println("Connected: " + socket);
 			start();
@@ -77,6 +80,13 @@ public class ServerInterface implements Runnable {
 			stop();
 		} else {
 			System.out.println(msg);
+			String[] split = msg.split("<EOM>");
+			for (int i = 0; i < split.length; i++){
+				System.out.println(i + ": " + split[i]);
+			}
+			if (split[0] == "101")	{
+				System.out.println("I hear you");
+			}
 		}
 	}
 
