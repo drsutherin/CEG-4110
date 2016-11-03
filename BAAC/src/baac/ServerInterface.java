@@ -1,6 +1,8 @@
 package baac;
 
 import java.net.*;
+import java.util.Arrays;
+import java.util.Vector;
 import java.io.*;
 
 /***************************************************************************
@@ -30,6 +32,8 @@ public class ServerInterface implements Runnable {
 	private InputStreamReader console = null;
 	private BufferedReader consoleBuffer = null;
 	private PrintWriter streamOut = null;
+	private Vector<String> sendVector = new Vector<String>();
+	private Vector<String> receiveVector = new Vector<String>();
 	private ServerInterfaceThread client = null;
 
 	/***************************************************************************
@@ -66,8 +70,15 @@ public class ServerInterface implements Runnable {
 	public void run() {
 		while (thread != null) {
 			try {
-				streamOut.println(consoleBuffer.readLine());
-				streamOut.flush();
+				String message = consoleBuffer.readLine();
+				//streamOut.println(message);
+				//streamOut.flush();
+				this.pushSendMessage(message);
+				while (!this.sendVector.isEmpty()){
+					String messageToSend = this.popSendMessage();
+					this.streamOut.println(messageToSend);
+					streamOut.flush();
+				}
 			} catch (IOException ioe) {
 				System.out.println("Sending error: " + ioe.getMessage());
 				stop();
@@ -86,12 +97,56 @@ public class ServerInterface implements Runnable {
 	 * ************************************************************************/
 
 	public void handle(String msg) {
-		if (msg.equals(".bye")) {
-			System.out.println("Good bye. Press RETURN to exit ...");
-			stop();
-		} else {
-			System.out.println(msg);
+		//System.out.println(msg);
+		String[] allMessages = msg.split("#");
+		Vector<String> messagesToAdd = new Vector<String>(Arrays.asList(allMessages));
+		for (int i = 0; i < messagesToAdd.size(); i++){
+			if ((messagesToAdd.get(i).length() > 3)){
+				this.pushReceiveMessage((messagesToAdd.get(i)));
+			}
+				
 		}
+		while (!this.receiveVector.isEmpty()){
+			String messageToPerform = this.popRecieveMessage();
+			System.out.println(messageToPerform);
+			String messageCode = messageToPerform.substring(0, 2);
+	        String monthString;
+	        switch (messageCode) {
+	            case "101":  System.out.println("hello");;
+	                     break;
+	            case "102":  messageCode = "February";
+	                     break;
+	            case "103":  messageCode= "March";
+	                     break;
+	            case "104":  messageCode = "April";
+	                     break;
+	            case "105":  messageCode = "May";
+	                     break;
+	            case "106":  messageCode = "June";
+	                     break;
+	            case "107":  messageCode = "July";
+	                     break;
+	            case" 108":  messageCode = "August";
+	                     break;
+	            case "109":  messageCode = "September";
+	                     break;
+	            case "1012": messageCode = "October";
+	                     break;
+	            case "1013": messageCode = "November";
+	                     break;
+	            case "1015": messageCode= "December";
+	                     break;
+	            default: monthString = "Invalid month";
+	                    break;
+			
+		}
+		}
+		//if (msg.equals(".bye")) {
+		//	System.out.println("Good bye. Press RETURN to exit ...");
+		//	stop();
+		//} else {
+		//	System.out.println(msg);
+		//}
 	}
 
 	/***************************************************************************
@@ -146,6 +201,47 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
+	 *
+	 *
+	 *
+	 * ************************************************************************/
+	private String popSendMessage() {
+		String message = this.sendVector.get(0);
+		this.sendVector.remove(0);
+		return message;
+	
+	}
+
+	/***************************************************************************
+	 *
+	 *
+	 *
+	 * ************************************************************************/
+	public String popRecieveMessage() {
+		String message = this.receiveVector.get(0);
+		this.receiveVector.remove(0);
+		return message;
+	}
+
+	/***************************************************************************
+	 *
+	 *
+	 *
+	 * ************************************************************************/
+	public void pushSendMessage(String message) {
+		this.sendVector.add(message);
+	}
+
+	/***************************************************************************
+	 *
+	 *
+	 *
+	 * ************************************************************************/
+	private void pushReceiveMessage(String message) {
+		this.receiveVector.add(message);
+
+	}
+	/***************************************************************************
 	 	*METHOD:
 	*DESCRIPTION:
 	*PARAMETERS:
@@ -158,6 +254,8 @@ public class ServerInterface implements Runnable {
 		private Socket socket = null;
 		private ServerInterface client = null;
 		private BufferedReader streamIn = null;
+
+		
 
 		/***************************************************************************
 		 	*METHOD:
@@ -217,7 +315,8 @@ public class ServerInterface implements Runnable {
 				try {
 					char[] cbuf = new char[100];
 					streamIn.read(cbuf);
-						client.handle(String.valueOf(cbuf).replaceAll("\n", "").replace("<EOM>", "<EOM>\n"));
+						client.handle(String.valueOf(cbuf).replaceAll("\n", "").replace("<EOM>", "<EOM>#"));
+						
 				} catch (IOException ioe) {
 					System.out.println("Listening error: " + ioe.getMessage());
 					client.stop();
