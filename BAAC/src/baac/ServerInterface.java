@@ -1,6 +1,7 @@
 package baac;
 
 import java.net.*;
+import static baac.Message.*;
 import java.util.Arrays;
 import java.util.Vector;
 import java.io.*;
@@ -39,7 +40,7 @@ public class ServerInterface implements Runnable {
 	private BAAC baac;
 
 	/***************************************************************************
-	*METHOD:
+	*METHOD: Constructor()
 	*DESCRIPTION:
 	*PARAMETERS:
 	*RETURNS:
@@ -62,11 +63,10 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
-	*METHOD:
-	*DESCRIPTION:
-	*PARAMETERS:
-	*RETURNS:
-	*DESCRIPTION:
+	*METHOD: run()
+	*PARAMETERS: --
+	*RETURNS: void
+	*DESCRIPTION: 
 	*
 	*
 	***************************************************************************/
@@ -90,17 +90,16 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
-	 *METHOD:
-	*DESCRIPTION:
-	*PARAMETERS:
-	*RETURNS:
-	*DESCRIPTION:
+	 *METHOD: handle()
+	 *PARAMETERS: String
+	 *RETURNS: void
+	 *DESCRIPTION:
 	 *
 	 *
 	 * ************************************************************************/
 
 	public void handle(String msg) {
-		//System.out.println(msg);
+		
 		String[] allMessages = msg.split("#");
 		Vector<String> messagesToAdd = new Vector<String>(Arrays.asList(allMessages));
 		for (int i = 0; i < messagesToAdd.size(); i++){
@@ -112,35 +111,66 @@ public class ServerInterface implements Runnable {
 		while (!this.receiveVector.isEmpty()){
 			String messageToPerform = this.popRecieveMessage();
 			System.out.println(messageToPerform);
-			String messageCode = messageToPerform.substring(0, 2);
+			String messageCode = messageToPerform.substring(0, 3);
+			//System.out.println(messageCode);
 	        String monthString;
 	        switch (messageCode) {
-	            case "101":  System.out.println("hello");;
+	            case Message.ASK_USERNAME: System.out.println("they asked your name stupid");;
 	                     break;
-	            case "102":  messageCode = "February";
+	            case Message.CONN_OK:  messageCode= "March";
 	                     break;
-	            case "103":  messageCode= "March";
+	            case Message.IN_LOBBY:  messageCode = "April";
 	                     break;
-	            case "104":  messageCode = "April";
+	            case Message.OUT_LOBBY:  messageCode = "May";
 	                     break;
-	            case "105":  messageCode = "May";
+	            case Message.MSG:  messageCode = "June";
 	                     break;
-	            case "106":  messageCode = "June";
+	            case Message.NEW_TBL:  messageCode = "July";
 	                     break;
-	            case "107":  messageCode = "July";
+	            case Message.GAME_START:  messageCode = "August";
 	                     break;
-	            case" 108":  messageCode = "August";
+	            case Message.COLOR_BLACK:  messageCode = "September";
 	                     break;
-	            case "109":  messageCode = "September";
+	            case Message.COLOR_RED: messageCode = "October";
 	                     break;
-	            case "1012": messageCode = "October";
+	            case Message.OPP_MOVE: messageCode = "November";
 	                     break;
-	            case "1013": messageCode = "November";
+	            case Message.BOARD_STATE: messageCode= "December";
 	                     break;
-	            case "1015": messageCode= "December";
-	                     break;
+	            case Message.GAME_WIN: messageCode = "October";
+                		 break;
+	            case Message.GAME_LOSE: messageCode = "November";
+	            		 break;
+	            case Message.TBL_JOINED: messageCode= "December";
+                		 break;
+	            case Message.TBL_LEFT: messageCode = "October";
+                		 break;
+	            case Message.WHO_IN_LOBBY: messageCode = "November";
+                		 break;
+	            case Message.WHO_ON_TBL: messageCode= "December";
+                		 break;
+	            case Message.TBL_LIST: messageCode = "October";
+	            		 break;
+	            case Message.NOW_LEFT_LOBBY: messageCode = "November";
+       					 break;
+	            case Message.OPP_LEFT_TABLE: messageCode= "December";
+	            		 break;
+	            case Message.YOUR_TURN: messageCode = "November";
+	            		 break;
+	            case Message.NOW_OBSERVING: messageCode= "December";
+	            		 break;
+	            case Message.STOP_OBSERVING: messageCode = "October";
+	            		 break;
+	            case Message.REGISTER_OK: messageCode = "November";
+	            		 break;
+	            case Message.LOGIN_OK: messageCode= "December";
+	            		 break;
+	            case Message.PROFILE_UPDATED: messageCode = "October";
+	            		 break;
+	            case Message.USER_PROFILE: messageCode = "November";
+	            		 break;
 	            default: monthString = "Invalid month";
-	                    break;
+	                     break;
 
 	        }
 		}
@@ -153,11 +183,10 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
-		*METHOD:
-	*DESCRIPTION:
-	*PARAMETERS:
-	*RETURNS:
-	*DESCRIPTION:
+	 *METHOD: start()
+	 *PARAMETERS: --
+	 *RETURNS: void
+	 *DESCRIPTION:
 	 *
 	 *
 	 * ************************************************************************/
@@ -173,11 +202,10 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
-	 	*METHOD:
-	*DESCRIPTION:
-	*PARAMETERS:
-	*RETURNS:
-	*DESCRIPTION:
+	 *METHOD: stop()
+	 *PARAMETERS: --
+	 *RETURNS: void
+	 *DESCRIPTION:
 	 *
 	 *
 	 * ************************************************************************/
@@ -204,7 +232,10 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
-	 *
+	 *METHOD: popSendMessage()
+	 *PARAMETERS: --
+	 *RETURNS: String
+	 *DESCRIPTION:
 	 *
 	 *
 	 * ************************************************************************/
@@ -216,6 +247,10 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
+	 *METHOD: popRecieveMessage()
+	 *PARAMETERS: --
+	 *RETURNS: String
+	 *DESCRIPTION:
 	 *
 	 *
 	 *
@@ -227,6 +262,10 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
+	 *METHOD: pushSendMessage()
+	 *PARAMETERS: String
+	 *RETURNS: void
+	 *DESCRIPTION:
 	 *
 	 *
 	 *
@@ -236,6 +275,10 @@ public class ServerInterface implements Runnable {
 	}
 
 	/***************************************************************************
+	 *METHOD: pushReceiveMessage()
+	 *PARAMETERS: String
+	 *RETURNS: void
+	 *DESCRIPTION:
 	 *
 	 *
 	 *
@@ -244,28 +287,23 @@ public class ServerInterface implements Runnable {
 		this.receiveVector.add(message);
 
 	}
-	/***************************************************************************
-	 	*METHOD:
-	*DESCRIPTION:
-	*PARAMETERS:
-	*RETURNS:
-	*DESCRIPTION:
-	 *
-	 *
-	 * ************************************************************************/
+
+	//////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
+	
 	public class ServerInterfaceThread extends Thread {
+		
 		private Socket socket = null;
 		private ServerInterface client = null;
 		private BufferedReader streamIn = null;
 
-
-
 		/***************************************************************************
-		 	*METHOD:
-	*DESCRIPTION:
-	*PARAMETERS:
-	*RETURNS:
-	*DESCRIPTION:
+		 *METHOD: Constructor
+		 *DESCRIPTION:
+		 *PARAMETERS:
+		 *RETURNS:
+		 *DESCRIPTION:
 		 *
 		 *
 		 * ************************************************************************/
@@ -276,6 +314,14 @@ public class ServerInterface implements Runnable {
 			start();
 		}
 
+		/***************************************************************************
+		 *METHOD: open()
+		 *PARAMETERS: --
+		 *RETURNS: void
+		 *DESCRIPTION:
+		 *
+		 *
+		 * ************************************************************************/
 		public void open() {
 			try {
 				streamIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -287,11 +333,10 @@ public class ServerInterface implements Runnable {
 		}
 
 		/***************************************************************************
-		 	*METHOD:
-	*DESCRIPTION:
-	*PARAMETERS:
-	*RETURNS:
-	*DESCRIPTION:
+		 *METHOD: close()
+		 *PARAMETERS: --
+		 *RETURNS: void
+		 *DESCRIPTION:
 		 *
 		 *
 		 * ************************************************************************/
@@ -305,11 +350,10 @@ public class ServerInterface implements Runnable {
 		}
 
 		/***************************************************************************
-		 	*METHOD:
-	*DESCRIPTION:
-	*PARAMETERS:
-	*RETURNS:
-	*DESCRIPTION:
+		 *METHOD: run()
+		 *PARAMETERS: --
+		 *RETURNS: void
+		 *DESCRIPTION:
 		 *
 		 *
 		 * ************************************************************************/
