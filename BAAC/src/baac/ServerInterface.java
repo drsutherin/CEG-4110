@@ -73,7 +73,7 @@ public class ServerInterface implements Runnable {
 	public void run() {
 		while (thread != null) {
 			try {
-				String message = consoleBuffer.readLine();
+				String message = (consoleBuffer.readLine()).replace("\n", " ");
 				//streamOut.println(message);
 				//streamOut.flush();
 				this.pushSendMessage(message);
@@ -81,6 +81,12 @@ public class ServerInterface implements Runnable {
 					String messageToSend = this.popSendMessage();
 					this.streamOut.println(messageToSend);
 					streamOut.flush();
+					System.out.println(messageToSend);
+					if (messageToSend.contains("108")){
+						System.out.println("goodbye now you");
+						stop();
+						
+					}
 				}
 			} catch (IOException ioe) {
 				System.out.println("Sending error: " + ioe.getMessage());
@@ -102,9 +108,13 @@ public class ServerInterface implements Runnable {
 		
 		String[] allMessages = msg.split("#");
 		Vector<String> messagesToAdd = new Vector<String>(Arrays.asList(allMessages));
+		
 		for (int i = 0; i < messagesToAdd.size(); i++){
 			if ((messagesToAdd.get(i).length() > 3)){
 				this.pushReceiveMessage((messagesToAdd.get(i)));
+			}
+			if (messagesToAdd.get(i).equals("108")){
+				stop();
 			}
 
 		}
@@ -359,12 +369,31 @@ public class ServerInterface implements Runnable {
 		 * ************************************************************************/
 		public void run() {
 			while (true) {
+				//String message = "";
+				//String messageToConcat =  "";
+				//char currentChar = ' ';
+				
 				try {
-					char[] cbuf = new char[100];
-					streamIn.read(cbuf);
-						client.handle(String.valueOf(cbuf).replaceAll("\n", "").replace("<EOM>", "<EOM>#"));
+					//while 
+					//while ((currentChar = (char)streamIn.read()) != -1){
+					//	message = message.concat(String.valueOf(currentChar));
+					//}
+					//char[] cbuf = new char[100];
+					//streamIn.re
+					//streamIn.read(cbuf);
+						//client.handle(String.valueOf(message).replaceAll("\n", "").replace("<EOM>", "<EOM>#"));
+					String message ="";
+					while (!message.contains("<EOM>")){
+						message = message + (char)streamIn.read();
+						
+					}
+					message = message.replaceAll("\n", "");
+					if (message.contains("108")){
+						client.stop();
+					}
+					client.handle(message);
 
-				} catch (IOException ioe) {
+				} catch (Exception ioe) {
 					System.out.println("Listening error: " + ioe.getMessage());
 					client.stop();
 				}
