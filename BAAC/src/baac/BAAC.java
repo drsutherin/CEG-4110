@@ -26,8 +26,8 @@ public class BAAC implements Runnable {
 	// Stage gui_background;
 
 	public BAAC()	{
-//		ServerInterface serverInterface = null;
-//		serverInterface = new ServerInterface("mchlrtkwski.tk", 45322, this);
+		ServerInterface serverInterface = null;
+		serverInterface = new ServerInterface("mchlrtkwski.tk", 45322, this);
 		
 		
 	}
