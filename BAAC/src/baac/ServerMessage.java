@@ -1,6 +1,6 @@
 package baac;
 
-    public final class Message {
+    public final class ServerMessage {
         public  static final String endOfMsg="<EOM>";
         public  static final String ASK_USERNAME="Sen";
 
