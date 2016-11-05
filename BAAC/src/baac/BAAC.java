@@ -21,13 +21,14 @@ public class BAAC implements Runnable {
 	LobbyChat lobbyChat;
 	Vector<PrivateChat> privateChatList;	// Contains all active private chats
 	Game theGame;
-	Player you;
+	Player you = Player.getInstance();
 	// Voce speechInterface;
 	// Stage gui_background;
+	//a random comment
 
 	public BAAC()	{
-//		ServerInterface serverInterface = null;
-//		serverInterface = new ServerInterface("mchlrtkwski.tk", 45322, this);
+		ServerInterface serverInterface = null;
+		serverInterface = new ServerInterface("mchlrtkwski.tk", 45322, this);
 		
 		
 	}

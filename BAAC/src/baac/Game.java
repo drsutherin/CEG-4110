@@ -25,12 +25,10 @@ public class Game implements Runnable {
 	
 	/**
 	 * Constructor for creating a new table
-	 * @param baac is the client
 	 * @param tid is the table ID
 	 */
-	public Game(BAAC baac, String tid)	{
-		client = baac;
-		player1 = baac.you.username;
+	public Game(String tid)	{
+		player1 = Player.getUsername();
 		player2 = "";
 		turn = "";
 		boardState = "";
@@ -43,9 +41,8 @@ public class Game implements Runnable {
 	 * @param tid is the existing table id
 	 * @param opponent is the opponent's username
 	 */
-	public Game(BAAC baac, String tid, String opponent){
-		client = baac;
-		player1 = baac.you.username;
+	public Game(String tid, String opponent){
+		player1 = Player.getUsername();
 		player2 = opponent;
 		turn = "";
 		boardState = "";
