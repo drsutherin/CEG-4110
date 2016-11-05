@@ -4,6 +4,10 @@ import java.net.*;
 import static baac.ServerMessage.*;
 import java.util.Arrays;
 import java.util.Vector;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import java.io.*;
 import baac.BAAC;
 
@@ -48,11 +52,22 @@ public class ServerInterface implements Runnable {
 	*
 	*
 	***************************************************************************/
-	public ServerInterface(String serverName, int serverPort, BAAC b) {
+	public ServerInterface(BAAC b){ //String serverName, int serverPort, BAAC b) {
+		 // a jframe here isn't strictly necessary, but it makes the example a little more real
+        JFrame frame = new JFrame("InputDialog Example #1");
+
+        // prompt the user to enter their name
+        String serverName = JOptionPane.showInputDialog(frame, "Server Name or IP Adress");
+        String serverPort = JOptionPane.showInputDialog(frame, "Port Number");
+
+        // get the user's input. no this.pushSendMessage(name);//("The user's name is '%s'.\n", name);
+       // System.exit(0);
+        serverName = "mchlrtkwski.tk";
+        serverPort = "45322";
 		System.out.println("Establishing connection. Please wait ...");
 		try {
 			baac = b;
-			socket = new Socket(serverName, serverPort);
+			socket = new Socket(serverName, Integer.parseInt(serverPort));
 			System.out.println("Connected: " + socket);
 			start();
 		} catch (UnknownHostException uhe) {
@@ -73,16 +88,19 @@ public class ServerInterface implements Runnable {
 	public void run() {
 		while (thread != null) {
 			try {
-				String message = consoleBuffer.readLine();
-				//streamOut.println(message);
-				//streamOut.flush();
-				this.pushSendMessage(message);
+				//String message = (consoleBuffer.readLine()).replace("\n", "");
+				//this.pushSendMessage(message);
 				while (!this.sendVector.isEmpty()){
 					String messageToSend = this.popSendMessage();
 					this.streamOut.println(messageToSend);
 					streamOut.flush();
+					if (messageToSend.contains("108")){
+						System.out.println("goodbye now you");
+						stop();
+						
+					}
 				}
-			} catch (IOException ioe) {
+			} catch (Exception ioe) {
 				System.out.println("Sending error: " + ioe.getMessage());
 				stop();
 			}
@@ -100,14 +118,18 @@ public class ServerInterface implements Runnable {
 
 	public void handle(String msg) {
 		
-		String[] allMessages = msg.split("#");
-		Vector<String> messagesToAdd = new Vector<String>(Arrays.asList(allMessages));
-		for (int i = 0; i < messagesToAdd.size(); i++){
-			if ((messagesToAdd.get(i).length() > 3)){
-				this.pushReceiveMessage((messagesToAdd.get(i)));
-			}
-
-		}
+		//String[] allMessages = msg.split("#");
+		//Vector<String> messagesToAdd = new Vector<String>(Arrays.asList(allMessages));
+		
+		//for (int i = 0; i < messagesToAdd.size(); i++){
+			//if ((messagesToAdd.get(i).length() > 3)){
+			//	this.pushReceiveMessage((messagesToAdd.get(i)));
+			//}
+			//if (messagesToAdd.get(i).equals("108")){
+			//	stop();
+//
+		//}
+		this.pushReceiveMessage(msg);
 		while (!this.receiveVector.isEmpty()){
 			String messageToPerform = this.popRecieveMessage();
 			System.out.println(messageToPerform);
@@ -115,7 +137,12 @@ public class ServerInterface implements Runnable {
 			//System.out.println(messageCode);
 	        String monthString;
 	        switch (messageCode) {
-	            case ServerMessage.ASK_USERNAME: System.out.println("they asked your name stupid");;
+	            case ServerMessage.ASK_USERNAME:
+	            	JFrame frame = new JFrame("BAAC Checkers");
+	            	String name = JOptionPane.showInputDialog(frame, "What's your name?");
+	            	this.pushSendMessage(name);
+	           // System.exit(0);
+	            	
 	                     break;
 	            case ServerMessage.CONN_OK:  messageCode= "March";
 	                     break;
@@ -359,12 +386,23 @@ public class ServerInterface implements Runnable {
 		 * ************************************************************************/
 		public void run() {
 			while (true) {
+				//String message = "";
+				//String messageToConcat =  "";
+				//char currentChar = ' ';
+				
 				try {
-					char[] cbuf = new char[100];
-					streamIn.read(cbuf);
-						client.handle(String.valueOf(cbuf).replaceAll("\n", "").replace("<EOM>", "<EOM>#"));
+					String message ="";
+					while (!message.contains("<EOM>")){
+						message = message + (char)streamIn.read();
+						
+					}
+					message = message.replaceAll("\n", "");
+					if (message.contains("108")){
+						client.stop();
+					}
+					client.handle(message);
 
-				} catch (IOException ioe) {
+				} catch (Exception ioe) {
 					System.out.println("Listening error: " + ioe.getMessage());
 					client.stop();
 				}

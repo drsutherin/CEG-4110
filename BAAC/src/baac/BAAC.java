@@ -28,9 +28,7 @@ public class BAAC implements Runnable {
 
 	public BAAC()	{
 		ServerInterface serverInterface = null;
-		serverInterface = new ServerInterface("mchlrtkwski.tk", 45322, this);
-		
-		
+		serverInterface = new ServerInterface(this); //"mchlrtkwski.tk", 45322, this);	
 	}
 
 	public void run() {
