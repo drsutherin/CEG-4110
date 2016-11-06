@@ -19,8 +19,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  */
 public class BAAC implements Runnable {
-	ServerInterface serverInterface;
-	LobbyChat lobbyChat;
+	Thread serverInterface = null;
+	Thread lobbyChat;
 	Vector<PrivateChat> privateChatList;	// Contains all active private chats
 	Game theGame;
 	Player you = Player.getInstance();
@@ -31,8 +31,8 @@ public class BAAC implements Runnable {
 
 	public BAAC()	{
 		//buffer for passing messages within the client (from classes to this interface)
-		ServerInterface serverInterface = null;
-		serverInterface = new ServerInterface(clientMessageBuffer); //"mchlrtkwski.tk", 45322, this);	
+		serverInterface = new Thread(new ServerInterface(clientMessageBuffer)); //"mchlrtkwski.tk", 45322, this);
+		lobbyChat = new Thread(new LobbyChat(clientMessageBuffer));		
 	}
 
 	//instantiate the other classes, send the clientMessageBuffer to classes that need to send messages back

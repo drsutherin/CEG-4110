@@ -42,11 +42,10 @@ public class ServerInterface implements Runnable {
 	private InputStreamReader console = null;
 	private BufferedReader consoleBuffer = null;
 	private PrintWriter streamOut = null;
-	private Vector<String> sendVector = new Vector<String>();
 	private Vector<String> receiveVector = new Vector<String>();
 	private ServerInterfaceThread client = null;
 	
-	//buffer for passing messages within the client (from classes to this interface)
+	//buffer for passing messages within the client (generally from other classes to this interface)
 	private BlockingQueue<String> clientMessageQueue;
 
 	/***************************************************************************
@@ -96,11 +95,11 @@ public class ServerInterface implements Runnable {
 			try {
 				//String message = (consoleBuffer.readLine()).replace("\n", "");
 				//this.pushSendMessage(message);
-				while (!this.sendVector.isEmpty()){
+				while (!clientMessageQueue.isEmpty()){
 					String messageToSend = this.popSendMessage();
 					this.streamOut.println(messageToSend);
 					streamOut.flush();
-					if (messageToSend.contains("108")){
+					if (messageToSend.startsWith("108")){
 						System.out.println("goodbye now you");
 						stop();
 						
@@ -268,15 +267,21 @@ public class ServerInterface implements Runnable {
 	 *METHOD: popSendMessage()
 	 *PARAMETERS: --
 	 *RETURNS: String
-	 *DESCRIPTION:
-	 *
-	 *
+	 *DESCRIPTION: Removes a message from the client's consumer-producer buffer.
+	 *The buffer generally holds messages in the form: ### CLIENT_ID MESSAGE_FROM_CLIENT <EOM>.
+	 *Most of these messages were produced by client classes (ie. PrivateChat, Game, etc)
+	 *One exception to the form is the initial send message which consists only of the 
+	 *username and is sent directly from the Server-Interface.
+	 *The server-interface consumes the messages and sends them to the server
 	 * ************************************************************************/
 	private String popSendMessage() {
-		String message = this.sendVector.get(0);
-		this.sendVector.remove(0);
+		String message = "";
+		try {
+			message = clientMessageQueue.take();
+		} catch (InterruptedException e) {
+			// TODO print to log
+		}
 		return message;
-
 	}
 
 	/***************************************************************************
@@ -304,7 +309,11 @@ public class ServerInterface implements Runnable {
 	 *
 	 * ************************************************************************/
 	public void pushSendMessage(String message) {
-		this.sendVector.add(message);
+		try {
+			clientMessageQueue.put(message);
+		} catch (InterruptedException e) {
+			// TODO print to log
+		}
 	}
 
 	/***************************************************************************
