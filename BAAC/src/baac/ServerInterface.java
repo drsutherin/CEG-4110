@@ -5,11 +5,15 @@ import static baac.ServerMessage.*;
 import java.util.Arrays;
 import java.util.Vector;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import java.io.*;
-import baac.BAAC;
+
+
 
 /***************************************************************************
  * The ServerInterface class was designed to be implemented within the
@@ -41,18 +45,20 @@ public class ServerInterface implements Runnable {
 	private Vector<String> sendVector = new Vector<String>();
 	private Vector<String> receiveVector = new Vector<String>();
 	private ServerInterfaceThread client = null;
-	private BAAC baac;
+	
+	//buffer for passing messages within the client (from classes to this interface)
+	private BlockingQueue<String> clientMessageQueue;
 
 	/***************************************************************************
 	*METHOD: Constructor()
 	*DESCRIPTION:
-	*PARAMETERS:
+	*PARAMETERS:messageQueue, a reference to the internal buffer that the client classes pass messages to
 	*RETURNS:
 	*DESCRIPTION:
 	*
 	*
 	***************************************************************************/
-	public ServerInterface(BAAC b){ //String serverName, int serverPort, BAAC b) {
+	public ServerInterface(LinkedBlockingQueue<String> messageQueue){ //String serverName, int serverPort, BAAC b) {
 		 // a jframe here isn't strictly necessary, but it makes the example a little more real
         JFrame frame = new JFrame("InputDialog Example #1");
 
@@ -66,7 +72,7 @@ public class ServerInterface implements Runnable {
         serverPort = "45322";
 		System.out.println("Establishing connection. Please wait ...");
 		try {
-			baac = b;
+			clientMessageQueue = messageQueue;
 			socket = new Socket(serverName, Integer.parseInt(serverPort));
 			System.out.println("Connected: " + socket);
 			start();
