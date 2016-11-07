@@ -54,7 +54,7 @@ public class BAAC implements Runnable {
 	 * @param gameID the game that the user wishes to join/observe
 	 * @return whether or not the message succeeded
 	 */
-	public boolean joinGame(GameMode gameMode, int gameID){
+	public boolean requestJoinGame(GameMode gameMode, int gameID){
 		boolean returnBool = true;
 		
 		if (gameMode == GameMode.PLAY){

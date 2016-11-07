@@ -101,8 +101,7 @@ public class ServerInterface implements Runnable {
 					streamOut.flush();
 					if (messageToSend.startsWith("108")){
 						System.out.println("goodbye now you");
-						stop();
-						
+						stop();						
 					}
 				}
 			} catch (Exception ioe) {
@@ -275,7 +274,7 @@ public class ServerInterface implements Runnable {
 	 *The server-interface consumes the messages and sends them to the server
 	 * ************************************************************************/
 	private String popSendMessage() {
-		String message = "";
+		String message = null;
 		try {
 			message = clientMessageQueue.take();
 		} catch (InterruptedException e) {
