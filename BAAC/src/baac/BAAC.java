@@ -61,10 +61,12 @@ public class BAAC implements Runnable {
 			//send the server the appropriate join table message
 			message = "<104> <"+Player.getUsername()+"> <"+gameID+"> <EOM>";
 			addToClientBuffer(message);
+			you.setUserStatus(Status.playing);
 		}else if (gameMode == GameMode.OBSERVE){
 			//send the server the appropriate observe table message
 			message = "<110> <"+Player.getUsername()+"> <"+gameID+"> <EOM>";
 			addToClientBuffer(message);
+			you.setUserStatus(Status.observing);
 		}else{
 			//if you are here something went wrong and the message will not be sent
 			returnBool =  false;
@@ -75,8 +77,12 @@ public class BAAC implements Runnable {
 	 * This method sends the "leave table" message to the server for this user
 	 */
 	public void leaveGame(){
-		message = "<107> <"+Player.getUsername()+"> <EOM>";
-		addToClientBuffer(message);
+		//can only leave game if we are in or observing a game
+		if (Player.getUserStatus() != Status.in_lobby){
+			message = "<107> <"+Player.getUsername()+"> <EOM>";
+			addToClientBuffer(message);
+			Player.setUserStatus(Status.in_lobby);
+		}
 	}
 	
 	/**
