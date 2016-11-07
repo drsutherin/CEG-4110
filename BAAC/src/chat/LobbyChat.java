@@ -6,12 +6,19 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import baac.Player;
 
+
+/***
+ * The chat handles parsing messages to and from the server. The chat thread remains in the loop until
+ * 
+ * @author ulyZ
+ *
+ */
 public class LobbyChat implements Runnable {
 	//the client's shared buffer for outgoing messages
 	private LinkedBlockingQueue<String> clientMessageQueue;
 	
 	//a class-specific intermediate buffer
-	private Queue<String> outgoingLobbyChatQueue;
+	private LinkedBlockingQueue<String> outgoingLobbyChatQueue;
 	private String username = Player.getUsername();
 	
 	/***
@@ -27,12 +34,15 @@ public class LobbyChat implements Runnable {
 	/**
 	 * Add's the message to the lobbyChat queue. Holding the internal (intermediate) queue will prevent 
 	 * the chat thread from stopping when the  shared buffer is full or unavailable
-	 * @param outgoingMessage
+	 * @param outgoingMessage 
 	 */
-	public void outgoingMessage(String outgoingMessage){
+	public void outgoingMessage(String outgoingMessage) {
 	     String formattedString = "101" + " " + username + " " + outgoingMessage + "<EOM>";
-	     outgoingLobbyChatQueue.add(formattedString);
-	     run();
+	     try {
+			outgoingLobbyChatQueue.put(formattedString);
+		} catch (InterruptedException e) {
+			// TODO Add to log
+		}
 	}
 	
 	/**
@@ -46,8 +56,10 @@ public class LobbyChat implements Runnable {
 		// index = 2 - the sender's message
 		String inMessage[] = incomingMessage.split(" ", 3);
 		String senderName = inMessage[1];
-		String senderMessage = inMessage[2];		
-		//TODO pass message and username to the gui
+		String senderMessage = inMessage[2];	
+		
+		String messageToUI[] = {senderName, senderMessage};
+		//displayInUI(messageToUI);
 	}
 
 	/**
@@ -55,7 +67,7 @@ public class LobbyChat implements Runnable {
 	 */
 	@Override
 	public void run() {
-		//get the message from the internal queue
+		//get the message from the internal queue, poll will return null if there is nothing in the queue
 		 String outgoingMessage = outgoingLobbyChatQueue.poll();
 		 while (outgoingMessage != null){
 			try {
