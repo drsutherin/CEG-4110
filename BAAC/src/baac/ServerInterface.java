@@ -323,6 +323,10 @@ public class ServerInterface extends Peer implements Runnable {
 	}
 	
 	
+	/**
+	 * Passes method to the threadsafe pushSendMessages
+	 * "recieveFromMediator" must be implemented to be a peer
+	 */
 	@Override
 	public void receiveFromMediator(String message) {
 		pushSendMessage(message);
@@ -338,8 +342,10 @@ public class ServerInterface extends Peer implements Runnable {
 	 *
 	 * ************************************************************************/
 	private void pushReceiveMessage(String message) {
-		this.receiveVector.add(message);
-
+		//TODO: Server will only process add request for username, should we move this functionality to BAAC?? 
+		this.receiveVector.add(message);		
+		//this is the new way
+		mediator.receiveFromServer(message);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////

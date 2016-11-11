@@ -4,6 +4,8 @@ import java.util.Queue;
 import java.util.Vector;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import baac.Peer;
+import baac.PeerMediator;
 import baac.Player;
 
 
@@ -13,13 +15,13 @@ import baac.Player;
  * @author ulyZ
  *
  */
-public class LobbyChat implements Runnable {
-	//the client's shared buffer for outgoing messages
-	private LinkedBlockingQueue<String> clientMessageQueue;
+public class LobbyChat extends Peer implements Runnable {
+	//Internal blocking Queues
+	private final LinkedBlockingQueue<String> receiveFromServer = new LinkedBlockingQueue<String>();
+	private final LinkedBlockingQueue<String> sendToServer = new LinkedBlockingQueue<String>();
 	
-	//a class-specific intermediate buffer
-	private LinkedBlockingQueue<String> outgoingLobbyChatQueue;
 	private String username = Player.getUsername();
+	private PeerMediator mediator;
 	
 	/***
 	 * constructor with passed consumer-producer buffer
@@ -27,8 +29,9 @@ public class LobbyChat implements Runnable {
 	 * @param messageQueue, the shared buffer, messages to be to be sent to the server are directed 
 	 * 		to the server-interface via this shared buffer
 	 */
-	public LobbyChat(LinkedBlockingQueue<String> messageQueue)	{
-		clientMessageQueue = messageQueue;
+	public LobbyChat(PeerMediator passedMediator)	{
+		mediator = passedMediator;
+		mediator.addPeerClass(this);
 	}
 	
 	/**
@@ -36,10 +39,10 @@ public class LobbyChat implements Runnable {
 	 * the chat thread from stopping when the  shared buffer is full or unavailable
 	 * @param outgoingMessage 
 	 */
-	public void outgoingMessage(String outgoingMessage) {
+	public void formatMessageFromUI(String outgoingMessage) {
 	     String formattedString = "101" + " " + username + " " + outgoingMessage + "<EOM>";
 	     try {
-			outgoingLobbyChatQueue.put(formattedString);
+			sendToServer.put(formattedString);
 		} catch (InterruptedException e) {
 			// TODO Add to log
 		}
@@ -49,7 +52,7 @@ public class LobbyChat implements Runnable {
 	 * receives messages from the Server and parses them to send to the GUI to be displayed
 	 * @param incomingMessage
 	 */
-	public void incomingMessage(String incomingMessage){
+	public void formatMessageFromServer(String incomingMessage){
 		//splits the message into three parts based on the first two spaces it sees,
 		// index = 0 - is the number 101 - not used
 		// index = 1 - the sender's name
@@ -67,16 +70,37 @@ public class LobbyChat implements Runnable {
 	 */
 	@Override
 	public void run() {
-		//get the message from the internal queue, poll will return null if there is nothing in the queue
-		 String outgoingMessage = outgoingLobbyChatQueue.poll();
-		 while (outgoingMessage != null){
+		
+		//send message to server
+		String outgoingMessage;
+		while (!sendToServer.isEmpty()){
 			try {
-				//place the message in the shared queue
-				clientMessageQueue.put(outgoingMessage);
+				//get the message(Received from the UI)
+				outgoingMessage = sendToServer.take();
+				//send message to mediator
+				mediator.receiveFromPeer(outgoingMessage);
 			} catch (InterruptedException e) {
 				//TODO Log in error log
-			}
-			outgoingMessage = outgoingLobbyChatQueue.poll();
+			};
 		}
+			
+		//get message from server
+		String incomingMessage;
+		while (!receiveFromServer.isEmpty()){
+			try{
+				//get the message (received from the mediator)
+				incomingMessage =  receiveFromServer.take();
+				//verify it is a pertinenet message and format to prepare to send to server 
+				formatMessageFromServer(incomingMessage);
+			}catch (InterruptedException e) {
+				//TODO Log in error log
+			};			
+		}	
+	}
+
+	@Override
+	public void receiveFromMediator(String message) {
+		// TODO Auto-generated method stub
+		
 	}
 }

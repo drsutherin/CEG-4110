@@ -6,7 +6,8 @@ package baac;
  * Every peer must satisfy these conditions:
  * 	1) extend Peer in class definition
  *  2) implement the constructor with the parameter mediator and set this.mediator = mediator
- *  3) implement the abstract method: receiveFromMediator(message)
+ *  3) in the constructor, add the peer as an interface or a peer by using the mediator.addPeer(this) or mediator.addServerInterface(this) methods
+ *  4) implement the abstract method: receiveFromMediator(message)
  * 
  * @author ulyz
  *
@@ -15,9 +16,12 @@ public abstract class Peer {
 	
 	private Mediator mediator;
 	
-	//public Peer(Mediator passedMediator){
+	//*********************************
+	//implement in each peer class
+	//public className(Mediator passedMediator){
 	//	this.mediator = passedMediator;
-	//}
+	//	mediator.addPeer(this); or mediator.addServerInterface(this);
+	//}**************************************
 	
 	//get mediator
 	public Mediator getMediator(){
@@ -33,5 +37,4 @@ public abstract class Peer {
 	public abstract void receiveFromMediator(String message);
 	
 	
-
 }
