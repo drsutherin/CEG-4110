@@ -3,10 +3,27 @@ package baac;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+/***
+ * Concrete implementation of the Mediator interface
+ * 
+ * Description of how Mediator Design Pattern was implemented:
+ *  (1) All threaded classes extend the abstract class Peer. In the constructor of any Peer class, the the local PeerMediator is instantiated 
+ *  	with a PeerMediator passed in as a parameter within the constructor of the class (example: public lobbyChat(PeerMediator passedMediator))
+ *  (2) Also, within the constructor of any class extending Peer, the Peer must add itself to the mediator as either a "ServerInterface" or a "Peer"
+ *  	(example: call mediator.addServerInterface(this) or mediator.addPeerClass(this))
+ *  (3) Once on the mediator's "mailing list", the concrete Peer will receive the following information (depending on which mailing list they are on):
+ *  	(a) serverInterfaceList will receive all messages originating from Peers (which call mediator's method: mediator.receiveFromPeer(message) )
+ *  	(b) Peers will receive all messages originating from serverInterface (which call the mediator's method mediator.receiveFromServer(message) ) 
+ * 
+ *  
+ * @author ulyz
+ *
+ */
+
 public class PeerMediator implements Mediator {
 
 	//Lists of classes signed up for updates
-	private final LinkedBlockingQueue<Peer> serverInterfaceList = new LinkedBlockingQueue<Peer>();
+	private final LinkedBlockingQueue<Peer> serverInterfaceList = new LinkedBlockingQueue<Peer>(); //
 	private final LinkedBlockingQueue<Peer> peerList = new LinkedBlockingQueue<Peer>();
 	
 	

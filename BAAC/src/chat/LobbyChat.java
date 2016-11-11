@@ -1,17 +1,16 @@
 package chat;
 
-import java.util.Queue;
-import java.util.Vector;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import baac.Peer;
 import baac.PeerMediator;
 import baac.Player;
+import baac.ServerMessage;
 
 
 /***
- * The chat handles parsing messages to and from the server. The chat thread remains in the loop until
- * 
+ * The chat handles parsing messages to and from the server. The chat thread remains active until the system is
+ * disconnected
  * @author ulyZ
  *
  */
@@ -57,11 +56,20 @@ public class LobbyChat extends Peer implements Runnable {
 		// index = 0 - is the number 101 - not used
 		// index = 1 - the sender's name
 		// index = 2 - the sender's message
-		String inMessage[] = incomingMessage.split(" ", 3);
-		String senderName = inMessage[1];
-		String senderMessage = inMessage[2];	
-		
+		String senderName = "";
+		String senderMessage = "";
+		if (incomingMessage.startsWith(ServerMessage.MSG_ALL)){
+			try{
+				String inMessage[] = incomingMessage.split(" ", 3);//change back to 3
+				senderName = inMessage[1];
+				senderMessage = inMessage[2];	
+			} catch(ArrayIndexOutOfBoundsException e){
+				senderName = "error";
+				senderMessage = "incorrect message format";
+			}
+		}
 		String messageToUI[] = {senderName, senderMessage};
+		//System.out.println("Server Recieved: " + senderName + ", " + senderMessage);
 		//displayInUI(messageToUI);
 	}
 
@@ -70,37 +78,41 @@ public class LobbyChat extends Peer implements Runnable {
 	 */
 	@Override
 	public void run() {
-		
-		//send message to server
-		String outgoingMessage;
-		while (!sendToServer.isEmpty()){
-			try {
-				//get the message(Received from the UI)
-				outgoingMessage = sendToServer.take();
-				//send message to mediator
-				mediator.receiveFromPeer(outgoingMessage);
-			} catch (InterruptedException e) {
-				//TODO Log in error log
-			};
+		while(true){
+			//send message to server
+			String outgoingMessage;
+			while (!sendToServer.isEmpty()){
+				try {
+					//get the message(Received from the UI)
+					outgoingMessage = sendToServer.take();
+					//send message to mediator
+					mediator.receiveFromPeer(outgoingMessage);
+				} catch (InterruptedException e) {
+					//TODO Log in error log
+				};
+			}
+				
+			//get message from server
+			String incomingMessage;
+			while (!receiveFromServer.isEmpty()){
+				try{
+					//get the message (received from the mediator)
+					incomingMessage =  receiveFromServer.take();
+					//verify it is a pertinent message and format to prepare to send to server 
+					formatMessageFromServer(incomingMessage);
+				}catch (InterruptedException e) {
+					//TODO Log in error log
+				};			
+			}
 		}
-			
-		//get message from server
-		String incomingMessage;
-		while (!receiveFromServer.isEmpty()){
-			try{
-				//get the message (received from the mediator)
-				incomingMessage =  receiveFromServer.take();
-				//verify it is a pertinenet message and format to prepare to send to server 
-				formatMessageFromServer(incomingMessage);
-			}catch (InterruptedException e) {
-				//TODO Log in error log
-			};			
-		}	
 	}
 
 	@Override
 	public void receiveFromMediator(String message) {
-		// TODO Auto-generated method stub
-		
+		try {
+			receiveFromServer.put(message);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}		
 	}
 }

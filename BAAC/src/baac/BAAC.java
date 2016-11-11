@@ -39,11 +39,15 @@ public class BAAC implements Runnable {
 		//buffer for passing messages within the client (from classes to this interface)
 		serverInterface = new Thread(new ServerInterface(mediator)); //"mchlrtkwski.tk", 45322, this);
 		lobbyChat = new Thread(new LobbyChat(mediator));
+		
+		lobbyChat.start();
 	}
 
-	//instantiate the other classes, send the clientMessageBuffer to classes that need to send messages back
+	//check the incoming and outgoing message buffers, use mediator as needed
 	public void run() {
-		// TODO Auto-generated method stub
+		while(true){
+			
+		}
 	}
 	public enum GameMode{
 		OBSERVE, PLAY

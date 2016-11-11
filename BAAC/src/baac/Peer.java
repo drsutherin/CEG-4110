@@ -36,5 +36,4 @@ public abstract class Peer {
 	//must be implemented by every class that extends peer
 	public abstract void receiveFromMediator(String message);
 	
-	
 }

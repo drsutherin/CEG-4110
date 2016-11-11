@@ -64,6 +64,7 @@ public class ServerInterface extends Peer implements Runnable {
 	public ServerInterface(Mediator passedMediator){ //String serverName, int serverPort, BAAC b) {
 		
 		mediator = passedMediator;
+		mediator.addServerInterface(this);
 		
 		 // a jframe here isn't strictly necessary, but it makes the example a little more real
         JFrame frame = new JFrame("InputDialog Example #1");
@@ -100,8 +101,8 @@ public class ServerInterface extends Peer implements Runnable {
 	public void run() {
 		while (thread != null) {
 			try {
-				//String message = (consoleBuffer.readLine()).replace("\n", "");
-				//this.pushSendMessage(message);
+				String message = (consoleBuffer.readLine()).replace("\n", "");
+				this.pushSendMessage(message);
 				while (!messagesFromClient.isEmpty()){
 					String messageToSend = this.popSendMessage();
 					this.streamOut.println(messageToSend);
@@ -149,9 +150,9 @@ public class ServerInterface extends Peer implements Runnable {
 	        String monthString;
 	        switch (messageCode) {
 	            case ServerMessage.ASK_USERNAME:
-	            	JFrame frame = new JFrame("BAAC Checkers");
-	            	String name = JOptionPane.showInputDialog(frame, "What's your name?");
-	            	this.pushSendMessage(name);
+	            	//JFrame frame = new JFrame("BAAC Checkers");
+	            	//String name = JOptionPane.showInputDialog(frame, "What's your name?");
+	            	//this.pushSendMessage(name);
 	           // System.exit(0);
 	            	
 	                     break;
