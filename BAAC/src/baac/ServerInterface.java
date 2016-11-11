@@ -35,7 +35,7 @@ import java.io.*;
  *	Create push and pop methods to implement a stack on the Vector
  *	Move catch statement prints to Error Log
  ***************************************************************************/
-public class ServerInterface implements Runnable {
+public class ServerInterface extends Peer implements Runnable {
 
 	private Socket socket = null;
 	private Thread thread = null;
@@ -44,9 +44,13 @@ public class ServerInterface implements Runnable {
 	private PrintWriter streamOut = null;
 	private Vector<String> receiveVector = new Vector<String>();
 	private ServerInterfaceThread client = null;
+	private Mediator mediator;
 	
 	//buffer for passing messages within the client (generally from other classes to this interface)
-	private BlockingQueue<String> clientMessageQueue;
+	//private BlockingQueue<String> clientMessageQueue;
+	
+	private BlockingQueue<String> messagesFromClient = new LinkedBlockingQueue<String>();
+	private BlockingQueue<String> messagesToClient = new LinkedBlockingQueue<String>();
 
 	/***************************************************************************
 	*METHOD: Constructor()
@@ -57,7 +61,10 @@ public class ServerInterface implements Runnable {
 	*
 	*
 	***************************************************************************/
-	public ServerInterface(LinkedBlockingQueue<String> messageQueue){ //String serverName, int serverPort, BAAC b) {
+	public ServerInterface(Mediator passedMediator){ //String serverName, int serverPort, BAAC b) {
+		
+		mediator = passedMediator;
+		
 		 // a jframe here isn't strictly necessary, but it makes the example a little more real
         JFrame frame = new JFrame("InputDialog Example #1");
 
@@ -71,7 +78,7 @@ public class ServerInterface implements Runnable {
         serverPort = "45322";
 		System.out.println("Establishing connection. Please wait ...");
 		try {
-			clientMessageQueue = messageQueue;
+			mediator.addServerInterface(this);
 			socket = new Socket(serverName, Integer.parseInt(serverPort));
 			System.out.println("Connected: " + socket);
 			start();
@@ -95,7 +102,7 @@ public class ServerInterface implements Runnable {
 			try {
 				//String message = (consoleBuffer.readLine()).replace("\n", "");
 				//this.pushSendMessage(message);
-				while (!clientMessageQueue.isEmpty()){
+				while (!messagesFromClient.isEmpty()){
 					String messageToSend = this.popSendMessage();
 					this.streamOut.println(messageToSend);
 					streamOut.flush();
@@ -276,7 +283,7 @@ public class ServerInterface implements Runnable {
 	private String popSendMessage() {
 		String message = null;
 		try {
-			message = clientMessageQueue.take();
+			message = messagesFromClient.take();
 		} catch (InterruptedException e) {
 			// TODO print to log
 		}
@@ -309,10 +316,16 @@ public class ServerInterface implements Runnable {
 	 * ************************************************************************/
 	public void pushSendMessage(String message) {
 		try {
-			clientMessageQueue.put(message);
+			messagesFromClient.put(message);
 		} catch (InterruptedException e) {
 			// TODO print to log
 		}
+	}
+	
+	
+	@Override
+	public void receiveFromMediator(String message) {
+		pushSendMessage(message);
 	}
 
 	/***************************************************************************
@@ -423,4 +436,6 @@ public class ServerInterface implements Runnable {
 			}
 		}
 	}
+
+
 }

@@ -27,7 +27,9 @@ public class BAAC implements Runnable {
 	String message = "";
 	Game theGame;
 	Player you = Player.getInstance();
-	private final LinkedBlockingQueue<String> clientMessageBuffer = new LinkedBlockingQueue<String>();
+	private final LinkedBlockingQueue<String> clientMessageBuffer = new LinkedBlockingQueue<String>();	
+	PeerMediator mediator = new PeerMediator();
+	
 	// Voce speechInterface;
 	// Stage gui_background;
 	// BAAC_GUI gui;
@@ -35,7 +37,7 @@ public class BAAC implements Runnable {
 
 	public BAAC()	{
 		//buffer for passing messages within the client (from classes to this interface)
-		serverInterface = new Thread(new ServerInterface(clientMessageBuffer)); //"mchlrtkwski.tk", 45322, this);
+		serverInterface = new Thread(new ServerInterface(mediator)); //"mchlrtkwski.tk", 45322, this);
 		lobbyChat = new Thread(new LobbyChat(clientMessageBuffer));
 	}
 

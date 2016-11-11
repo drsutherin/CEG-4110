@@ -15,9 +15,9 @@ public abstract class Peer {
 	
 	private Mediator mediator;
 	
-	public Peer(Mediator passedMediator){
-		this.mediator = passedMediator;
-	}
+	//public Peer(Mediator passedMediator){
+	//	this.mediator = passedMediator;
+	//}
 	
 	//get mediator
 	public Mediator getMediator(){
