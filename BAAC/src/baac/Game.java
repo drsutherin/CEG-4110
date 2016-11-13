@@ -19,12 +19,14 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  */
 public class Game extends Peer implements Runnable {
+	
 	String player1, player2;
 	GameStatus status;
-	String turn;
+	Boolean isTurn;
 	String boardState;		// Same format as sent from server (see CheckersServerDocumentation)
 	BAAC client;
 	String tableID;			// Received from server
+	
 	Mediator mediator;
 	
 	//Thread safe buffers used to add/remove messages from this thread
@@ -39,7 +41,7 @@ public class Game extends Peer implements Runnable {
 	public Game(String tid, PeerMediator passedMediator)	{
 		player1 = Player.getUsername();
 		player2 = "";
-		turn = "";
+		isTurn = false;
 		boardState = "";
 		tableID = tid;
 		mediator = passedMediator;
@@ -55,7 +57,7 @@ public class Game extends Peer implements Runnable {
 	public Game(String tid, String opponent, PeerMediator passedMediator){
 		player1 = Player.getUsername();
 		player2 = opponent;
-		turn = "";
+		isTurn = false;
 		boardState = "";
 		tableID = tid;
 		mediator = passedMediator;
@@ -112,38 +114,87 @@ public class Game extends Peer implements Runnable {
 	 * Directs message to the proper class method for further processing.
 	 */
 	public void scanMessageFromServer(String message){
+		boolean noMatch = false;
+		String inMessage[];
 		String messageCode = message.substring(0, 3);
-		//System.out.println(messageCode);
         switch (messageCode) {
-            case ServerMessage.GAME_START:  messageCode = "August";
-                     break;
-            case ServerMessage.COLOR_BLACK:  messageCode = "September";
-                     break;
-            case ServerMessage.COLOR_RED: messageCode = "October";
-                     break;
-            case ServerMessage.OPP_MOVE: messageCode = "November";
-                     break;
-            case ServerMessage.BOARD_STATE: messageCode= "December";
-                     break;
-            case ServerMessage.GAME_WIN: messageCode = "October";
-            		 break;
-            case ServerMessage.GAME_LOSE: messageCode = "November";
-            		 break;
-            case ServerMessage.WHO_ON_TBL: messageCode= "December";
-            		 break;
-            case ServerMessage.OPP_LEFT_TABLE: messageCode= "December";
-            		 break;
-            case ServerMessage.YOUR_TURN: messageCode = "November";
-            		 break;
-            //note - there is no way to know who is observing table (if anyone)
+            case ServerMessage.GAME_START:
+            	status = GameStatus.active;
+        		isTurn = false;
+        		if(Player.getUsername() == player1){
+        			isTurn = true;
+        		}
+                break;
+            case ServerMessage.COLOR_BLACK:
+        		player1 = Player.getUsername();		
+                break;
+            case ServerMessage.COLOR_RED:
+        		player1 = Player.getUsername();
+                break;
+            case ServerMessage.OPP_MOVE: 
+        		isTurn = false;
+                break;
+            case ServerMessage.BOARD_STATE:
+            	//<code><tableID><boardState>
+            	//split the string into three parts based on first two spaces
+            	inMessage = message.split(" ", 3);
+            	if(inMessage[1] == tableID){
+            		boardState = inMessage[2];
+            	}
+                break;
+            case ServerMessage.GAME_WIN: 
+            	status = GameStatus.player_win;
+            	break;
+            case ServerMessage.GAME_LOSE:
+            	status = GameStatus.player_lose;
+            	break;
+            case ServerMessage.WHO_ON_TBL:
+            	//<code><tableID><player1><players2> <-- p1 or p2 may be -1 if empty
+            	//split  this string into four parts based on the first three spaces
+            	//TODO: Player Username cannot have spaces
+            	inMessage = message.split(" ", 4);
+            	if (tableID == inMessage[1]){
+            		//set player 1
+            		if (inMessage[2] == "-1"){
+            			status = GameStatus.waiting_opponent;
+            		} else {
+            			player1 = inMessage[2];
+            		}
+            		//set player 2
+            		if (inMessage[3] == "-1"){
+            			status = GameStatus.waiting_opponent;
+            		} else {
+            			player2 = inMessage[3];
+            		}
+            	}
+            	break;
+            case ServerMessage.OPP_LEFT_TABLE:
+            	status = GameStatus.waiting_opponent;
+            	break;
+            case ServerMessage.YOUR_TURN:
+            	isTurn = true;
+            	break;
+            default:
+            	noMatch = true;
+            	break;
         }
+        //if the messages matched a code, update the GUI
+        if (noMatch == false){
+        	//TODO: Update GUI with game vars
+        }
+   }
 		
-	}
+	
 	
 	/******************************************************/
-				/* Handle Events From Server */
+				/* Handle Events From GUI */
 	/******************************************************/
 	
+	//Player Makes a Move
+	
+	//Player Leaves Game
+	
+	//Player Starts Game
 	
 	
 	
