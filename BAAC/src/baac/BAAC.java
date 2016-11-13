@@ -71,16 +71,8 @@ public class BAAC extends Peer implements Runnable {
 			}
 				
 			//get message from server
-			String incomingMessage;
 			while (!receiveFromServer.isEmpty()){
-				try{
-					//get the message (received from the mediator)
-					incomingMessage =  receiveFromServer.take();
-					//verify it is a pertinent message and format to prepare to send to server 
-					decodeMessageFromServer(incomingMessage);
-				}catch (InterruptedException e) {
-
-				};			
+				decodeMessageFromServer();			
 			}
 		}		
 	}
@@ -148,7 +140,7 @@ public class BAAC extends Peer implements Runnable {
 	/***
 	 * Looks at all the messages from server and determines which ones to process
 	 */
-	private void decodeMessageFromServer(String incomingMessage){
+	private void decodeMessageFromServer(){
 		//Jon- this is some switch statement, I don't really know what should go in here...
 		// I was thinking. . .
 		// Does the server interface need to receive/process any messages from the sever? Currently it is responsible for getting the username
@@ -157,12 +149,19 @@ public class BAAC extends Peer implements Runnable {
 		// in its own switch statement. It's janky. I want to get rid of it but I don't know if there are any implications. I think this 
 		// switch is going to involve you looking at almost every incoming message of so I was hoping you could keep that in the back of your 
 		// mind and come to a conclusion either way.
-		
-		String code = incomingMessage.substring(1, 3);
-		switch(code){
-		
+		String message;
+		try {
+			message = receiveFromServer.take();
+			//this method will only use codes starting with 2 as those are ones that are received from the server
+			String code = message.substring(0, 2);
+			switch(code){
+			
 			default:
-				break;
+					break;
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

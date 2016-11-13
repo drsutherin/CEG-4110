@@ -145,11 +145,12 @@ public class ServerInterface extends Peer implements Runnable {
 		while (!this.receiveVector.isEmpty()){
 			String messageToPerform = this.popRecieveMessage();
 			System.out.println(messageToPerform);
-			String messageCode = messageToPerform.substring(0, 3);
+			String messageCode = messageToPerform.substring(0, 2);
 			//System.out.println(messageCode);
 	        String monthString;
 	        switch (messageCode) {
 	            case ServerMessage.ASK_USERNAME:
+	            	
 	            	//JFrame frame = new JFrame("BAAC Checkers");
 	            	//String name = JOptionPane.showInputDialog(frame, "What's your name?");
 	            	//this.pushSendMessage(name);
