@@ -101,8 +101,8 @@ public class ServerInterface extends Peer implements Runnable {
 	public void run() {
 		while (thread != null) {
 			try {
-				String message = (consoleBuffer.readLine()).replace("\n", "");
-				this.pushSendMessage(message);
+				//String message = (consoleBuffer.readLine()).replace("\n", "");
+				//this.pushSendMessage(message);
 				while (!messagesFromClient.isEmpty()){
 					String messageToSend = this.popSendMessage();
 					this.streamOut.println(messageToSend);
@@ -145,9 +145,11 @@ public class ServerInterface extends Peer implements Runnable {
 		while (!this.receiveVector.isEmpty()){
 			String messageToPerform = this.popRecieveMessage();
 			System.out.println(messageToPerform);
-			String messageCode = messageToPerform.substring(0, 2);
+			String messageCode = messageToPerform.substring(0, 3);
 			//System.out.println(messageCode);
 	        String monthString;
+	        
+	        /*
 	        switch (messageCode) {
 	            case ServerMessage.ASK_USERNAME:
 	            	
@@ -213,6 +215,7 @@ public class ServerInterface extends Peer implements Runnable {
 	                     break;
 
 	        }
+	        */
 		}
 		//if (msg.equals(".bye")) {
 		//	System.out.println("Good bye. Press RETURN to exit ...");

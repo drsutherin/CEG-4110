@@ -109,10 +109,19 @@ public class LobbyChat extends Peer implements Runnable {
 
 	@Override
 	public void receiveFromMediator(String message) {
+		/*
 		try {
 			receiveFromServer.put(message);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}		
+		*/
+	}
+	public void lobbyChatIn(String message){
+		try {
+			receiveFromServer.put(message);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

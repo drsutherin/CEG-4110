@@ -1,5 +1,6 @@
 package baac;
 
+import java.util.Scanner;
 import java.util.Vector;
 import chat.*;
 import gui.*;
@@ -27,8 +28,11 @@ public class BAAC extends Peer implements Runnable {
 	Vector<Integer> activeTables;
 	String message = "";
 	Game theGame;
+	Scanner in = new Scanner(System.in);
+	
 	Player you = Player.getInstance();//ensures there is a player
 	PeerMediator mediator = new PeerMediator();
+	LobbyChat lobby = new LobbyChat(mediator);
 	
 	//Thread safe buffers used to add/remove messages from this thread
 	private final LinkedBlockingQueue<String> sendToServer = new LinkedBlockingQueue<String>();	
@@ -45,10 +49,11 @@ public class BAAC extends Peer implements Runnable {
 	 *  c) instantiate and start the lobbyChat
 	 */
 	public BAAC()	{
+		in = new Scanner(System.in);
 		mediator.addPeerClass(this);
 		//buffer for passing messages within the client (from classes to this interface)
 		serverInterface = new Thread(new ServerInterface(mediator)); //"mchlrtkwski.tk", 45322, this);
-		lobbyChat = new Thread(new LobbyChat(mediator));	
+		lobbyChat = new Thread(lobby);	
 		lobbyChat.start();
 	}
 	
@@ -153,10 +158,103 @@ public class BAAC extends Peer implements Runnable {
 		try {
 			message = receiveFromServer.take();
 			//this method will only use codes starting with 2 as those are ones that are received from the server
-			String code = message.substring(0, 2);
+			//System.out.println(message);
+			String code = message.substring(0, 3);
+			//System.out.println(code);
 			switch(code){
-			
-			default:
+			//2 codes start here
+				case ServerMessage.ASK_USERNAME:
+					System.out.println("Enter Username");
+					sendToServer.put(in.next());
+				case ServerMessage.CONN_OK:
+					System.out.println("Connected to Server");
+					break;
+				case ServerMessage.IN_LOBBY:
+					break;
+				case ServerMessage.OUT_LOBBY:
+					break;
+				case ServerMessage.MSG:
+					lobby.lobbyChatIn(message);
+					break;
+				case ServerMessage.NEW_TBL:
+					break;
+				case ServerMessage.GAME_START:
+					break;
+				case ServerMessage.COLOR_BLACK:
+					break;
+				case ServerMessage.COLOR_RED:
+					break;
+				case ServerMessage.OPP_MOVE:
+					break;
+				case ServerMessage.BOARD_STATE:
+					break;
+				case ServerMessage.GAME_WIN:
+					break;
+				case ServerMessage.GAME_LOSE:
+					break;
+				case ServerMessage.TBL_JOINED:
+					break;
+				case ServerMessage.TBL_LEFT:
+					break;
+				case ServerMessage.WHO_IN_LOBBY:
+					break;
+				case ServerMessage.NOW_IN_LOBBY:
+					break;
+				case ServerMessage.WHO_ON_TBL:
+					break;
+				case ServerMessage.TBL_LIST:
+					break;
+				case ServerMessage.NOW_LEFT_LOBBY:
+					break;
+				case ServerMessage.OPP_LEFT_TABLE:
+					break;
+				case ServerMessage.YOUR_TURN:
+					break;
+				case ServerMessage.NOW_OBSERVING:
+					break;
+				case ServerMessage.STOPPED_OBSERVING:
+					break;
+				case ServerMessage.REGISTER_OK:
+					break;
+				case ServerMessage.LOGIN_OK:
+					break;
+				case ServerMessage.PROFILE_UPDATED:
+					break;
+				case ServerMessage.USER_PROFILE:
+					break;
+				//4 codes start here
+				case ServerMessage.NET_EXCEPTION:
+					break;
+				case ServerMessage.NAME_IN_USE:
+				case ServerMessage.BAD_NAME:
+					//these will both result in the user having to choose a new name
+					break;
+				case ServerMessage.ILLEGAL:
+					break;
+				case ServerMessage.TBL_FULL:
+					break;
+				case ServerMessage.NOT_IN_LOBBY:
+					break;
+				case ServerMessage.BAD_MESSAGE:
+					break;
+				case ServerMessage.ERR_IN_LOBBY:
+					break;
+				case ServerMessage.PLAYERS_NOT_READY:
+					break;
+				case ServerMessage.NOT_YOUR_TURN:
+					break;
+				case ServerMessage.TBL_NOT_EXIST:
+					break;
+				case ServerMessage.GAME_NOT_CREATED:
+					break;
+				case ServerMessage.ALREADY_REGISTERED:
+					break;
+				case ServerMessage.LOGIN_FAIL:
+					break;
+				case ServerMessage.NOT_OBSERVING:
+					break;
+				default:
+					//all of the 1 codes will go to here and do nothing
 					break;
 			}
 		} catch (InterruptedException e) {
