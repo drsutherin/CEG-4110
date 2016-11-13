@@ -34,7 +34,7 @@ public class PeerMediator implements Mediator {
 	public synchronized void receiveFromPeer(String message) {
 		for(Peer peer : serverInterfaceList){
 			peer.receiveFromMediator(message);
-		}
+			}
 	}
 
 	/**

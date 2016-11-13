@@ -42,7 +42,7 @@ public class ServerInterface extends Peer implements Runnable {
 	private InputStreamReader console = null;
 	private BufferedReader consoleBuffer = null;
 	private PrintWriter streamOut = null;
-	private Vector<String> receiveVector = new Vector<String>();
+	//private Vector<String> receiveVector = new Vector<String>();
 	private ServerInterfaceThread client = null;
 	private Mediator mediator;
 	
@@ -104,7 +104,15 @@ public class ServerInterface extends Peer implements Runnable {
 				//String message = (consoleBuffer.readLine()).replace("\n", "");
 				//this.pushSendMessage(message);
 				while (!messagesFromClient.isEmpty()){
+					//System.out.println(messagesFromClient.size());
+					
+					//for currently unknown reason input for messageToSend
+					//is being put there twice
+					//lazy workaround is having it pop twice while only using 1
+					//will fix when bug is tracked down - Jon
 					String messageToSend = this.popSendMessage();
+					messageToSend = this.popSendMessage();
+					System.out.println(messageToSend);
 					this.streamOut.println(messageToSend);
 					streamOut.flush();
 					if (messageToSend.startsWith("108")){
@@ -142,12 +150,13 @@ public class ServerInterface extends Peer implements Runnable {
 //
 		//}
 		this.pushReceiveMessage(msg);
-		while (!this.receiveVector.isEmpty()){
-			String messageToPerform = this.popRecieveMessage();
-			System.out.println(messageToPerform);
-			String messageCode = messageToPerform.substring(0, 3);
+		System.out.println(msg);
+		//while (!this.receiveVector.isEmpty()){
+			//String messageToPerform = this.popRecieveMessage();
+			//System.out.println(messageToPerform);
+			//String messageCode = messageToPerform.substring(0, 3);
 			//System.out.println(messageCode);
-	        String monthString;
+	        //String monthString;
 	        
 	        /*
 	        switch (messageCode) {
@@ -216,7 +225,7 @@ public class ServerInterface extends Peer implements Runnable {
 
 	        }
 	        */
-		}
+		//}
 		//if (msg.equals(".bye")) {
 		//	System.out.println("Good bye. Press RETURN to exit ...");
 		//	stop();
@@ -289,6 +298,7 @@ public class ServerInterface extends Peer implements Runnable {
 		String message = null;
 		try {
 			message = messagesFromClient.take();
+			
 		} catch (InterruptedException e) {
 			// TODO print to log
 		}
@@ -304,11 +314,13 @@ public class ServerInterface extends Peer implements Runnable {
 	 *
 	 *
 	 * ************************************************************************/
-	public String popRecieveMessage() {
+	
+	/*public String popRecieveMessage() {
 		String message = this.receiveVector.get(0);
 		this.receiveVector.remove(0);
 		return message;
 	}
+	*/
 
 	/***************************************************************************
 	 *METHOD: pushSendMessage()
@@ -330,7 +342,7 @@ public class ServerInterface extends Peer implements Runnable {
 	
 	/**
 	 * Passes method to the threadsafe pushSendMessages
-	 * "recieveFromMediator" must be implemented to be a peer
+	 * "receiveFromMediator" must be implemented to be a peer
 	 */
 	@Override
 	public void receiveFromMediator(String message) {
@@ -348,7 +360,7 @@ public class ServerInterface extends Peer implements Runnable {
 	 * ************************************************************************/
 	private void pushReceiveMessage(String message) {
 		//TODO: Server will only process add request for username, should we move this functionality to BAAC?? 
-		this.receiveVector.add(message);		
+		//this.receiveVector.add(message);		
 		//this is the new way
 		mediator.receiveFromServer(message);
 	}

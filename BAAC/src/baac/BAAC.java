@@ -155,6 +155,7 @@ public class BAAC extends Peer implements Runnable {
 		// switch is going to involve you looking at almost every incoming message of so I was hoping you could keep that in the back of your 
 		// mind and come to a conclusion either way.
 		String message;
+		String out;
 		try {
 			message = receiveFromServer.take();
 			//this method will only use codes starting with 2 as those are ones that are received from the server
@@ -165,54 +166,77 @@ public class BAAC extends Peer implements Runnable {
 			//2 codes start here
 				case ServerMessage.ASK_USERNAME:
 					System.out.println("Enter Username");
-					sendToServer.put(in.next());
+					//Scanner to halt works here because the server needs a username before we can do anything else
+					out = in.nextLine();
+					out.replaceAll("\"", "");
+					sendToServer.put(out);
 				case ServerMessage.CONN_OK:
 					System.out.println("Connected to Server");
 					break;
 				case ServerMessage.IN_LOBBY:
+					//code for lobby handling
 					break;
 				case ServerMessage.OUT_LOBBY:
+					//code for lobby handling
 					break;
 				case ServerMessage.MSG:
 					lobby.lobbyChatIn(message);
 					break;
 				case ServerMessage.NEW_TBL:
+					//code for indicating a new table has been created
 					break;
 				case ServerMessage.GAME_START:
 					break;
 				case ServerMessage.COLOR_BLACK:
+					//send to game code that our color is black
 					break;
 				case ServerMessage.COLOR_RED:
+					//send to game code that our color is red
 					break;
 				case ServerMessage.OPP_MOVE:
+					//tell user where the opponent has moved
 					break;
 				case ServerMessage.BOARD_STATE:
+					//code to update the board state
 					break;
 				case ServerMessage.GAME_WIN:
+					//tell the user that they have won
 					break;
 				case ServerMessage.GAME_LOSE:
+					//tell the user that they have lost
 					break;
 				case ServerMessage.TBL_JOINED:
+					//tell the user that they joined a new table
 					break;
 				case ServerMessage.TBL_LEFT:
+					//tell the user they have left the table
 					break;
 				case ServerMessage.WHO_IN_LOBBY:
+					//send gui info for displaying who is in the lobby
 					break;
 				case ServerMessage.NOW_IN_LOBBY:
+					//indicate to the user that they are in the lobby
 					break;
 				case ServerMessage.WHO_ON_TBL:
+					//indicate to the user who is on the table
 					break;
 				case ServerMessage.TBL_LIST:
+					//show the user a list of tables
 					break;
 				case ServerMessage.NOW_LEFT_LOBBY:
+					//indicate that a user has left the lobby
 					break;
 				case ServerMessage.OPP_LEFT_TABLE:
+					//indicate that the opponent has left the table
 					break;
 				case ServerMessage.YOUR_TURN:
+					//indicate that it is the user's turn
 					break;
 				case ServerMessage.NOW_OBSERVING:
+					//indicate that the user is now observing a game
 					break;
 				case ServerMessage.STOPPED_OBSERVING:
+					//indicate that the user 
 					break;
 				case ServerMessage.REGISTER_OK:
 					break;
@@ -236,6 +260,12 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.NOT_IN_LOBBY:
 					break;
 				case ServerMessage.BAD_MESSAGE:
+					//this is here for testing duplicate inputs in serverInterface
+					//when working properly without lazy workaround this should be removed
+					System.out.println("Enter Garbage");
+					out = in.nextLine();
+					out.replaceAll("\"", "");
+					sendToServer.put(out);
 					break;
 				case ServerMessage.ERR_IN_LOBBY:
 					break;
