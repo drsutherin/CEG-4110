@@ -157,10 +157,17 @@ public class BAAC extends Peer implements Runnable {
 		// in its own switch statement. It's janky. I want to get rid of it but I don't know if there are any implications. I think this 
 		// switch is going to involve you looking at almost every incoming message of so I was hoping you could keep that in the back of your 
 		// mind and come to a conclusion either way.
+		
+		String code = incomingMessage.substring(1, 3);
+		switch(code){
+		
+			default:
+				break;
+		}
 	}
 
 	/**
-	 * This method is accessed by PeerMediator and adds messages from the server to the local buffer
+	 * This method is accessed by PeerMediator and adds messages from the server to thusernamee local buffer
 	 * the thread in the run() method will consume the messages.
 	 * Because PeerMediator accesses this method from another thread, a thread safe blocking queue is used
 	 */
