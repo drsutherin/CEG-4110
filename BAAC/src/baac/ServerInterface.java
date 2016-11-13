@@ -42,9 +42,9 @@ public class ServerInterface extends Peer implements Runnable {
 	private InputStreamReader console = null;
 	private BufferedReader consoleBuffer = null;
 	private PrintWriter streamOut = null;
-	private Vector<String> receiveVector = new Vector<String>();
+	//private Vector<String> receiveVector = new Vector<String>();
 	private ServerInterfaceThread client = null;
-	private Mediator mediator;
+	private PeerMediator mediator;
 	
 	//buffer for passing messages within the client (generally from other classes to this interface)
 	//private BlockingQueue<String> clientMessageQueue;
@@ -61,10 +61,10 @@ public class ServerInterface extends Peer implements Runnable {
 	*
 	*
 	***************************************************************************/
-	public ServerInterface(Mediator passedMediator){ //String serverName, int serverPort, BAAC b) {
+	public ServerInterface(PeerMediator passedMediator){ //String serverName, int serverPort, BAAC b) {
 		
 		mediator = passedMediator;
-		mediator.addServerInterface(this);
+		//mediator.addServerInterface(this);
 		
 		 // a jframe here isn't strictly necessary, but it makes the example a little more real
         JFrame frame = new JFrame("InputDialog Example #1");
@@ -105,6 +105,7 @@ public class ServerInterface extends Peer implements Runnable {
 				//this.pushSendMessage(message);
 				while (!messagesFromClient.isEmpty()){
 					String messageToSend = this.popSendMessage();
+					System.out.println(messageToSend);
 					this.streamOut.println(messageToSend);
 					streamOut.flush();
 					if (messageToSend.startsWith("108")){
@@ -142,12 +143,13 @@ public class ServerInterface extends Peer implements Runnable {
 //
 		//}
 		this.pushReceiveMessage(msg);
-		while (!this.receiveVector.isEmpty()){
-			String messageToPerform = this.popRecieveMessage();
-			System.out.println(messageToPerform);
-			String messageCode = messageToPerform.substring(0, 3);
+		
+		//while (!this.receiveVector.isEmpty()){
+			//String messageToPerform = this.popRecieveMessage();
+			//System.out.println(messageToPerform);
+			//String messageCode = messageToPerform.substring(0, 3);
 			//System.out.println(messageCode);
-	        String monthString;
+	        //String monthString;
 	        
 	        /*
 	        switch (messageCode) {
@@ -216,7 +218,7 @@ public class ServerInterface extends Peer implements Runnable {
 
 	        }
 	        */
-		}
+		//}
 		//if (msg.equals(".bye")) {
 		//	System.out.println("Good bye. Press RETURN to exit ...");
 		//	stop();
@@ -289,6 +291,7 @@ public class ServerInterface extends Peer implements Runnable {
 		String message = null;
 		try {
 			message = messagesFromClient.take();
+			
 		} catch (InterruptedException e) {
 			// TODO print to log
 		}
@@ -304,11 +307,13 @@ public class ServerInterface extends Peer implements Runnable {
 	 *
 	 *
 	 * ************************************************************************/
-	public String popRecieveMessage() {
+	
+	/*public String popRecieveMessage() {
 		String message = this.receiveVector.get(0);
 		this.receiveVector.remove(0);
 		return message;
 	}
+	*/
 
 	/***************************************************************************
 	 *METHOD: pushSendMessage()
@@ -319,18 +324,19 @@ public class ServerInterface extends Peer implements Runnable {
 	 *
 	 *
 	 * ************************************************************************/
-	public void pushSendMessage(String message) {
+	public void pushSendMessage(String message) {		
 		try {
 			messagesFromClient.put(message);
 		} catch (InterruptedException e) {
 			// TODO print to log
 		}
+		
 	}
 	
 	
 	/**
 	 * Passes method to the threadsafe pushSendMessages
-	 * "recieveFromMediator" must be implemented to be a peer
+	 * "receiveFromMediator" must be implemented to be a peer
 	 */
 	@Override
 	public void receiveFromMediator(String message) {
@@ -348,7 +354,7 @@ public class ServerInterface extends Peer implements Runnable {
 	 * ************************************************************************/
 	private void pushReceiveMessage(String message) {
 		//TODO: Server will only process add request for username, should we move this functionality to BAAC?? 
-		this.receiveVector.add(message);		
+		//this.receiveVector.add(message);		
 		//this is the new way
 		mediator.receiveFromServer(message);
 	}
@@ -435,10 +441,12 @@ public class ServerInterface extends Peer implements Runnable {
 						
 					}
 					message = message.replaceAll("\n", "");
+					//client.pushReceiveMessage(message);
+					client.handle(message);
 					if (message.contains("108")){
+						System.out.println("108 received.");
 						client.stop();
 					}
-					client.handle(message);
 
 				} catch (Exception ioe) {
 					System.out.println("Listening error: " + ioe.getMessage());
