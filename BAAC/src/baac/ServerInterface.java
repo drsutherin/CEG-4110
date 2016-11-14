@@ -64,7 +64,7 @@ public class ServerInterface extends Peer implements Runnable {
 	public ServerInterface(Mediator passedMediator){ //String serverName, int serverPort, BAAC b) {
 		
 		mediator = passedMediator;
-		mediator.addServerInterface(this);
+		//mediator.addServerInterface(this);
 		
 		 // a jframe here isn't strictly necessary, but it makes the example a little more real
         JFrame frame = new JFrame("InputDialog Example #1");
