@@ -6,6 +6,7 @@ import baac.Peer;
 import baac.PeerMediator;
 import baac.Player;
 import baac.ServerMessage;
+import baac.Status;
 
 
 /***
@@ -21,6 +22,8 @@ public class LobbyChat extends Peer implements Runnable {
 	
 	private String username = Player.getUsername();
 	private PeerMediator mediator;
+	
+	private Status playerStatus = Player.getUserStatus();
 	
 	/***
 	 * constructor with passed consumer-producer buffer
@@ -55,22 +58,31 @@ public class LobbyChat extends Peer implements Runnable {
 		//splits the message into three parts based on the first two spaces it sees,
 		// index = 0 - is the number 101 - not used
 		// index = 1 - the sender's name
-		// index = 2 - the sender's message
+		// index = 3 - the code 0 for public, 1 for private
+		// index = 4 - the sender's message
 		String senderName = "";
 		String senderMessage = "";
-		if (incomingMessage.startsWith(ServerMessage.MSG_ALL)){
+		String code = incomingMessage.substring(0, 3);
+		switch(code){
+		case ServerMessage.MSG:
 			try{
-				String inMessage[] = incomingMessage.split(" ", 3);//change back to 3
-				senderName = inMessage[1];
-				senderMessage = inMessage[2];	
+				incomingMessage = incomingMessage.replace("\r ", " ");//Incoming message looks like: 201 Name\r 0 this is a message <EOM>
+				incomingMessage = incomingMessage.replace("<EOM>", ""); //don't pass EOM to the GUI
+				String inMessage[] = incomingMessage.split(" ", 4);
+				if (inMessage[3] == "0"){
+					senderName = inMessage[1];
+					senderMessage = inMessage[2];
+					String messageToUI[] = {senderName, senderMessage};
+				}
 			} catch(ArrayIndexOutOfBoundsException e){
-				senderName = "error";
-				senderMessage = "incorrect message format";
+
 			}
+			//only display the message if the user is in the lobby
+			if (Player.getUserStatus() == Status.in_lobby){
+				//TODO: displayInUI(messageToUI);
+			}
+			break;	
 		}
-		String messageToUI[] = {senderName, senderMessage};
-		//System.out.println("Server Recieved: " + senderName + ", " + senderMessage);
-		//displayInUI(messageToUI);
 	}
 
 	/**
