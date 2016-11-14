@@ -6,6 +6,7 @@ import baac.Peer;
 import baac.PeerMediator;
 import baac.Player;
 import baac.ServerMessage;
+import baac.Status;
 
 
 /***
@@ -21,6 +22,8 @@ public class LobbyChat extends Peer implements Runnable {
 	
 	private String username = Player.getUsername();
 	private PeerMediator mediator;
+	
+	private Status playerStatus = Player.getUserStatus();
 	
 	/***
 	 * constructor with passed consumer-producer buffer
@@ -58,7 +61,10 @@ public class LobbyChat extends Peer implements Runnable {
 		// index = 2 - the sender's message
 		String senderName = "";
 		String senderMessage = "";
-		if (incomingMessage.startsWith(ServerMessage.MSG_ALL)){
+		String code = incomingMessage.substring(0, 3);
+		
+		switch(code){
+		case ServerMessage.MSG_ALL:
 			try{
 				String inMessage[] = incomingMessage.split(" ", 3);//change back to 3
 				senderName = inMessage[1];
@@ -67,10 +73,13 @@ public class LobbyChat extends Peer implements Runnable {
 				senderName = "error";
 				senderMessage = "incorrect message format";
 			}
+			String messageToUI[] = {senderName, senderMessage};
+			//only display the message if the user is in the lobby
+			if (Player.getUserStatus() == Status.in_lobby){
+				//TODO: displayInUI(messageToUI);
+			}
+			break;	
 		}
-		String messageToUI[] = {senderName, senderMessage};
-		//System.out.println("Server Recieved: " + senderName + ", " + senderMessage);
-		//displayInUI(messageToUI);
 	}
 
 	/**
