@@ -183,9 +183,6 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.OUT_LOBBY:
 					//code for lobby handling
 					break;
-				case ServerMessage.MSG:
-					lobby.lobbyChatIn(message);
-					break;
 				case ServerMessage.NEW_TBL:
 					//code for indicating a new table has been created
 					break;
