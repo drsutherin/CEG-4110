@@ -27,6 +27,7 @@ public class Game extends Peer implements Runnable {
 	BAAC client;
 	String tableID;			// Received from server
 	
+	Boolean activeThread = true;
 	Mediator mediator;
 	
 	//Thread safe buffers used to add/remove messages from this thread
@@ -65,10 +66,17 @@ public class Game extends Peer implements Runnable {
 	}
 
 	/**
+	 * Shutdown thread
+	 */
+	public void shutdownPlayableGame(){
+		activeThread = false;
+	}
+	
+	/**
 	 * Check the buffers for messages from the server and messages to be sent to the server 
 	 */
 	public void run() {
-		while(true){
+		while(activeThread){
 			//send message to server
 			String outgoingMessage;
 			while (!sendToServer.isEmpty()){
