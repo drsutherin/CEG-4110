@@ -170,6 +170,8 @@ public class BAAC extends Peer implements Runnable {
 					out = in.nextLine();
 					out.replaceAll("\n", "");
 					Player.setUsername(out);
+					out = in.nextLine();
+					out.replaceAll("\"", "");
 					sendToServer.put(out);
 				case ServerMessage.CONN_OK:
 					System.out.println("Connected to Server");
@@ -268,6 +270,12 @@ public class BAAC extends Peer implements Runnable {
 					break;
 				case ServerMessage.BAD_MESSAGE:
 					//print error message
+					//this is here for testing duplicate inputs in serverInterface
+					//when working properly without lazy workaround this should be removed
+					System.out.println("Enter Garbage");
+					out = in.nextLine();
+					out.replaceAll("\"", "");
+					sendToServer.put(out);
 					break;
 				case ServerMessage.ERR_IN_LOBBY:
 					break;

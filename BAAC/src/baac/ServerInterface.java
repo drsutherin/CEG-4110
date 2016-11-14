@@ -104,7 +104,14 @@ public class ServerInterface extends Peer implements Runnable {
 				//String message = (consoleBuffer.readLine()).replace("\n", "");
 				//this.pushSendMessage(message);
 				while (!messagesFromClient.isEmpty()){
+					//System.out.println(messagesFromClient.size());
+					
+					//for currently unknown reason input for messageToSend
+					//is being put there twice
+					//lazy workaround is having it pop twice while only using 1
+					//will fix when bug is tracked down - Jon
 					String messageToSend = this.popSendMessage();
+					messageToSend = this.popSendMessage();
 					System.out.println(messageToSend);
 					this.streamOut.println(messageToSend);
 					streamOut.flush();
@@ -143,7 +150,7 @@ public class ServerInterface extends Peer implements Runnable {
 //
 		//}
 		this.pushReceiveMessage(msg);
-		
+		System.out.println(msg);
 		//while (!this.receiveVector.isEmpty()){
 			//String messageToPerform = this.popRecieveMessage();
 			//System.out.println(messageToPerform);
