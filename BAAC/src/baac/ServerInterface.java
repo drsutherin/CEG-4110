@@ -104,15 +104,7 @@ public class ServerInterface extends Peer implements Runnable {
 				//String message = (consoleBuffer.readLine()).replace("\n", "");
 				//this.pushSendMessage(message);
 				while (!messagesFromClient.isEmpty()){
-					//System.out.println(messagesFromClient.size());
-					
-					//for currently unknown reason input for messageToSend
-					//is being put there twice
-					//lazy workaround is having it pop twice while only using 1
-					//will fix when bug is tracked down - Jon
 					String messageToSend = this.popSendMessage();
-					messageToSend = this.popSendMessage();
-					System.out.println(messageToSend);
 					this.streamOut.println(messageToSend);
 					streamOut.flush();
 					if (messageToSend.startsWith("108")){
@@ -444,9 +436,11 @@ public class ServerInterface extends Peer implements Runnable {
 				try {
 					String message ="";
 					while (!message.contains("<EOM>")){
+						//System.out.println("Before");
 						message = message + (char)streamIn.read();
-						
+						//System.out.println("After");
 					}
+					//System.out.println("Double after");
 					message = message.replaceAll("\n", "");
 					//client.pushReceiveMessage(message);
 					client.handle(message);

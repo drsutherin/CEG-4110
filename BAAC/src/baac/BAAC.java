@@ -159,7 +159,7 @@ public class BAAC extends Peer implements Runnable {
 		try {
 			message = receiveFromServer.take();
 			//this method will only use codes starting with 2 as those are ones that are received from the server
-			System.out.println(message);
+			//System.out.println(message);
 			String code = message.substring(0, 3);
 			switch(code){
 			//2 codes start here
@@ -169,12 +169,10 @@ public class BAAC extends Peer implements Runnable {
 					//This will be replaced with gui elements in the future
 					out = in.nextLine();
 					out.replaceAll("\n", "");
-					Player.setUsername(out);
-					out = in.nextLine();
-					out.replaceAll("\"", "");
 					sendToServer.put(out);
+					Player.setUsername(out);
 				case ServerMessage.CONN_OK:
-					System.out.println("Connected to Server");
+					//System.out.println("Connected to Server");
 					break;
 				case ServerMessage.IN_LOBBY:
 					System.out.println("You are now in the lobby");
@@ -266,13 +264,6 @@ public class BAAC extends Peer implements Runnable {
 					//inform the user that they are not in the lobby
 					break;
 				case ServerMessage.BAD_MESSAGE:
-					//print error message
-					//this is here for testing duplicate inputs in serverInterface
-					//when working properly without lazy workaround this should be removed
-					System.out.println("Enter Garbage");
-					out = in.nextLine();
-					out.replaceAll("\"", "");
-					sendToServer.put(out);
 					break;
 				case ServerMessage.ERR_IN_LOBBY:
 					break;
