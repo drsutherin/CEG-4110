@@ -1,6 +1,5 @@
 package baac;
 
-import java.util.Observable;
 import java.util.Scanner;
 import java.util.Vector;
 import chat.*;
@@ -307,12 +306,6 @@ public class BAAC extends Peer implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}		
-	}
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	

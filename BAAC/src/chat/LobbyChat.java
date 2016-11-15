@@ -1,6 +1,5 @@
 package chat;
 
-import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import baac.Peer;
@@ -128,12 +127,6 @@ public class LobbyChat extends Peer implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}		
-		
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
 		
 	}
 }

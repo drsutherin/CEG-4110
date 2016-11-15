@@ -3,7 +3,6 @@ package baac;
 import java.net.*;
 import static baac.ServerMessage.*;
 import java.util.Arrays;
-import java.util.Observable;
 import java.util.Vector;
 
 import java.util.concurrent.BlockingQueue;
@@ -456,12 +455,6 @@ public class ServerInterface extends Peer implements Runnable {
 				}
 			}
 		}
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
 	}
 
 
