@@ -1,6 +1,5 @@
 package baac;
 
-import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -192,12 +191,6 @@ public class Game extends Peer implements Runnable {
         	//TODO: Update GUI with game vars
         }
    }
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
-	}
 		
 	
 	
