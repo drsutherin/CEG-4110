@@ -114,6 +114,8 @@ public class PrivateChat extends Peer implements Runnable {
 					//TODO Log in error log
 				};			
 			}
+			
+			sleepyThread();
 		}
 	}
 

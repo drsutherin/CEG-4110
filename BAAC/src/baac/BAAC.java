@@ -80,6 +80,7 @@ public class BAAC extends Peer implements Runnable {
 			while (!receiveFromServer.isEmpty()){
 				decodeMessageFromServer();			
 			}
+		sleepyThread();	
 		}		
 	}
 	
@@ -205,6 +206,7 @@ public class BAAC extends Peer implements Runnable {
 					String[] messageArray = message.split(" ", 2);
 					String tableNum = messageArray[1];
 					theGame = new Thread(new Game(tableNum, mediator));
+					theGame.start();
 					break;
 				case ServerMessage.TBL_LEFT:
 					//tell the user they have left the table

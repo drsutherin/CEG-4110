@@ -103,6 +103,8 @@ public class Game extends Peer implements Runnable {
 					e.printStackTrace();
 				};			
 			}
+			
+			sleepyThread();
 		}		
 	}
 
