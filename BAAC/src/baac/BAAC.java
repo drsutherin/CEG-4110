@@ -27,6 +27,7 @@ public class BAAC extends Peer implements Runnable {
 	Vector<PrivateChat> privateChatList;	// Contains all active private chats
 	Vector<String> activeUsers;
 	Vector<Integer> activeTables;
+	Vector<Vector<String>> activeTableStatus;
 	String message = "";
 	Game theGame;
 	Scanner in = new Scanner(System.in);
@@ -56,6 +57,7 @@ public class BAAC extends Peer implements Runnable {
 		serverInterface = new Thread(new ServerInterface(mediator)); //"mchlrtkwski.tk", 45322, this);
 		activeUsers = new Vector<String>();
 		activeTables = new Vector<Integer>();
+		activeTableStatus = new Vector<Vector<String>>();
 	}
 	
 	/**
@@ -169,28 +171,25 @@ public class BAAC extends Peer implements Runnable {
 					break;
 				case ServerMessage.IN_LOBBY:
 					System.out.println("You are now in the lobby");
-					lobbyChat = new Thread(lobby);	
+					lobbyChat = new Thread(lobby);
 					lobbyChat.start();
 					break;
 				case ServerMessage.OUT_LOBBY:
-					//code for lobby handling
+					lobbyChat.stop();
 					break;
 				case ServerMessage.NEW_TBL:
 					message = message.substring(4, message.length()-6);
 					activeTables.add(Integer.parseInt(message));
 					//update gui elements
 					break;
-				case ServerMessage.GAME_START:
-					//start game thread
-					break;
 				case ServerMessage.TBL_JOINED:
-					//tell the user that they joined a new table
+					//launch game thread
 					break;
 				case ServerMessage.TBL_LEFT:
-					//tell the user they have left the table
+					//stop game thread
 					break;
 				case ServerMessage.WHO_IN_LOBBY:
-					System.out.println("Users in lobby are: ");
+					System.out.println("Users in lobby are:");
 					System.out.println(message.substring(4, message.length()-6));
 					message = message.substring(4, message.length()-6);
 					String[] users = message.split(" ");
@@ -206,9 +205,31 @@ public class BAAC extends Peer implements Runnable {
 					//update gui elements for who is in the lobby
 					break;
 				case ServerMessage.WHO_ON_TBL:
-					//indicate to the user who is on the table
+					//remove code and <EOM> from message
+					message = message.substring(4, message.length()-6);
+					//instantiate string to hold the players on the table
+					//this will be added to the activeTablesStatus vector
+					Vector<String> statusHold = new Vector<String>();
+					//split the message into an array of strings by spaces
+					//we will end up with an array of 3 strings
+					String[] split = message.split(" ");
+					
+					//add the table id as an int to its vector
+					activeTables.add(Integer.parseInt(split[0]));
+					
+					//run through the rest of the array and add the name of the person in that spot or
+					//vacant if there is nobody
+					for (int i = 1; i < split.length; i++){
+						if (split[i].equalsIgnoreCase("-1")){
+							statusHold.add("free seat");
+						}else{
+							statusHold.add(split[i]);
+						}
+					}
+					activeTableStatus.add(statusHold);
 					break;
 				case ServerMessage.TBL_LIST:
+					Vector<Integer> tblHold = new Vector<Integer>();
 					//if there are no tables this condition will not be fulfilled
 					if (message.length()-6 > 4){
 						//select table part of the message
@@ -217,9 +238,13 @@ public class BAAC extends Peer implements Runnable {
 						String[] tables = message.split(" ");
 						//put the table ids into the active tables vector
 						for (int i = 0; i < tables.length; i++){
-							activeTables.add(Integer.parseInt(tables[i]));
+							tblHold.add(Integer.parseInt(tables[i]));
+						}
+						for (int i = 0; i < tblHold.size(); i++){
+							sendToServer.put("109 " + tblHold.get(i) + " <EOM>");
 						}
 					}
+					
 					break;
 				case ServerMessage.NOW_LEFT_LOBBY:
 					message = message.substring(4, message.length()-6);
