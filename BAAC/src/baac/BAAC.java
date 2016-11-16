@@ -8,6 +8,9 @@ import gui.*;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  * will create:
  * a mediator instance
@@ -31,19 +34,19 @@ public class BAAC extends Peer implements Runnable {
 	String message = "";
 	Game theGame;
 	Scanner in = new Scanner(System.in);
-	
+
 	Player you = Player.getInstance();//ensures there is a player
 	PeerMediator mediator = new PeerMediator();
 	LobbyChat lobby = new LobbyChat(mediator);
-	
+
 	//Thread safe buffers used to add/remove messages from this thread
-	private final LinkedBlockingQueue<String> sendToServer = new LinkedBlockingQueue<String>();	
-	private final LinkedBlockingQueue<String> receiveFromServer = new LinkedBlockingQueue<String>();	
-		
+	private final LinkedBlockingQueue<String> sendToServer = new LinkedBlockingQueue<String>();
+	private final LinkedBlockingQueue<String> receiveFromServer = new LinkedBlockingQueue<String>();
+
 	// Voce speechInterface;
 	// Stage gui_background;
 	// BAAC_GUI gui;
-	
+
 	/**
 	 * Constructor for BAAC
 	 * 	a) add self to mediator peer list so it will recieve messages from server
@@ -59,9 +62,9 @@ public class BAAC extends Peer implements Runnable {
 		activeTables = new Vector<Integer>();
 		activeTableStatus = new Vector<Vector<String>>();
 	}
-	
+
 	/**
-	 * Check the buffers for messages from the server and messages to be sent to the server 
+	 * Check the buffers for messages from the server and messages to be sent to the server
 	 */
 	public void run() {
 		while(true){
@@ -77,31 +80,31 @@ public class BAAC extends Peer implements Runnable {
 
 				};
 			}
-				
+
 			//get message from server
 			while (!receiveFromServer.isEmpty()){
-				decodeMessageFromServer();			
+				decodeMessageFromServer();
 			}
-		}		
+		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public enum GameMode{
 		OBSERVE, PLAY
 	}
-	
+
 	/**
 	 * This method will either join or observe a game depending on user input
-	 * 
+	 *
 	 * @param gameMode indicates whether or not the user wishes to play or observe the game
 	 * @param gameID the game that the user wishes to join/observe
 	 * @return whether or not the message succeeded
 	 */
 	public boolean requestJoinGame(GameMode gameMode, int gameID){
 		boolean returnBool = true;
-		
+
 		if (gameMode == GameMode.PLAY){
 			//send the server the appropriate join table message
 			message = "<104> <"+Player.getUsername()+"> <"+gameID+"> <EOM>";
@@ -118,7 +121,7 @@ public class BAAC extends Peer implements Runnable {
 		}
 		return returnBool;
 	}
-	
+
 	/**
 	 * This method sends the "leave table" message to the server for this user
 	 */
@@ -130,7 +133,7 @@ public class BAAC extends Peer implements Runnable {
 			Player.setUserStatus(Status.in_lobby);
 		}
 	}
-	
+
 	/**
 	 * Receives a message and places it in Baac's out going message buffer (threadsafe)
 	 * @param message, a formatted string that will be sent to the server interface
@@ -144,7 +147,7 @@ public class BAAC extends Peer implements Runnable {
 			}
 		}
 	}
-	
+
 	/***
 	 * Looks at all the messages from server and determines which ones to process
 	 */
@@ -159,7 +162,10 @@ public class BAAC extends Peer implements Runnable {
 			switch(code){
 			//2 codes start here
 				case ServerMessage.ASK_USERNAME:
-					enterUsername("Enter Username");
+					JFrame frame = new JFrame("Username Entry");
+			        // prompt the user to enter their name
+			        out = JOptionPane.showInputDialog(frame, "Enter username:").replaceAll("\n","");
+					enterUsername(out);
 				case ServerMessage.CONN_OK:
 					//System.out.println("Connected to Server");
 					break;
@@ -207,11 +213,11 @@ public class BAAC extends Peer implements Runnable {
 					//split the message into an array of strings by spaces
 					//we will end up with an array of 3 strings
 					String[] split = message.split(" ");
-					
+
 					//add the table id as an int to its vector
 					activeTables.add(Integer.parseInt(split[0]));
-					
-					//run through the rest of the array and add the name of the person in that spot or
+
+					//run through the rest of the array aFnd add the name of the person in that spot or
 					//vacant if there is nobody
 					for (int i = 1; i < split.length; i++){
 						if (split[i].equalsIgnoreCase("-1")){
@@ -238,7 +244,7 @@ public class BAAC extends Peer implements Runnable {
 							sendToServer.put("109 " + tblHold.get(i) + " <EOM>");
 						}
 					}
-					
+
 					break;
 				case ServerMessage.NOW_LEFT_LOBBY:
 					message = message.substring(4, message.length()-6);
@@ -248,8 +254,8 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.NOW_OBSERVING:
 					//start observe game thread
 					break;
-					
-				
+
+
 				case ServerMessage.STOPPED_OBSERVING:
 					//end observe game thread
 					break;
@@ -262,21 +268,19 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.USER_PROFILE:
 					break;
 				//4 codes start here
-					
-					
-					
-				
-					
-					
+
+
 				case ServerMessage.NET_EXCEPTION:
 					//
 					break;
 				case ServerMessage.NAME_IN_USE:
-					enterUsername("Name taken, please re-enter username");
-					break;
 				case ServerMessage.BAD_NAME:
-					enterUsername("Bad name, please re-enter username");
-					break;
+					JFrame frame2 = new JFrame("Username Error");
+			        // prompt the user to enter their name
+			        out = JOptionPane.showInputDialog(frame2, "Username error. Re-enter username:").replaceAll("\n","");
+					//Scanner to halt works here because the server needs a username before we can do anything else
+					//This will be replaced with gui elements in the future
+					enterUsername(out);
 				case ServerMessage.TBL_FULL:
 					System.out.println("Cannot join, table is full");
 					break;
@@ -297,7 +301,7 @@ public class BAAC extends Peer implements Runnable {
 					//inform the user of a general login failure error
 					break;
 				case ServerMessage.NOT_OBSERVING:
-					
+
 					break;
 				default:
 					break;
@@ -307,20 +311,20 @@ public class BAAC extends Peer implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * This method will take a username from the user after
 	 * prompting them to enter it
 	 * The desired username will then be sent to the server
-	 * 
+	 *
 	 * @param prompt Enter username prompt
 	 * @return the desired username
 	 */
-	private void enterUsername(String prompt){
+	private void enterUsername(String out){
 		//when gui elements established place prompt in the gui and obtain
 		//username from gui elements
-		System.out.println(prompt);
-		String out = in.nextLine();
+		//System.out.println(prompt);
+		//String out = in.nextLine();
 		out.replaceAll("\n", "");
 		try {
 			sendToServer.put(out);
@@ -342,14 +346,14 @@ public class BAAC extends Peer implements Runnable {
 			receiveFromServer.put(message);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	
-	
+
 }
