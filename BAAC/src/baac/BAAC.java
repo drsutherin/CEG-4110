@@ -248,6 +248,8 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.NOW_OBSERVING:
 					//start observe game thread
 					break;
+					
+				
 				case ServerMessage.STOPPED_OBSERVING:
 					//end observe game thread
 					break;
@@ -260,6 +262,12 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.USER_PROFILE:
 					break;
 				//4 codes start here
+					
+					
+					
+				
+					
+					
 				case ServerMessage.NET_EXCEPTION:
 					//
 					break;
@@ -269,28 +277,19 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.BAD_NAME:
 					enterUsername("Bad name, please re-enter username");
 					break;
-				case ServerMessage.ILLEGAL:
-					//inform user that the move they chose was illegal
-					break;
 				case ServerMessage.TBL_FULL:
-					//inform user that the table they are trying to join is full
+					System.out.println("Cannot join, table is full");
 					break;
 				case ServerMessage.NOT_IN_LOBBY:
-					//inform the user that they are not in the lobby
+					System.out.println("You are not in the lobby");
 					break;
 				case ServerMessage.BAD_MESSAGE:
+					System.out.println("Bad message to the server");
 					break;
 				case ServerMessage.ERR_IN_LOBBY:
 					break;
-				case ServerMessage.PLAYERS_NOT_READY:
-					break;
-				case ServerMessage.NOT_YOUR_TURN:
-					//inform the user that they cannot move as it is not their turn
-					break;
 				case ServerMessage.TBL_NOT_EXIST:
 					//inform the user that they cannot join the table they are trying to because it does not exist
-					break;
-				case ServerMessage.GAME_NOT_CREATED:
 					break;
 				case ServerMessage.ALREADY_REGISTERED:
 					break;
@@ -298,6 +297,7 @@ public class BAAC extends Peer implements Runnable {
 					//inform the user of a general login failure error
 					break;
 				case ServerMessage.NOT_OBSERVING:
+					
 					break;
 				default:
 					break;
@@ -316,7 +316,7 @@ public class BAAC extends Peer implements Runnable {
 	 * @param prompt Enter username prompt
 	 * @return the desired username
 	 */
-	private String enterUsername(String prompt){
+	private void enterUsername(String prompt){
 		//when gui elements established place prompt in the gui and obtain
 		//username from gui elements
 		System.out.println(prompt);
@@ -329,7 +329,6 @@ public class BAAC extends Peer implements Runnable {
 			e.printStackTrace();
 		}
 		Player.setUsername(out);
-		return "blah";
 	}
 
 	/**
