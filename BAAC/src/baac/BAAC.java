@@ -159,13 +159,7 @@ public class BAAC extends Peer implements Runnable {
 			switch(code){
 			//2 codes start here
 				case ServerMessage.ASK_USERNAME:
-					System.out.println("Enter Username");
-					//Scanner to halt works here because the server needs a username before we can do anything else
-					//This will be replaced with gui elements in the future
-					out = in.nextLine();
-					out.replaceAll("\n", "");
-					sendToServer.put(out);
-					Player.setUsername(out);
+					enterUsername("Enter Username");
 				case ServerMessage.CONN_OK:
 					//System.out.println("Connected to Server");
 					break;
@@ -251,9 +245,6 @@ public class BAAC extends Peer implements Runnable {
 					activeUsers.remove(message);
 					//indicate that a user has left the lobby
 					break;
-				case ServerMessage.OPP_LEFT_TABLE:
-					//indicate that the opponent has left the table
-					break;
 				case ServerMessage.NOW_OBSERVING:
 					//start observe game thread
 					break;
@@ -270,10 +261,13 @@ public class BAAC extends Peer implements Runnable {
 					break;
 				//4 codes start here
 				case ServerMessage.NET_EXCEPTION:
+					//
 					break;
 				case ServerMessage.NAME_IN_USE:
+					enterUsername("Name taken, please re-enter username");
+					break;
 				case ServerMessage.BAD_NAME:
-					//these will both result in the user having to choose a new name
+					enterUsername("Bad name, please re-enter username");
 					break;
 				case ServerMessage.ILLEGAL:
 					//inform user that the move they chose was illegal
@@ -312,6 +306,30 @@ public class BAAC extends Peer implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * This method will take a username from the user after
+	 * prompting them to enter it
+	 * The desired username will then be sent to the server
+	 * 
+	 * @param prompt Enter username prompt
+	 * @return the desired username
+	 */
+	private String enterUsername(String prompt){
+		//when gui elements established place prompt in the gui and obtain
+		//username from gui elements
+		System.out.println(prompt);
+		String out = in.nextLine();
+		out.replaceAll("\n", "");
+		try {
+			sendToServer.put(out);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Player.setUsername(out);
+		return "blah";
 	}
 
 	/**
