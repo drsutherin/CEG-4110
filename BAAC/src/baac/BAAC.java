@@ -175,9 +175,12 @@ public class BAAC extends Peer implements Runnable {
 					//code for lobby handling
 					break;
 				case ServerMessage.NEW_TBL:
-					//code for indicating a new table has been created
+					message = message.substring(4, message.length()-6);
+					activeTables.add(Integer.parseInt(message));
+					//update gui elements
 					break;
 				case ServerMessage.GAME_START:
+					//start game thread
 					break;
 				case ServerMessage.TBL_JOINED:
 					//tell the user that they joined a new table
@@ -199,7 +202,7 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.NOW_IN_LOBBY:
 					message = message.substring(4, message.length()-6);
 					activeUsers.add(message);
-					//indicate to the user that they are in the lobby
+					//update gui elements for who is in the lobby
 					break;
 				case ServerMessage.WHO_ON_TBL:
 					//indicate to the user who is on the table
