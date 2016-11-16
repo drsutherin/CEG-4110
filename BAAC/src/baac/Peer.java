@@ -1,4 +1,7 @@
 package baac;
+
+import java.util.Observer;
+
 /**
  * This abstract class provides a contract as to what defines a peer class
  * 
@@ -12,7 +15,7 @@ package baac;
  * @author ulyz
  *
  */
-public abstract class Peer {
+public abstract class Peer implements Observer {
 	
 	private Mediator mediator;
 	

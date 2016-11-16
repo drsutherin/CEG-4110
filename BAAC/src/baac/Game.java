@@ -1,5 +1,6 @@
 package baac;
 
+import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -248,6 +249,12 @@ public class Game extends Peer implements Runnable {
 		//format the request to the server
 		String startGame = "105 " + player1 + "<EOM>";
 		mediator.receiveFromPeer(startGame);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}	
 }
 	
