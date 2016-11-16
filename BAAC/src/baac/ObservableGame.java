@@ -133,4 +133,20 @@ public class ObservableGame extends Peer implements Runnable {
    }
 	
 	
+	/*************************/
+	/** Handle GUI Functions**/
+	/*************************/
+	/**
+	 * Processes the GUI leave observation change for observer leaves table.
+	 * places a string in mediator's queue: <107><client><EOM>
+	 * TODO: verify a 107 message works for an observer leaving a table
+	 */
+	public void clientLeaveTableRequest(){
+		//format the request to the server
+		String leaveGame =  "107 " + player1 + "<EOM>";
+		mediator.receiveFromPeer(leaveGame);
+	}
+	
+	
+	
 }

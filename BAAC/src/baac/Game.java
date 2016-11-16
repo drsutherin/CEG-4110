@@ -198,19 +198,57 @@ public class Game extends Peer implements Runnable {
 				/* Handle Events From GUI */
 	/******************************************************/
 	
+
+	/**
+	 * Processes the move information from the GUI.
+	 * 
 	//Player Makes a Move
+	/// 0 1 2 3 4 5 6 7/
+	//-----------------/
+	//0| |B| |B| |B| |B|/ The server expects format : (row,column) 
+	//1|B| |B| |B| |B| |/					 example: (1,2) 
+	//2| |B| |B| |B| |B|/
+	//3| | | | | | | | |/
+	//4| | | | | | | | |/
+	//5|R| |R| |R| |R| |/
+	//6| |R| |R| |R| |R|/
+	//7|R| |R| |R| |R| |/
+	//-----------------
+	//// 
+	 * @param currentRow
+	 * @param currentColumn
+	 * @param newRow
+	 * @param newColumn
+	 * places a string in mediator's queue:<106><clientName><currentPosition><newPosition><EOM>
+	 */
+	public void clientMoveRequest(String currentRow, String currentColumn, String newRow, String newColumn ){
+		//format the request to the server
+		String currentPosition = "(" + currentRow + "," + currentColumn + ")";
+		String newPosition = "(" + currentRow + "," + currentColumn + ")";
+		String move = "106 " + player1 + " " + currentPosition + " " + newPosition + "<EOM>"; 
+		mediator.receiveFromPeer(move);
+	}
 	
-	//Player Leaves Game
+	/**
+	 * Processes the GUI status change for player leaves the table.
+	 * places a string in mediator's queue: <107><client><EOM>
+	 */
+	public void clientLeaveTableRequest(){
+		//format the request to the server
+		String leaveGame =  "107 " + player1 + "<EOM>";
+		mediator.receiveFromPeer(leaveGame);
+	}
 	
 	//Player Starts Game
-	
-	
-	
-	
-	
-	
-	
-	
+	/**
+	 * Processes the GUI status change for player is Ready
+	 * places a string in the mediator's queue: <105><client><EOM>
+	 */
+	public void clientStartGameRequest(){
+		//format the request to the server
+		String startGame = "105 " + player1 + "<EOM>";
+		mediator.receiveFromPeer(startGame);
+	}	
 }
 	
 	
