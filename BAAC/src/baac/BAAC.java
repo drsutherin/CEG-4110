@@ -27,6 +27,7 @@ public class BAAC extends Peer implements Runnable {
 	Vector<PrivateChat> privateChatList;	// Contains all active private chats
 	Vector<String> activeUsers;
 	Vector<Integer> activeTables;
+	Vector<Vector<String>> activeTableStatus;
 	String message = "";
 	Game theGame;
 	Scanner in = new Scanner(System.in);
@@ -56,6 +57,7 @@ public class BAAC extends Peer implements Runnable {
 		serverInterface = new Thread(new ServerInterface(mediator)); //"mchlrtkwski.tk", 45322, this);
 		activeUsers = new Vector<String>();
 		activeTables = new Vector<Integer>();
+		activeTableStatus = new Vector<Vector<String>>();
 	}
 	
 	/**
@@ -157,40 +159,31 @@ public class BAAC extends Peer implements Runnable {
 			switch(code){
 			//2 codes start here
 				case ServerMessage.ASK_USERNAME:
-					System.out.println("Enter Username");
-					//Scanner to halt works here because the server needs a username before we can do anything else
-					//This will be replaced with gui elements in the future
-					out = in.nextLine();
-					out.replaceAll("\n", "");
-					sendToServer.put(out);
-					Player.setUsername(out);
+					enterUsername("Enter Username");
 				case ServerMessage.CONN_OK:
 					//System.out.println("Connected to Server");
 					break;
 				case ServerMessage.IN_LOBBY:
 					System.out.println("You are now in the lobby");
-					lobbyChat = new Thread(lobby);	
+					lobbyChat = new Thread(lobby);
 					lobbyChat.start();
 					break;
 				case ServerMessage.OUT_LOBBY:
-					//code for lobby handling
+					lobbyChat.stop();
 					break;
 				case ServerMessage.NEW_TBL:
 					message = message.substring(4, message.length()-6);
-					activeTables.add(Integer.parseInt(message));
+					sendToServer.put("109 " + message + " <EOM>");
 					//update gui elements
 					break;
-				case ServerMessage.GAME_START:
-					//start game thread
-					break;
 				case ServerMessage.TBL_JOINED:
-					//tell the user that they joined a new table
+					//launch game thread
 					break;
 				case ServerMessage.TBL_LEFT:
-					//tell the user they have left the table
+					//stop game thread
 					break;
 				case ServerMessage.WHO_IN_LOBBY:
-					System.out.println("Users in lobby are: ");
+					System.out.println("Users in lobby are:");
 					System.out.println(message.substring(4, message.length()-6));
 					message = message.substring(4, message.length()-6);
 					String[] users = message.split(" ");
@@ -206,9 +199,31 @@ public class BAAC extends Peer implements Runnable {
 					//update gui elements for who is in the lobby
 					break;
 				case ServerMessage.WHO_ON_TBL:
-					//indicate to the user who is on the table
+					//remove code and <EOM> from message
+					message = message.substring(4, message.length()-6);
+					//instantiate string to hold the players on the table
+					//this will be added to the activeTablesStatus vector
+					Vector<String> statusHold = new Vector<String>();
+					//split the message into an array of strings by spaces
+					//we will end up with an array of 3 strings
+					String[] split = message.split(" ");
+					
+					//add the table id as an int to its vector
+					activeTables.add(Integer.parseInt(split[0]));
+					
+					//run through the rest of the array and add the name of the person in that spot or
+					//vacant if there is nobody
+					for (int i = 1; i < split.length; i++){
+						if (split[i].equalsIgnoreCase("-1")){
+							statusHold.add("free seat");
+						}else{
+							statusHold.add(split[i]);
+						}
+					}
+					activeTableStatus.add(statusHold);
 					break;
 				case ServerMessage.TBL_LIST:
+					Vector<Integer> tblHold = new Vector<Integer>();
 					//if there are no tables this condition will not be fulfilled
 					if (message.length()-6 > 4){
 						//select table part of the message
@@ -217,21 +232,24 @@ public class BAAC extends Peer implements Runnable {
 						String[] tables = message.split(" ");
 						//put the table ids into the active tables vector
 						for (int i = 0; i < tables.length; i++){
-							activeTables.add(Integer.parseInt(tables[i]));
+							tblHold.add(Integer.parseInt(tables[i]));
+						}
+						for (int i = 0; i < tblHold.size(); i++){
+							sendToServer.put("109 " + tblHold.get(i) + " <EOM>");
 						}
 					}
+					
 					break;
 				case ServerMessage.NOW_LEFT_LOBBY:
 					message = message.substring(4, message.length()-6);
 					activeUsers.remove(message);
 					//indicate that a user has left the lobby
 					break;
-				case ServerMessage.OPP_LEFT_TABLE:
-					//indicate that the opponent has left the table
-					break;
 				case ServerMessage.NOW_OBSERVING:
 					//start observe game thread
 					break;
+					
+				
 				case ServerMessage.STOPPED_OBSERVING:
 					//end observe game thread
 					break;
@@ -244,34 +262,34 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.USER_PROFILE:
 					break;
 				//4 codes start here
+					
+					
+					
+				
+					
+					
 				case ServerMessage.NET_EXCEPTION:
+					//
 					break;
 				case ServerMessage.NAME_IN_USE:
-				case ServerMessage.BAD_NAME:
-					//these will both result in the user having to choose a new name
+					enterUsername("Name taken, please re-enter username");
 					break;
-				case ServerMessage.ILLEGAL:
-					//inform user that the move they chose was illegal
+				case ServerMessage.BAD_NAME:
+					enterUsername("Bad name, please re-enter username");
 					break;
 				case ServerMessage.TBL_FULL:
-					//inform user that the table they are trying to join is full
+					System.out.println("Cannot join, table is full");
 					break;
 				case ServerMessage.NOT_IN_LOBBY:
-					//inform the user that they are not in the lobby
+					System.out.println("You are not in the lobby");
 					break;
 				case ServerMessage.BAD_MESSAGE:
+					System.out.println("Bad message to the server");
 					break;
 				case ServerMessage.ERR_IN_LOBBY:
 					break;
-				case ServerMessage.PLAYERS_NOT_READY:
-					break;
-				case ServerMessage.NOT_YOUR_TURN:
-					//inform the user that they cannot move as it is not their turn
-					break;
 				case ServerMessage.TBL_NOT_EXIST:
 					//inform the user that they cannot join the table they are trying to because it does not exist
-					break;
-				case ServerMessage.GAME_NOT_CREATED:
 					break;
 				case ServerMessage.ALREADY_REGISTERED:
 					break;
@@ -279,6 +297,7 @@ public class BAAC extends Peer implements Runnable {
 					//inform the user of a general login failure error
 					break;
 				case ServerMessage.NOT_OBSERVING:
+					
 					break;
 				default:
 					break;
@@ -287,6 +306,29 @@ public class BAAC extends Peer implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * This method will take a username from the user after
+	 * prompting them to enter it
+	 * The desired username will then be sent to the server
+	 * 
+	 * @param prompt Enter username prompt
+	 * @return the desired username
+	 */
+	private void enterUsername(String prompt){
+		//when gui elements established place prompt in the gui and obtain
+		//username from gui elements
+		System.out.println(prompt);
+		String out = in.nextLine();
+		out.replaceAll("\n", "");
+		try {
+			sendToServer.put(out);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Player.setUsername(out);
 	}
 
 	/**
