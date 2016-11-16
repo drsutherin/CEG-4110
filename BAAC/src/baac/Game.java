@@ -202,7 +202,6 @@ public class Game extends Peer implements Runnable {
 
 	/**
 	 * Processes the move information from the GUI.
-	 * 
 	//Player Makes a Move
 	/// 0 1 2 3 4 5 6 7/
 	//-----------------/
@@ -215,7 +214,6 @@ public class Game extends Peer implements Runnable {
 	//6| |R| |R| |R| |R|/
 	//7|R| |R| |R| |R| |/
 	//-----------------
-	//// 
 	 * @param currentRow
 	 * @param currentColumn
 	 * @param newRow

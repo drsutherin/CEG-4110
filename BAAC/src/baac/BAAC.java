@@ -102,12 +102,12 @@ public class BAAC extends Peer implements Runnable {
 		
 		if (gameMode == GameMode.PLAY){
 			//send the server the appropriate join table message
-			message = "<104> <"+Player.getUsername()+"> <"+gameID+"> <EOM>";
+			message = "104 "+ Player.getUsername() +" " + gameID + "<EOM>";
 			queueUpToSendToServer(message);
 			you.setUserStatus(Status.playing);
 		}else if (gameMode == GameMode.OBSERVE){
 			//send the server the appropriate observe table message
-			message = "<110> <"+Player.getUsername()+"> <"+gameID+"> <EOM>";
+			message = "110 "+ Player.getUsername() +" " + gameID + "<EOM>";
 			queueUpToSendToServer(message);
 			you.setUserStatus(Status.observing);
 		}else{
@@ -117,13 +117,23 @@ public class BAAC extends Peer implements Runnable {
 		return returnBool;
 	}
 	
+	
+	/***
+	 * Asks the server to create a new table and place the user in a seat at the new table
+	 */
+	public void requestCreateTable(){
+		String message = "103 " + Player.getUsername() + "<EOM>";
+		queueUpToSendToServer(message);
+	}
+	
+	
 	/**
 	 * This method sends the "leave table" message to the server for this user
 	 */
 	public void leaveGame(){
 		//can only leave game if we are in or observing a game
 		if (Player.getUserStatus() != Status.in_lobby){
-			message = "<107> <"+Player.getUsername()+"> <EOM>";
+			message = "107 "+ Player.getUsername() + "<EOM>";
 			queueUpToSendToServer(message);
 			Player.setUserStatus(Status.in_lobby);
 		}
@@ -185,6 +195,11 @@ public class BAAC extends Peer implements Runnable {
 					break;
 				case ServerMessage.TBL_JOINED:
 					//tell the user that they joined a new table
+					
+					//join a game
+				
+					String tableNum = "1";
+					Game game = new Game(tableNum, mediator);
 					break;
 				case ServerMessage.TBL_LEFT:
 					//tell the user they have left the table
@@ -203,6 +218,8 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.NOW_IN_LOBBY:
 					message = message.substring(4, message.length()-6);
 					activeUsers.add(message);
+					//TODO: Remove this, it's only temporary to create a game
+					
 					//update gui elements for who is in the lobby
 					break;
 				case ServerMessage.WHO_ON_TBL:
