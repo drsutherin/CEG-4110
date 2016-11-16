@@ -145,7 +145,11 @@ public class ObservableGame extends Peer implements Runnable {
 	public void clientLeaveTableRequest(){
 		//format the request to the server
 		String leaveGame =  "107 " + player1 + "<EOM>";
-		mediator.receiveFromPeer(leaveGame);
+		try {
+			sendToServer.put(leaveGame);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

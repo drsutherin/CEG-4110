@@ -227,7 +227,7 @@ public class Game extends Peer implements Runnable {
 		String currentPosition = "(" + currentRow + "," + currentColumn + ")";
 		String newPosition = "(" + currentRow + "," + currentColumn + ")";
 		String move = "106 " + player1 + " " + currentPosition + " " + newPosition + "<EOM>"; 
-		mediator.receiveFromPeer(move);
+		placeMessageInIntermediateQueue(move);
 	}
 	
 	/**
@@ -237,7 +237,7 @@ public class Game extends Peer implements Runnable {
 	public void clientLeaveTableRequest(){
 		//format the request to the server
 		String leaveGame =  "107 " + player1 + "<EOM>";
-		mediator.receiveFromPeer(leaveGame);
+		placeMessageInIntermediateQueue(leaveGame);
 	}
 	
 	//Player Starts Game
@@ -248,8 +248,17 @@ public class Game extends Peer implements Runnable {
 	public void clientStartGameRequest(){
 		//format the request to the server
 		String startGame = "105 " + player1 + "<EOM>";
-		mediator.receiveFromPeer(startGame);
+		placeMessageInIntermediateQueue(startGame);
 	}
+	
+	public void placeMessageInIntermediateQueue(String message){
+		try {
+			sendToServer.put(message);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 	@Override
 	public void update(Observable o, Object arg) {
