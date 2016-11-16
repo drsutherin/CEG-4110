@@ -179,7 +179,7 @@ public class BAAC extends Peer implements Runnable {
 					break;
 				case ServerMessage.NEW_TBL:
 					message = message.substring(4, message.length()-6);
-					activeTables.add(Integer.parseInt(message));
+					sendToServer.put("109 " + message + " <EOM>");
 					//update gui elements
 					break;
 				case ServerMessage.TBL_JOINED:
