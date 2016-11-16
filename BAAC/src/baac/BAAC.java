@@ -165,10 +165,7 @@ public class BAAC extends Peer implements Runnable {
 					JFrame frame = new JFrame("Username Entry");
 			        // prompt the user to enter their name
 			        out = JOptionPane.showInputDialog(frame, "Enter username:").replaceAll("\n","");
-					//Scanner to halt works here because the server needs a username before we can do anything else
-					//This will be replaced with gui elements in the future
-					sendToServer.put(out);
-					Player.setUsername(out);
+					enterUsername(out);
 				case ServerMessage.CONN_OK:
 					//System.out.println("Connected to Server");
 					break;
@@ -283,9 +280,7 @@ public class BAAC extends Peer implements Runnable {
 			        out = JOptionPane.showInputDialog(frame2, "Username error. Re-enter username:").replaceAll("\n","");
 					//Scanner to halt works here because the server needs a username before we can do anything else
 					//This will be replaced with gui elements in the future
-					sendToServer.put(out);
-					Player.setUsername(out);
-					enterUsername("Name taken, please re-enter username");
+					enterUsername(out);
 				case ServerMessage.TBL_FULL:
 					System.out.println("Cannot join, table is full");
 					break;
@@ -325,11 +320,11 @@ public class BAAC extends Peer implements Runnable {
 	 * @param prompt Enter username prompt
 	 * @return the desired username
 	 */
-	private void enterUsername(String prompt){
+	private void enterUsername(String out){
 		//when gui elements established place prompt in the gui and obtain
 		//username from gui elements
-		System.out.println(prompt);
-		String out = in.nextLine();
+		//System.out.println(prompt);
+		//String out = in.nextLine();
 		out.replaceAll("\n", "");
 		try {
 			sendToServer.put(out);
