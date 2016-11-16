@@ -8,6 +8,9 @@ import gui.*;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  * will create:
  * a mediator instance
@@ -165,11 +168,11 @@ public class BAAC extends Peer implements Runnable {
 			switch(code){
 			//2 codes start here
 				case ServerMessage.ASK_USERNAME:
-					System.out.println("Enter Username");
+					JFrame frame = new JFrame("Username Entry");
+			        // prompt the user to enter their name
+			        out = JOptionPane.showInputDialog(frame, "Enter username:").replaceAll("\n","");
 					//Scanner to halt works here because the server needs a username before we can do anything else
 					//This will be replaced with gui elements in the future
-					out = in.nextLine();
-					out.replaceAll("\n", "");
 					sendToServer.put(out);
 					Player.setUsername(out);
 				case ServerMessage.CONN_OK:
@@ -253,7 +256,13 @@ public class BAAC extends Peer implements Runnable {
 					break;
 				case ServerMessage.NAME_IN_USE:
 				case ServerMessage.BAD_NAME:
-					//these will both result in the user having to choose a new name
+					JFrame frame2 = new JFrame("Username Error");
+			        // prompt the user to enter their name
+			        out = JOptionPane.showInputDialog(frame2, "Username error. Re-enter username:").replaceAll("\n","");
+					//Scanner to halt works here because the server needs a username before we can do anything else
+					//This will be replaced with gui elements in the future
+					sendToServer.put(out);
+					Player.setUsername(out);
 					break;
 				case ServerMessage.ILLEGAL:
 					//inform user that the move they chose was illegal

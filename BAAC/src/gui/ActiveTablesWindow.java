@@ -3,8 +3,8 @@ import javax.swing.*;
 import java.util.Vector;
 
 /*********************************************************************************
- * The LobbyUsersWindow displays a list of the usernames of all users currently
- * active in the lobby.  No interactions are defined for the window at this time,
+ * The ActiveTablesWindow displays a list of the table IDs of all tables currently
+ * active on the server.  No interactions are defined for the window at this time,
  * it is merely an informative tool.
  * 
  * D. Sutherin, November 2016
