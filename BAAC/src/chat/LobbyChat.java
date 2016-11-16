@@ -146,7 +146,7 @@ public class LobbyChat extends Peer implements Runnable {
 	@Override
 	public void update(Observable o, Object arg) {
 		try {
-			String outFinalDraft = "101 " + Player.getUsername() + " " + chatWindow.getLastMessage() + "<EOF>";
+			String outFinalDraft = "101 " + Player.getUsername() + " " + chatWindow.getLastMessage() + "<EOM>";
 			sendToServer.put(outFinalDraft);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

@@ -169,7 +169,6 @@ public class BAAC extends Peer implements Runnable {
 					//This will be replaced with gui elements in the future
 					sendToServer.put(out);
 					Player.setUsername(out);
-					enterUsername("Enter Username");
 				case ServerMessage.CONN_OK:
 					//System.out.println("Connected to Server");
 					break;
@@ -221,7 +220,7 @@ public class BAAC extends Peer implements Runnable {
 					//add the table id as an int to its vector
 					activeTables.add(Integer.parseInt(split[0]));
 
-					//run through the rest of the array and add the name of the person in that spot or
+					//run through the rest of the array aFnd add the name of the person in that spot or
 					//vacant if there is nobody
 					for (int i = 1; i < split.length; i++){
 						if (split[i].equalsIgnoreCase("-1")){
@@ -272,10 +271,6 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.USER_PROFILE:
 					break;
 				//4 codes start here
-
-
-
-
 
 
 				case ServerMessage.NET_EXCEPTION:
