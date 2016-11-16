@@ -14,12 +14,13 @@ import chat.LobbyChat;
 
 public class LobbyChatWindow extends Observable {
 
-	Vector<String> messages;
-	JList<String>messagesList;
+	private Vector<String> viewableMessages;
+	private Vector<String> rawMessages;
+	private JList<String>messagesList;
 	
 	public LobbyChatWindow(LobbyChat l){
 		addObserver(l);
-		messages = new Vector<String>();
+		viewableMessages = new Vector<String>();
 		setupGUI();
 	}
 
@@ -52,9 +53,10 @@ public class LobbyChatWindow extends Observable {
 			String msg = outbox.getText();
 			System.out.println(msg);
 			outbox.setText("");
+			rawMessages.add(msg);
 			msg = "Me:    " + msg;
-			messages.add(msg);
-			messagesList.setListData(messages);
+			viewableMessages.add(msg);
+			messagesList.setListData(viewableMessages);
 			setChanged();
 			notifyObservers();
 		});
@@ -73,22 +75,23 @@ public class LobbyChatWindow extends Observable {
 	 * @param incoming is a 2D String array where [0]=username, [1]=message
 	 */
 	public void addMessage(String[] incoming){
+		rawMessages.add(incoming[1]);
 		String newText = incoming[0]+":    "+incoming[1];
-		messages.add(newText);
-		messagesList.setListData(messages);
+		viewableMessages.add(newText);
+		messagesList.setListData(viewableMessages);
 	}
 	
 	/**
 	 * Returns the list of messages
 	 */
 	public Vector<String> getMessages()	{
-		return messages;
+		return rawMessages;
 	}
 	
 	/**
 	 * Returns the most recent message
 	 */
 	public String getLastMessage()	{
-		return messages.lastElement();
+		return rawMessages.lastElement();
 	}
 }

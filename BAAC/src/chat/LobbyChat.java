@@ -3,11 +3,8 @@ package chat;
 import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import baac.Peer;
-import baac.PeerMediator;
-import baac.Player;
-import baac.ServerMessage;
-import baac.Status;
+import baac.*;
+import gui.LobbyChatWindow;
 
 
 /***
@@ -26,6 +23,8 @@ public class LobbyChat extends Peer implements Runnable {
 	
 	private Status playerStatus = Player.getUserStatus();
 	
+	LobbyChatWindow chatWindow;
+	
 	/***
 	 * constructor with passed consumer-producer buffer
 	 * lobby chat is a producer of outgoingMessages, the server-interface is the consumer
@@ -35,6 +34,7 @@ public class LobbyChat extends Peer implements Runnable {
 	public LobbyChat(PeerMediator passedMediator)	{
 		mediator = passedMediator;
 		mediator.addPeerClass(this);
+		chatWindow = new LobbyChatWindow(this);
 	}
 	
 	/**
@@ -74,16 +74,24 @@ public class LobbyChat extends Peer implements Runnable {
 					senderName = inMessage[1];
 					senderMessage = inMessage[2];
 					String messageToUI[] = {senderName, senderMessage};
+					//only display the message if the user is in the lobby
+					if (Player.getUserStatus() == Status.in_lobby){
+						displayInUI(messageToUI);
+					}
+					break;
 				}
 			} catch(ArrayIndexOutOfBoundsException e){
 
-			}
-			//only display the message if the user is in the lobby
-			if (Player.getUserStatus() == Status.in_lobby){
-				//TODO: displayInUI(messageToUI);
-			}
-			break;	
+			}	
 		}
+	}
+
+	/**
+	 * Sends a message to the LobbyChatWindow
+	 * @param messageToUI is a 2D String array where [0]=username, [1]=message
+	 */
+	private void displayInUI(String[] messageToUI) {
+		chatWindow.addMessage(messageToUI);
 	}
 
 	/**
@@ -131,9 +139,17 @@ public class LobbyChat extends Peer implements Runnable {
 		
 	}
 
+	/**
+	 * update gets the most recent message from the GUI (presumably one just 
+	 * typed by the user) and 
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+		try {
+			String outFinalDraft = "102 " + Player.getUsername() + " " + chatWindow.getLastMessage() + "<EOF>";
+			sendToServer.put(outFinalDraft);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+		}
 	}
 }
