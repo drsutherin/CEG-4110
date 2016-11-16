@@ -53,8 +53,8 @@ public class BAAC extends Peer implements Runnable {
 		mediator.addPeerClass(this);
 		//buffer for passing messages within the client (from classes to this interface)
 		serverInterface = new Thread(new ServerInterface(mediator)); //"mchlrtkwski.tk", 45322, this);
-		lobbyChat = new Thread(lobby);	
-		lobbyChat.start();
+		activeUsers = new Vector<String>();
+		activeTables = new Vector<Integer>();
 	}
 	
 	/**
@@ -146,14 +146,6 @@ public class BAAC extends Peer implements Runnable {
 	 * Looks at all the messages from server and determines which ones to process
 	 */
 	private void decodeMessageFromServer(){
-		//Jon- this is some switch statement, I don't really know what should go in here...
-		// I was thinking. . .
-		// Does the server interface need to receive/process any messages from the sever? Currently it is responsible for getting the username
-		// and looking for a 108 message but perhaps that is better suited here since for Server interface to receive anything from the
-		// server has to bypass the mediator (which is what is currently happening, it just copies the messages to an array and check them
-		// in its own switch statement. It's janky. I want to get rid of it but I don't know if there are any implications. I think this 
-		// switch is going to involve you looking at almost every incoming message of so I was hoping you could keep that in the back of your 
-		// mind and come to a conclusion either way.
 		String message;
 		String out;
 		try {
@@ -176,7 +168,8 @@ public class BAAC extends Peer implements Runnable {
 					break;
 				case ServerMessage.IN_LOBBY:
 					System.out.println("You are now in the lobby");
-					//code for lobby handling
+					lobbyChat = new Thread(lobby);	
+					lobbyChat.start();
 					break;
 				case ServerMessage.OUT_LOBBY:
 					//code for lobby handling
@@ -185,24 +178,6 @@ public class BAAC extends Peer implements Runnable {
 					//code for indicating a new table has been created
 					break;
 				case ServerMessage.GAME_START:
-					break;
-				case ServerMessage.COLOR_BLACK:
-					//send to game code that our color is black
-					break;
-				case ServerMessage.COLOR_RED:
-					//send to game code that our color is red
-					break;
-				case ServerMessage.OPP_MOVE:
-					//tell user where the opponent has moved
-					break;
-				case ServerMessage.BOARD_STATE:
-					//code to update the board state
-					break;
-				case ServerMessage.GAME_WIN:
-					//tell the user that they have won
-					break;
-				case ServerMessage.GAME_LOSE:
-					//tell the user that they have lost
 					break;
 				case ServerMessage.TBL_JOINED:
 					//tell the user that they joined a new table
@@ -213,31 +188,48 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.WHO_IN_LOBBY:
 					System.out.println("Users in lobby are: ");
 					System.out.println(message.substring(4, message.length()-6));
+					message = message.substring(4, message.length()-6);
+					String[] users = message.split(" ");
+					//System.out.println(users.toString());
+					for (int i = 0; i < users.length; i++){
+						activeUsers.add(users[i]);
+					}
 					//send gui info for displaying who is in the lobby
 					break;
 				case ServerMessage.NOW_IN_LOBBY:
+					message = message.substring(4, message.length()-6);
+					activeUsers.add(message);
 					//indicate to the user that they are in the lobby
 					break;
 				case ServerMessage.WHO_ON_TBL:
 					//indicate to the user who is on the table
 					break;
 				case ServerMessage.TBL_LIST:
-					//show the user a list of tables
+					//if there are no tables this condition will not be fulfilled
+					if (message.length()-6 > 4){
+						//select table part of the message
+						message = message.substring(4, message.length()-6);
+						//if there are several tables split the string into an array of strings
+						String[] tables = message.split(" ");
+						//put the table ids into the active tables vector
+						for (int i = 0; i < tables.length; i++){
+							activeTables.add(Integer.parseInt(tables[i]));
+						}
+					}
 					break;
 				case ServerMessage.NOW_LEFT_LOBBY:
+					message = message.substring(4, message.length()-6);
+					activeUsers.remove(message);
 					//indicate that a user has left the lobby
 					break;
 				case ServerMessage.OPP_LEFT_TABLE:
 					//indicate that the opponent has left the table
 					break;
-				case ServerMessage.YOUR_TURN:
-					//indicate that it is the user's turn
-					break;
 				case ServerMessage.NOW_OBSERVING:
-					//indicate that the user is now observing a game
+					//start observe game thread
 					break;
 				case ServerMessage.STOPPED_OBSERVING:
-					//indicate that the user 
+					//end observe game thread
 					break;
 				case ServerMessage.REGISTER_OK:
 					break;
@@ -285,7 +277,6 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.NOT_OBSERVING:
 					break;
 				default:
-					//all of the 1 codes will go to here and do nothing
 					break;
 			}
 		} catch (InterruptedException e) {
