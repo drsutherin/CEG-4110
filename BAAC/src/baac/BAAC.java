@@ -28,7 +28,7 @@ public class BAAC extends Peer implements Runnable {
 	Vector<String> activeUsers;
 	Vector<Integer> activeTables;
 	String message = "";
-	Game theGame;
+	Thread theGame;
 	Scanner in = new Scanner(System.in);
 	
 	Player you = Player.getInstance();//ensures there is a player
@@ -181,6 +181,10 @@ public class BAAC extends Peer implements Runnable {
 					System.out.println("You are now in the lobby");
 					lobbyChat = new Thread(lobby);	
 					lobbyChat.start();
+					
+					//TODO: Remove this, it's only temporary to create a game
+					requestCreateTable();
+					
 					break;
 				case ServerMessage.OUT_LOBBY:
 					//code for lobby handling
@@ -194,12 +198,13 @@ public class BAAC extends Peer implements Runnable {
 					//start game thread
 					break;
 				case ServerMessage.TBL_JOINED:
-					//tell the user that they joined a new table
+					//TODO: tell the user that they joined a new table
 					
-					//join a game
-				
-					String tableNum = "1";
-					Game game = new Game(tableNum, mediator);
+					//parse the string
+					message = message.replace("<EOM>", "");
+					String[] messageArray = message.split(" ", 2);
+					String tableNum = messageArray[1];
+					theGame = new Thread(new Game(tableNum, mediator));
 					break;
 				case ServerMessage.TBL_LEFT:
 					//tell the user they have left the table
@@ -217,8 +222,7 @@ public class BAAC extends Peer implements Runnable {
 					break;
 				case ServerMessage.NOW_IN_LOBBY:
 					message = message.substring(4, message.length()-6);
-					activeUsers.add(message);
-					//TODO: Remove this, it's only temporary to create a game
+					activeUsers.add(message);					
 					
 					//update gui elements for who is in the lobby
 					break;
