@@ -3,7 +3,7 @@ package gui;
 import java.util.Observable;
 import java.util.Vector;
 import javax.swing.*;
-import chat.LobbyChat;
+import chat.PrivateChat;
 
 /*********************************************************************************
  * The LobbyUsersWindow displays a list messages and supplies a text area and 
@@ -12,25 +12,27 @@ import chat.LobbyChat;
  * D. Sutherin, November 2016
  ********************************************************************************/
 
-public class LobbyChatWindow extends Observable {
+public class PrivateChatWindow extends Observable {
 
 	private Vector<String> viewableMessages;
 	private Vector<String> rawMessages;
 	private JList<String>messagesList;
+	String chatBuddy;
 	
-	public LobbyChatWindow(LobbyChat l){
-		addObserver(l);
+	public PrivateChatWindow(PrivateChat p, String buddy){
+		addObserver(p);
 		viewableMessages = new Vector<String>();
 		rawMessages = new Vector<String>();
+		chatBuddy = buddy;
 		setupGUI();
 	}
 
 	/**
-	 * Initiates the LobbyChatWindow
+	 * Initiates the PrivateChatWindow
 	 */
 	private void setupGUI()	{
 		// Initial window setup
-		JFrame frame = new JFrame("Lobby Chat");
+		JFrame frame = new JFrame("Private Chat");
 		
 		JPanel panel = new JPanel();
 		panel.setSize(300,400);
@@ -66,24 +68,24 @@ public class LobbyChatWindow extends Observable {
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
 		frame.setSize(300, 400);
-		frame.setTitle("Lobby Chat");
+		frame.setTitle("Private Chat with " + chatBuddy);
 		frame.pack();
 		frame.setVisible(true);
 	}
 	
 	/**
 	 * Adds a message to the Vector of messages and updates the GUI
-	 * @param incoming is a 2D String array where [0]=username, [1]=message
+	 * @param incoming is a String containing the new message from user's chat partner
 	 */
-	public void addMessage(String[] incoming){
-		rawMessages.add(incoming[1]);
-		String newText = incoming[0]+":    "+incoming[1];
+	public void addMessage(String incoming){
+		rawMessages.add(incoming);
+		String newText = chatBuddy+":    "+incoming;
 		viewableMessages.add(newText);
 		messagesList.setListData(viewableMessages);
 	}
 	
 	/**
-	 * Returns the list of messages
+	 * Returns all messages
 	 */
 	public Vector<String> getMessages()	{
 		return rawMessages;

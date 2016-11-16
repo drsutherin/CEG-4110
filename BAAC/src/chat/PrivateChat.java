@@ -7,6 +7,7 @@ import baac.Peer;
 import baac.PeerMediator;
 import baac.Player;
 import baac.ServerMessage;
+import gui.PrivateChatWindow;
 
 
 /***
@@ -25,6 +26,8 @@ public class PrivateChat extends Peer implements Runnable {
 	
 	private String chatBuddy;
 	
+	private PrivateChatWindow chatWindow;
+	
 	/***
 	 * Constructor for private chat.
 	 * @param passedMediator, the Mediator that sends and receives messages
@@ -34,6 +37,7 @@ public class PrivateChat extends Peer implements Runnable {
 		mediator = passedMediator;
 		mediator.addPeerClass(this);
 		chatBuddy = passedChatBuddy;
+		chatWindow = new PrivateChatWindow(this, chatBuddy);
 	}
 	
 	/**
@@ -131,9 +135,12 @@ public class PrivateChat extends Peer implements Runnable {
 		
 	}
 
+	/**
+	 * Gets the most recent message from the GUI (presumably one just 
+	 * typed by the user) and calls a method to format and send it
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+		formatMessageFromUI(chatWindow.getLastMessage());
 	}
 }
