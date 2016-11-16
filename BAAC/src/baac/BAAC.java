@@ -103,7 +103,6 @@ public class BAAC extends Peer implements Runnable {
 	public boolean requestJoinGame(GameMode gameMode, int gameID){
 		boolean returnBool = true;
 		
-bby
 		if (gameMode == GameMode.PLAY){
 			//send the server the appropriate join table message
 			message = "<104> <"+Player.getUsername()+"> <"+gameID+"> <EOM>";

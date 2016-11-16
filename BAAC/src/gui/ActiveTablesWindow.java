@@ -18,8 +18,13 @@ public class ActiveTablesWindow {
 	 * Instantiating a ActiveTablesWindow causes it to run immediately
 	 * @param tables contains a list of the IDs of all active tables
 	 */
-	public ActiveTablesWindow(Vector<String> tables)	{
-		tablesVector = tables;
+	public ActiveTablesWindow(Vector<Integer> tables, Vector<Vector<String>> players)	{
+		String currentTable;
+		for (int i = 0; i < tables.size(); i++)	{
+			currentTable = "Table ID:" + tables.get(i).toString() + players.get(i).get(0)
+					+ " vs " + players.get(i).get(1);
+			tablesVector.add(currentTable);
+		}
 		setupGUI();
 	}
 	
