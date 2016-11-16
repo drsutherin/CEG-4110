@@ -140,13 +140,13 @@ public class LobbyChat extends Peer implements Runnable {
 	}
 
 	/**
-	 * update gets the most recent message from the GUI (presumably one just 
-	 * typed by the user) and 
+	 * Gets the most recent message from the GUI (presumably one just 
+	 * typed by the user) and adds it to the outgoing queue of messages
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		try {
-			String outFinalDraft = "102 " + Player.getUsername() + " " + chatWindow.getLastMessage() + "<EOF>";
+			String outFinalDraft = "101 " + Player.getUsername() + " " + chatWindow.getLastMessage() + "<EOF>";
 			sendToServer.put(outFinalDraft);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

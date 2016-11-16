@@ -50,7 +50,7 @@ public class LobbyUsersWindow {
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
 		frame.setSize(300, 400);
-		frame.setTitle("Main Menu");
+		frame.setTitle("Users in Lobby");
 		frame.pack();
 		frame.setVisible(true);
 	}
