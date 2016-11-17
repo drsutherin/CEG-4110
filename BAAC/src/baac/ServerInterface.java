@@ -106,7 +106,7 @@ public class ServerInterface extends Peer implements Runnable {
 				//this.pushSendMessage(message);
 				while (!messagesFromClient.isEmpty()){
 					String messageToSend = this.popSendMessage();
-					this.streamOut.println(messageToSend);
+					this.streamOut.print(messageToSend);
 					streamOut.flush();
 					if (messageToSend.startsWith("108")){
 						System.out.println("goodbye now you");
