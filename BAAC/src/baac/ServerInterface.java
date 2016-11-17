@@ -58,7 +58,7 @@ public class ServerInterface extends Peer implements Runnable {
 	*DESCRIPTION:
 	*PARAMETERS:messageQueue, a reference to the internal buffer that the client classes pass messages to
 	*RETURNS:
-	*DESCRIPTION: This method 
+	*DESCRIPTION:
 	*
 	*
 	***************************************************************************/
@@ -124,10 +124,8 @@ public class ServerInterface extends Peer implements Runnable {
 	 *METHOD: handle()
 	 *PARAMETERS: String
 	 *RETURNS: void
-	 *DESCRIPTION: This message handles the messages received from the TCP 
-	 *connection and calls the pushRecieveMessage with the String parameter
-	 *that it received. The message is then printed to the screen for testing
-	 *purposes.
+	 *DESCRIPTION:
+	 *
 	 *
 	 * ************************************************************************/
 
@@ -141,8 +139,7 @@ public class ServerInterface extends Peer implements Runnable {
 	 *METHOD: start()
 	 *PARAMETERS: --
 	 *RETURNS: void
-	 *DESCRIPTION:This method calls a new ServerIncerface thread and starts the
-	 *running thread. Console Input is created for testing purposes.
+	 *DESCRIPTION:
 	 *
 	 *
 	 * ************************************************************************/
@@ -196,7 +193,7 @@ public class ServerInterface extends Peer implements Runnable {
 	 *Most of these messages were produced by client classes (ie. PrivateChat, Game, etc)
 	 *One exception to the form is the initial send message which consists only of the 
 	 *username and is sent directly from the Server-Interface.
-	 *The server-interface consumes the messages and sends them to the server.
+	 *The server-interface consumes the messages and sends them to the server
 	 * ************************************************************************/
 	private String popSendMessage() {
 		String message = null;
