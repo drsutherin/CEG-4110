@@ -249,8 +249,8 @@ public class BAAC extends Peer implements Runnable {
 					theGame.stop();
 					break;
 				case ServerMessage.WHO_IN_LOBBY:
-					System.out.println("Users in lobby are:");
-					System.out.println(message.substring(4, message.length()-6));
+					//System.out.println("Users in lobby are:");
+					//System.out.println(message.substring(4, message.length()-6));
 					message = message.replace(ServerMessage.WHO_IN_LOBBY + " ", "");
 					message = message.replace(" <EOM>", "");
 					message = message.replace("<EOM>", "");
@@ -262,7 +262,9 @@ public class BAAC extends Peer implements Runnable {
 					//send gui info for displaying who is in the lobby
 					break;
 				case ServerMessage.NOW_IN_LOBBY:
-					message = message.substring(4, message.length()-6);
+					message = message.replace(ServerMessage.NOW_IN_LOBBY + " ", "");
+					message = message.replace(" <EOM>", "");
+					message = message.replace("<EOM>", "");
 					activeUsers.add(message);
 					//update gui elements for who is in the lobby
 					break;
@@ -334,7 +336,7 @@ public class BAAC extends Peer implements Runnable {
 
 
 				case ServerMessage.NET_EXCEPTION:
-					//
+					System.out.println("NET EXCEPTION");
 					break;
 				case ServerMessage.NAME_IN_USE:
 				case ServerMessage.BAD_NAME:
@@ -354,14 +356,16 @@ public class BAAC extends Peer implements Runnable {
 					System.out.println("Bad message to the server");
 					break;
 				case ServerMessage.ERR_IN_LOBBY:
+					System.out.println("Error in lobby");
 					break;
 				case ServerMessage.TBL_NOT_EXIST:
-					//inform the user that they cannot join the table they are trying to because it does not exist
+					System.out.println("That table does not exist");
 					break;
 				case ServerMessage.ALREADY_REGISTERED:
+					System.out.println("That username is already registered");
 					break;
 				case ServerMessage.LOGIN_FAIL:
-					//inform the user of a general login failure error
+					System.out.println("Unable to log in (did you enter your password correctly?)");
 					break;
 				case ServerMessage.NOT_OBSERVING:
 
