@@ -2,5 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/michaelrutkowski/Github/CEG-4110/BAAC/lib/cmu_us_kal.jar"/>
+	<classpathentry kind="lib" path="/Users/michaelrutkowski/Github/CEG-4110/BAAC/lib/cmulex.jar"/>
+	<classpathentry kind="lib" path="/Users/michaelrutkowski/Github/CEG-4110/BAAC/lib/en_us.jar"/>
+	<classpathentry kind="lib" path="/Users/michaelrutkowski/Github/CEG-4110/BAAC/lib/freetts.jar"/>
+	<classpathentry kind="lib" path="/Users/michaelrutkowski/Github/CEG-4110/BAAC/lib/jsapi.jar"/>
+	<classpathentry kind="lib" path="/Users/michaelrutkowski/Github/CEG-4110/BAAC/lib/sphinx4.jar"/>
+	<classpathentry kind="lib" path="/Users/michaelrutkowski/Github/CEG-4110/BAAC/lib/voce.jar"/>
+	<classpathentry kind="lib" path="/Users/michaelrutkowski/Github/CEG-4110/BAAC/lib/WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
