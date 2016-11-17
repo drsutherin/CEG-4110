@@ -445,6 +445,8 @@ public class BAAC extends Peer implements Runnable {
 			if (chatBuddy != null)	{
 		        PrivateChat p = new PrivateChat(mediator, chatBuddy);
 				privateChatList.add(p);
+				Thread privateChatThread = new Thread(p);
+				privateChatThread.start();
 			}
 			break;
 		case EXIT_GAME:
