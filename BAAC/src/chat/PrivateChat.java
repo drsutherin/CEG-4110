@@ -13,7 +13,7 @@ import gui.PrivateChatWindow;
 /***
  * The private chat handles parsing messages to and from the server. The chat thread remains active until the user closes the
  * private chat window.
- * @author ulyZ
+ * @author Z. Rhodes, D. Sutherin
  *
  */
 public class PrivateChat extends Peer implements Runnable {

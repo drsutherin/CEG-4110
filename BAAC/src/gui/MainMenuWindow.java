@@ -1,4 +1,6 @@
 package gui;
+import java.util.Observable;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,8 +12,9 @@ import javax.swing.JPanel;
  * D. Sutherin, November 2016
  ********************************************************************************/
 
-public class MainMenuWindow {
-
+public class MainMenuWindow extends Observable {
+	private MenuButtonStatus lastPressed = null;
+	
 	/**
 	 * Instantiating a MainMenuWindow causes it to run immediately
 	 */
@@ -39,6 +42,9 @@ public class MainMenuWindow {
 		startButton.addActionListener(e -> {
 			//TODO: Interact w/ BAAC
 			System.out.println("Starting game...");
+			lastPressed = MenuButtonStatus.START;
+			setChanged();
+			notifyObservers();
 		});
 		panel.add(startButton);
 		
@@ -47,6 +53,9 @@ public class MainMenuWindow {
 		joinButton.addActionListener(e -> {
 			//TODO: Interact w/ BAAC
 			System.out.println("Joining game...");
+			lastPressed = MenuButtonStatus.JOIN;
+			setChanged();
+			notifyObservers();
 		});
 		panel.add(joinButton);
 		
@@ -55,6 +64,9 @@ public class MainMenuWindow {
 		observeButton.addActionListener(e -> {
 			//TODO: Interact w/ BAAC
 			System.out.println("Observing game...");
+			lastPressed = MenuButtonStatus.OBSERVE;
+			setChanged();
+			notifyObservers();
 		});
 		panel.add(observeButton);
 
@@ -63,6 +75,9 @@ public class MainMenuWindow {
 		chatButton.addActionListener(e -> {
 			//TODO: Interact w/ BAAC
 			System.out.println("Starting private chat...");
+			lastPressed = MenuButtonStatus.PRIVATE_CHAT;
+			setChanged();
+			notifyObservers();
 		});
 		panel.add(chatButton);
 
@@ -71,9 +86,9 @@ public class MainMenuWindow {
 		exitButton.addActionListener(e -> {
 			//TODO: Interact w/ BAAC
 			System.out.println("Exiting...");
-			// Send exit command to ServerInterface
-			// Close all windows
-			// System.exit(0);
+			lastPressed = MenuButtonStatus.EXIT;
+			setChanged();
+			notifyObservers();
 		});
 		panel.add(exitButton);
 		
@@ -84,6 +99,14 @@ public class MainMenuWindow {
 		frame.setTitle("Main Menu");
 		frame.pack();
 		frame.setVisible(true);
+	}
+	
+	/**
+	 * Returns the last button pressed.  Used when BAAC calls update()
+	 * @return lastPressed is a MenuButtonStatus corresponding to the last pressed button
+	 */
+	public MenuButtonStatus getLastPressed()	{
+		return lastPressed;
 	}
 
 }

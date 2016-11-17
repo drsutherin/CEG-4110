@@ -10,7 +10,7 @@ import gui.LobbyChatWindow;
 /***
  * The chat handles parsing messages to and from the server. The chat thread remains active until the system is
  * disconnected
- * @author ulyZ
+ * @author Z. Rhodes, D. Sutherin
  *
  */
 public class LobbyChat extends Peer implements Runnable {

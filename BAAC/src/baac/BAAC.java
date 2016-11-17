@@ -45,8 +45,11 @@ public class BAAC extends Peer implements Runnable {
 
 	// Voce speechInterface;
 	// Stage gui_background;
-	// BAAC_GUI gui;
 
+	// GUI Windows
+	MainMenuWindow mainMenu;
+	
+	
 	/**
 	 * Constructor for BAAC
 	 * 	a) add self to mediator peer list so it will recieve messages from server
@@ -173,32 +176,32 @@ public class BAAC extends Peer implements Runnable {
 					lobbyChat = new Thread(lobby);
 					lobbyChat.start();
 					break;
-				case ServerMessage.MSG:
-					String[] messageSplit = message.split(" ");
-					String sender, receiver, msg;
-					sender = messageSplit[1];
-					receiver = messageSplit[2];
-					msg = messageSplit[3];
-
-					if (receiver == "1")	{
-						boolean found = false;
-						for (int i = 0; i < privateChatList.size(); i++)	{
-							if (privateChatList.get(i).getBuddy() == sender)	{
-								privateChatList.get(i).formatMessageFromServer(message);
-								found = true;
-								break;
-							}
-						}
-						if (!found) {
-							PrivateChat newChat = new PrivateChat(mediator, sender);
-							newChat.formatMessageFromServer(message);
-							privateChatList.add(newChat);
-						}
-					}
-					else {
-						lobby.formatMessageFromServer(message);
-					}
-					break;
+//				case ServerMessage.MSG:
+//					String[] messageSplit = message.split(" ");
+//					String sender, receiver, msg;
+//					sender = messageSplit[1];
+//					receiver = messageSplit[2];
+//					msg = messageSplit[3];
+//
+//					if (receiver == "1")	{
+//						boolean found = false;
+//						for (int i = 0; i < privateChatList.size(); i++)	{
+//							if (privateChatList.get(i).getBuddy() == sender)	{
+//								privateChatList.get(i).formatMessageFromServer(message);
+//								found = true;
+//								break;
+//							}
+//						}
+//						if (!found) {
+//							PrivateChat newChat = new PrivateChat(mediator, sender);
+//							newChat.formatMessageFromServer(message);
+//							privateChatList.add(newChat);
+//						}
+//					}
+//					else {
+//						lobby.formatMessageFromServer(message);
+//					}
+//					break;
 				case ServerMessage.OUT_LOBBY:
 					lobbyChat.stop();
 					break;
@@ -232,7 +235,7 @@ public class BAAC extends Peer implements Runnable {
 					message = message.replace(ServerMessage.NOW_IN_LOBBY + " ", "");
 					message = message.replace(" <EOM>", "");
 					message = message.replace("<EOM>", "");
-					activeUsers.add(message);
+					//activeUsers.add(message);
 					//update gui elements for who is in the lobby
 					break;
 				case ServerMessage.WHO_ON_TBL:
@@ -383,8 +386,23 @@ public class BAAC extends Peer implements Runnable {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-
+		MenuButtonStatus last = mainMenu.getLastPressed();
+		switch (last)	{
+		case START:
+			// create a new game
+			break;
+		case JOIN:
+			// prompt user for which game to join
+			// attempt to join selected game
+			break;
+		case OBSERVE:
+			// join a game as an observer
+			break;
+		case PRIVATE_CHAT:
+			break;
+		case EXIT:
+			break;
+		}
 	}
 
 
