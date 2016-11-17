@@ -40,37 +40,35 @@ public class Game extends Peer implements Runnable {
 	 * @param tid is the table ID
 	 * @param passedMediator is the Mediator used to pass messages between peers
 	 */
-	public Game(String tid, PeerMediator passedMediator)	{
-		player1 = Player.getUsername();
+	public Game(PeerMediator passedMediator)	{
+		player1 = "";
 		player2 = "";
 		isTurn = false;
 		boardState = "";
-		tableID = tid;
-		mediator = passedMediator;
-		mediator.addPeerClass(this);
-	}
-	
-	/**
-	 * Constructor for joining a table
-	 * @param baac is the client
-	 * @param tid is the existing table id
-	 * @param passedMediator is the Mediator used to pass messages between peers
-	 */
-	public Game(String tid, String opponent, PeerMediator passedMediator){
-		player1 = Player.getUsername();
-		player2 = opponent;
-		isTurn = false;
-		boardState = "";
-		tableID = tid;
 		mediator = passedMediator;
 		mediator.addPeerClass(this);
 	}
 
+	/***
+	 * Override the stop function
+	 */
+	public void stop(){
+		shutdownPlayableGame();
+	}
+	
 	/**
 	 * Shutdown thread
 	 */
 	public void shutdownPlayableGame(){
 		activeThread = false;
+	}
+
+	/**
+	 * Set table number 
+	 * @param tableNumber
+	 */
+	public void setTableID(String tableNumber){
+		tableID = tableNumber;
 	}
 	
 	/**
