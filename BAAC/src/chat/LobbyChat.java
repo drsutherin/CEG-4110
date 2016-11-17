@@ -79,7 +79,7 @@ public class LobbyChat extends Peer implements Runnable {
 					}
 					String messageToUI[] = new String[]{senderName, senderMessage};
 					//only display the message if the user is in the lobby
-					if (Player.getUserStatus() == Status.in_lobby){
+					if (Player.getUserStatus() == Status.IN_LOBBY){
 						displayInUI(messageToUI);
 					}
 				}

@@ -25,7 +25,7 @@ public class Player {
 	
 	private Player(){
 		username = "";
-		user_status = Status.in_lobby;
+		user_status = Status.IN_LOBBY;
 	};
 	
 	

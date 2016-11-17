@@ -115,12 +115,12 @@ public class BAAC extends Peer implements Runnable {
 			//send the server the appropriate join table message
 			message = "104 "+ Player.getUsername() +" " + gameID + "<EOM>";
 			queueUpToSendToServer(message);
-			you.setUserStatus(Status.playing);
+			you.setUserStatus(Status.PLAYING);
 		}else if (gameMode == GameMode.OBSERVE){
 			//send the server the appropriate observe table message
 			message = "110 "+ Player.getUsername() +" " + gameID + "<EOM>";
 			queueUpToSendToServer(message);
-			you.setUserStatus(Status.observing);
+			you.setUserStatus(Status.OBSERVING);
 		}else{
 			//if you are here something went wrong and the message will not be sent
 			returnBool =  false;
@@ -143,10 +143,10 @@ public class BAAC extends Peer implements Runnable {
 	 */
 	public void leaveGame(){
 		//can only leave game if we are in or observing a game
-		if (Player.getUserStatus() != Status.in_lobby){
+		if (Player.getUserStatus() != Status.IN_LOBBY){
 			message = "107 "+ Player.getUsername() + "<EOM>";
 			queueUpToSendToServer(message);
-			Player.setUserStatus(Status.in_lobby);
+			Player.setUserStatus(Status.IN_LOBBY);
 		}
 	}
 
@@ -412,7 +412,15 @@ public class BAAC extends Peer implements Runnable {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		MenuButtonStatus last = mainMenu.getLastPressed();
+		MenuButtonStatus last;
+		if (Player.getUserStatus() == Status.IN_LOBBY)	{
+			last = mainMenu.getLastPressed();
+		}
+		else {
+			// TODO: Update this once inGameMenu is created
+			//last = inGameMenu.getlastPressed();
+			last = null;
+		}
 		switch (last)	{
 		case START:
 			// create a new game
@@ -425,8 +433,13 @@ public class BAAC extends Peer implements Runnable {
 			// join a game as an observer
 			break;
 		case PRIVATE_CHAT:
+			// create a new private chat
 			break;
-		case EXIT:
+		case EXIT_GAME:
+			// leave the current game
+			break;
+		case EXIT_BAAC:
+			// disconnect from server and exit the client
 			break;
 		}
 	}

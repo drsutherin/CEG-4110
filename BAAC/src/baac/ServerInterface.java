@@ -71,13 +71,13 @@ public class ServerInterface extends Peer implements Runnable {
         JFrame frame = new JFrame("InputDialog Example #1");
 
         // prompt the user to enter their name
-        String serverName = JOptionPane.showInputDialog(frame, "Server Name or IP Adress");
-        String serverPort = JOptionPane.showInputDialog(frame, "Port Number");
+        String serverName = JOptionPane.showInputDialog(frame, "Server Name or IP Adress", "mchlrtkwski.tk");
+        String serverPort = JOptionPane.showInputDialog(frame, "Port Number", "45322");
 
         // get the user's input. no this.pushSendMessage(name);//("The user's name is '%s'.\n", name);
        // System.exit(0);
-        serverName = "mchlrtkwski.tk";
-        serverPort = "45322";
+        //serverName = "mchlrtkwski.tk";
+        //serverPort = "45322";
 		System.out.println("Establishing connection. Please wait ...");
 		try {
 			mediator.addServerInterface(this);

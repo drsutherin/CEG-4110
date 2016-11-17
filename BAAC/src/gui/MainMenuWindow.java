@@ -86,7 +86,7 @@ public class MainMenuWindow extends Observable {
 		exitButton.addActionListener(e -> {
 			//TODO: Interact w/ BAAC
 			System.out.println("Exiting...");
-			lastPressed = MenuButtonStatus.EXIT;
+			lastPressed = MenuButtonStatus.EXIT_BAAC;
 			setChanged();
 			notifyObservers();
 		});
