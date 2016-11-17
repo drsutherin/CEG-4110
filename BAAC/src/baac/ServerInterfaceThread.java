@@ -40,7 +40,7 @@ public class ServerInterfaceThread extends Thread {
 				streamIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				;
 			} catch (IOException ioe) {
-				System.out.println("Error getting input stream: " + ioe);
+				System.out.println("Error from the input stream " + ioe);
 				client.stop();
 			}
 		}
@@ -93,7 +93,7 @@ public class ServerInterfaceThread extends Thread {
 					}
 
 				} catch (Exception ioe) {
-					System.out.println("Listening error: " + ioe.getMessage());
+					System.out.println("Error: " + ioe.getMessage());
 					client.stop();
 				}
 			}

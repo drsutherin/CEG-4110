@@ -28,9 +28,8 @@ import java.io.*;
  * @author M. Rutkowski
  * @author D. Sutherin
  *
- *Source of Multithreading Material found at:
+ *Source of learning Multithreading Material found at:
  *http://pirate.shu.edu/~wachsmut/Teaching/CSAS2214/Virtual/Lectures/chat-client-server.html
- *Needed Largely edited due to deprecated methods
  *Things to do:
  *	Store Messages in at thread-safe Vector in order for use. *class attribute*
  *	Create push and pop methods to implement a stack on the Vector
@@ -85,7 +84,7 @@ public class ServerInterface extends Peer implements Runnable {
 			System.out.println("Connected: " + socket);
 			start();
 		} catch (UnknownHostException uhe) {
-			System.out.println("Host unknown: " + uhe.getMessage());
+			System.out.println("IP not Knwon " + uhe.getMessage());
 		} catch (IOException ioe) {
 			System.out.println("Unexpected exception: " + ioe.getMessage());
 		}
@@ -181,7 +180,7 @@ public class ServerInterface extends Peer implements Runnable {
 				socket.close();
 			}
 		} catch (IOException ioe) {
-			System.out.println("Error closing ...");
+			System.out.println("Error closing port...");
 		}
 		client.close();
 		client.stop();
@@ -230,7 +229,7 @@ public class ServerInterface extends Peer implements Runnable {
 	 *METHOD: pushSendMessage()
 	 *PARAMETERS: String
 	 *RETURNS: void
-	 *DESCRIPTION:
+	 *DESCRIPTION: This method
 	 *
 	 *
 	 *
