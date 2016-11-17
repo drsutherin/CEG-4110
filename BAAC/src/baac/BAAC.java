@@ -170,7 +170,7 @@ public class BAAC extends Peer implements Runnable {
 					//System.out.println("Connected to Server");
 					break;
 				case ServerMessage.IN_LOBBY:
-					System.out.println("You are now in the lobby");
+					//System.out.println("You are now in the lobby");
 					lobbyChat = new Thread(lobby);
 					lobbyChat.start();
 					break;
@@ -178,8 +178,10 @@ public class BAAC extends Peer implements Runnable {
 					lobbyChat.stop();
 					break;
 				case ServerMessage.NEW_TBL:
-					message = message.substring(4, message.length()-6);
-					sendToServer.put("109 " + message + " <EOM>");
+					message = message.replace(ServerMessage.NEW_TBL + " ", "");
+					message = message.replace(" <EOM>", "");
+					message = message.replace("<EOM>", "");
+					sendToServer.put("109 " + Player.getUsername() + " " + message + " <EOM>");
 					//update gui elements
 					break;
 				case ServerMessage.TBL_JOINED:
@@ -191,7 +193,9 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.WHO_IN_LOBBY:
 					System.out.println("Users in lobby are:");
 					System.out.println(message.substring(4, message.length()-6));
-					message = message.substring(4, message.length()-6);
+					message = message.replace(ServerMessage.WHO_IN_LOBBY + " ", "");
+					message = message.replace(" <EOM>", "");
+					message = message.replace("<EOM>", "");
 					String[] users = message.split(" ");
 					//System.out.println(users.toString());
 					for (int i = 0; i < users.length; i++){
@@ -200,13 +204,17 @@ public class BAAC extends Peer implements Runnable {
 					//send gui info for displaying who is in the lobby
 					break;
 				case ServerMessage.NOW_IN_LOBBY:
-					message = message.substring(4, message.length()-6);
+					message = message.replace(ServerMessage.NOW_IN_LOBBY + " ", "");
+					message = message.replace(" <EOM>", "");
+					message = message.replace("<EOM>", "");
 					activeUsers.add(message);
 					//update gui elements for who is in the lobby
 					break;
 				case ServerMessage.WHO_ON_TBL:
 					//remove code and <EOM> from message
-					message = message.substring(4, message.length()-6);
+					message = message.replace(ServerMessage.WHO_ON_TBL + " ", "");
+					message = message.replace(" <EOM>", "");
+					message = message.replace("<EOM>", "");
 					//instantiate string to hold the players on the table
 					//this will be added to the activeTablesStatus vector
 					Vector<String> statusHold = new Vector<String>();
@@ -230,24 +238,25 @@ public class BAAC extends Peer implements Runnable {
 					break;
 				case ServerMessage.TBL_LIST:
 					Vector<Integer> tblHold = new Vector<Integer>();
-					//if there are no tables this condition will not be fulfilled
-					if (message.length()-6 > 4){
-						//select table part of the message
-						message = message.substring(4, message.length()-6);
-						//if there are several tables split the string into an array of strings
-						String[] tables = message.split(" ");
-						//put the table ids into the active tables vector
-						for (int i = 0; i < tables.length; i++){
-							tblHold.add(Integer.parseInt(tables[i]));
-						}
-						for (int i = 0; i < tblHold.size(); i++){
-							sendToServer.put("109 " + tblHold.get(i) + " <EOM>");
-						}
+					message = message.replace(ServerMessage.TBL_LIST + " ", "");
+					message = message.replace(" <EOM>", "");
+					message = message.replace("<EOM>", "");
+					//if there are several tables split the string into an array of strings
+					String[] tables = message.split(" ");
+					//put the table ids into the active tables vector
+					for (int i = 0; i < tables.length; i++){
+						tblHold.add(Integer.parseInt(tables[i]));
 					}
+					for (int i = 0; i < tblHold.size(); i++){
+						sendToServer.put("109 " + Player.getUsername() + " " + tblHold.get(i) + " <EOM>");
+					}
+				
 
 					break;
 				case ServerMessage.NOW_LEFT_LOBBY:
-					message = message.substring(4, message.length()-6);
+					message = message.replace(ServerMessage.NOW_LEFT_LOBBY + " ", "");
+					message = message.replace(" <EOM>", "");
+					message = message.replace("<EOM>", "");
 					activeUsers.remove(message);
 					//indicate that a user has left the lobby
 					break;
