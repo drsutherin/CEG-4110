@@ -77,8 +77,8 @@ public class PrivateChatWindow extends Observable {
 	 * Adds a message to the Vector of messages and updates the GUI
 	 * @param incoming is a String containing the new message from user's chat partner
 	 */
-	public void addMessage(String incoming){
-		rawMessages.add(incoming);
+	public void addMessage(String[] incoming){
+		rawMessages.add(incoming[1]);
 		String newText = chatBuddy+":    "+incoming;
 		viewableMessages.add(newText);
 		messagesList.setListData(viewableMessages);

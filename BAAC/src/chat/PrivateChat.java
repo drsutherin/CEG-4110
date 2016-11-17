@@ -77,6 +77,7 @@ public class PrivateChat extends Peer implements Runnable {
 				if (inMessage[3].equals("1") && senderName.equals(chatBuddy)){
 					senderMessage = inMessage[2];
 					String messageToUI[] = {senderName, senderMessage};
+					displayInUI(messageToUI);
 				}
 			} catch(ArrayIndexOutOfBoundsException e){
 
@@ -85,6 +86,15 @@ public class PrivateChat extends Peer implements Runnable {
 				//TODO: displayInUI(messageToUI);
 			break;	
 		}
+	}
+
+	/**
+	 * Sends an incoming message to the PrivateChatWindow UI
+	 * @param messageToUI is a String array where [1]=username, [2]=message
+	 */
+	private void displayInUI(String[] messageToUI) {
+		chatWindow.addMessage(messageToUI);
+		
 	}
 
 	/**
