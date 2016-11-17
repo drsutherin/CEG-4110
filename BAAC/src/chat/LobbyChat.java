@@ -64,24 +64,28 @@ public class LobbyChat extends Peer implements Runnable {
 		String senderName = "";
 		String senderMessage = "";
 		String code = incomingMessage.substring(0, 3);
+		
 		switch(code){
 		case ServerMessage.MSG:
 			try{
 				incomingMessage = incomingMessage.replace("\r ", " ");//Incoming message looks like: 201 Name\r 0 this is a message <EOM>
 				incomingMessage = incomingMessage.replace("<EOM>", ""); //don't pass EOM to the GUI
-				String inMessage[] = incomingMessage.split(" ", 4);
-				if (inMessage[3] == "0"){
-					senderName = inMessage[1];
-					senderMessage = inMessage[2];
-					String messageToUI[] = {senderName, senderMessage};
+				String inMessage[] = incomingMessage.split(" ");
+				senderName = inMessage[1];
+				String username = Player.getUsername();
+				if (!senderName.equals(username))	{
+					for (int i = 3; i < inMessage.length; i++)	{
+						senderMessage = senderMessage + " " + inMessage[i];
+					}
+					String messageToUI[] = new String[]{senderName, senderMessage};
 					//only display the message if the user is in the lobby
 					if (Player.getUserStatus() == Status.in_lobby){
 						displayInUI(messageToUI);
 					}
-					break;
 				}
+				break;
 			} catch(ArrayIndexOutOfBoundsException e){
-
+				
 			}	
 		}
 	}

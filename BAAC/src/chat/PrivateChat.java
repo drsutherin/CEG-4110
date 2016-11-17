@@ -143,4 +143,12 @@ public class PrivateChat extends Peer implements Runnable {
 	public void update(Observable o, Object arg) {
 		formatMessageFromUI(chatWindow.getLastMessage());
 	}
+	
+	/**
+	 * Returns the name of the player's chat partner
+	 * @return chatBuddy is the chat partner's username
+	 */
+	public String getBuddy()	{
+		return chatBuddy;
+	}
 }

@@ -60,6 +60,5 @@ public class Player {
 	public static Status getUserStatus(){
 		return user_status;
 	}
-	
 
 }

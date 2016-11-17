@@ -171,8 +171,35 @@ public class BAAC extends Peer implements Runnable {
 					break;
 				case ServerMessage.IN_LOBBY:
 					System.out.println("You are now in the lobby");
+					Player.setUserStatus(Status.in_lobby);
 					lobbyChat = new Thread(lobby);
 					lobbyChat.start();
+					break;
+				case ServerMessage.MSG:
+					String[] messageSplit = message.split(" ");
+					String sender, receiver, msg;
+					sender = messageSplit[1];
+					receiver = messageSplit[2];
+					msg = messageSplit[3];
+					
+					if (receiver == "1")	{
+						boolean found = false;
+						for (int i = 0; i < privateChatList.size(); i++)	{
+							if (privateChatList.get(i).getBuddy() == sender)	{
+								privateChatList.get(i).formatMessageFromServer(message);
+								found = true;
+								break;
+							}
+						}
+						if (!found) {
+							PrivateChat newChat = new PrivateChat(mediator, sender);
+							newChat.formatMessageFromServer(message);
+							privateChatList.add(newChat);
+						}
+					}
+					else {
+						lobby.formatMessageFromServer(message);
+					}
 					break;
 				case ServerMessage.OUT_LOBBY:
 					lobbyChat.stop();
