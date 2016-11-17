@@ -62,6 +62,8 @@ public class ObservableGame extends Peer implements Runnable {
 					e.printStackTrace();
 				};			
 			}
+			
+			sleepyThread();
 		}		
 	}
 

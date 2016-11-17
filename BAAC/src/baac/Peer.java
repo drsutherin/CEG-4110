@@ -36,6 +36,18 @@ public abstract class Peer implements Observer {
 		mediator.receiveFromPeer(message);
 	}
 	
+	/**
+	 * Thread will sleep for a given number of cycles
+	 */
+	protected void sleepyThread(){
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	//must be implemented by every class that extends peer
 	public abstract void receiveFromMediator(String message);
 	

@@ -116,7 +116,7 @@ public class LobbyChat extends Peer implements Runnable {
 					//TODO Log in error log
 				};
 			}
-				
+			
 			//get message from server
 			String incomingMessage;
 			while (!receiveFromServer.isEmpty()){
@@ -129,6 +129,9 @@ public class LobbyChat extends Peer implements Runnable {
 					//TODO Log in error log
 				};			
 			}
+			
+			sleepyThread();
+			
 		}
 	}
 
@@ -156,4 +159,7 @@ public class LobbyChat extends Peer implements Runnable {
 			// TODO Auto-generated catch block
 		}
 	}
+	
+	
+	
 }

@@ -32,12 +32,13 @@ public class BAAC extends Peer implements Runnable {
 	Vector<Integer> activeTables;
 	Vector<Vector<String>> activeTableStatus;
 	String message = "";
-	Game theGame;
 	Scanner in = new Scanner(System.in);
 
 	Player you = Player.getInstance();//ensures there is a player
 	PeerMediator mediator = new PeerMediator();
 	LobbyChat lobby = new LobbyChat(mediator);
+
+	Game theGame = new Game(mediator);
 
 	//Thread safe buffers used to add/remove messages from this thread
 	private final LinkedBlockingQueue<String> sendToServer = new LinkedBlockingQueue<String>();
@@ -48,8 +49,8 @@ public class BAAC extends Peer implements Runnable {
 
 	// GUI Windows
 	MainMenuWindow mainMenu;
-	
-	
+
+
 	/**
 	 * Constructor for BAAC
 	 * 	a) add self to mediator peer list so it will recieve messages from server
@@ -88,7 +89,9 @@ public class BAAC extends Peer implements Runnable {
 			while (!receiveFromServer.isEmpty()){
 				decodeMessageFromServer();
 			}
+		sleepyThread();
 		}
+
 	}
 
 	/**
@@ -110,12 +113,12 @@ public class BAAC extends Peer implements Runnable {
 
 		if (gameMode == GameMode.PLAY){
 			//send the server the appropriate join table message
-			message = "<104> <"+Player.getUsername()+"> <"+gameID+"> <EOM>";
+			message = "104 "+ Player.getUsername() +" " + gameID + "<EOM>";
 			queueUpToSendToServer(message);
 			you.setUserStatus(Status.playing);
 		}else if (gameMode == GameMode.OBSERVE){
 			//send the server the appropriate observe table message
-			message = "<110> <"+Player.getUsername()+"> <"+gameID+"> <EOM>";
+			message = "110 "+ Player.getUsername() +" " + gameID + "<EOM>";
 			queueUpToSendToServer(message);
 			you.setUserStatus(Status.observing);
 		}else{
@@ -125,13 +128,23 @@ public class BAAC extends Peer implements Runnable {
 		return returnBool;
 	}
 
+
+
+	/***
+	 * Asks the server to create a new table and place the user in a seat at the new table
+	 */
+	public void requestCreateTable(){
+		String message = "103 " + Player.getUsername() + "<EOM>";
+		queueUpToSendToServer(message);
+	}
+
 	/**
 	 * This method sends the "leave table" message to the server for this user
 	 */
 	public void leaveGame(){
 		//can only leave game if we are in or observing a game
 		if (Player.getUserStatus() != Status.in_lobby){
-			message = "<107> <"+Player.getUsername()+"> <EOM>";
+			message = "107 "+ Player.getUsername() + "<EOM>";
 			queueUpToSendToServer(message);
 			Player.setUserStatus(Status.in_lobby);
 		}
@@ -154,6 +167,7 @@ public class BAAC extends Peer implements Runnable {
 	/***
 	 * Looks at all the messages from server and determines which ones to process
 	 */
+
 	private void decodeMessageFromServer(){
 		String message;
 		String out;
@@ -175,6 +189,10 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.IN_LOBBY:
 					lobbyChat = new Thread(lobby);
 					lobbyChat.start();
+
+					//Uncomment this to
+					//requestCreateTable();
+
 					break;
 //				case ServerMessage.MSG:
 //					String[] messageSplit = message.split(" ");
@@ -213,10 +231,20 @@ public class BAAC extends Peer implements Runnable {
 					//update gui elements
 					break;
 				case ServerMessage.TBL_JOINED:
-					//launch game thread
+					//TODO: tell the user that they joined a new table
+
+					//parse the string
+					message = message.replace("<EOM>", "");
+					String[] messageArray = message.split(" ", 2);
+					String tableNum = messageArray[1];
+					theGame.setTableID(tableNum);
+					//create the thread
+					Thread gameThread = new Thread(theGame);
+					gameThread.start();
 					break;
 				case ServerMessage.TBL_LEFT:
-					//stop game thread
+
+					theGame.stop();
 					break;
 				case ServerMessage.WHO_IN_LOBBY:
 					System.out.println("Users in lobby are:");
@@ -232,10 +260,8 @@ public class BAAC extends Peer implements Runnable {
 					//send gui info for displaying who is in the lobby
 					break;
 				case ServerMessage.NOW_IN_LOBBY:
-					message = message.replace(ServerMessage.NOW_IN_LOBBY + " ", "");
-					message = message.replace(" <EOM>", "");
-					message = message.replace("<EOM>", "");
-					//activeUsers.add(message);
+					message = message.substring(4, message.length()-6);
+					activeUsers.add(message);
 					//update gui elements for who is in the lobby
 					break;
 				case ServerMessage.WHO_ON_TBL:
