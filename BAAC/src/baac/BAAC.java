@@ -26,7 +26,7 @@ import javax.swing.JOptionPane;
  */
 public class BAAC extends Peer implements Runnable {
 	Thread serverInterface = null;
-	Thread lobbyChat;
+	Thread lobbyChatThread;
 	Vector<PrivateChat> privateChatList;	// Contains all active private chats
 	Vector<String> activeUsers;
 	Vector<Integer> activeTables;
@@ -36,7 +36,7 @@ public class BAAC extends Peer implements Runnable {
 
 	Player you = Player.getInstance();//ensures there is a player
 	PeerMediator mediator = new PeerMediator();
-	LobbyChat lobby = new LobbyChat(mediator);
+	LobbyChat lobbyChat;
 
 	Game theGame = new Game(mediator);
 
@@ -65,6 +65,8 @@ public class BAAC extends Peer implements Runnable {
 		activeUsers = new Vector<String>();
 		activeTables = new Vector<Integer>();
 		activeTableStatus = new Vector<Vector<String>>();
+		privateChatList = new Vector<PrivateChat>();
+		setupLobby();
 	}
 
 	/**
@@ -187,8 +189,8 @@ public class BAAC extends Peer implements Runnable {
 					//System.out.println("Connected to Server");
 					break;
 				case ServerMessage.IN_LOBBY:
-					lobbyChat = new Thread(lobby);
-					lobbyChat.start();
+					lobbyChatThread = new Thread(lobbyChat);
+					lobbyChatThread.start();
 
 					//Uncomment this to
 					//requestCreateTable();
@@ -221,7 +223,7 @@ public class BAAC extends Peer implements Runnable {
 //					}
 //					break;
 				case ServerMessage.OUT_LOBBY:
-					lobbyChat.stop();
+					lobbyChatThread.stop();
 					break;
 				case ServerMessage.NEW_TBL:
 					message = message.replace(ServerMessage.NEW_TBL + " ", "");
@@ -253,7 +255,7 @@ public class BAAC extends Peer implements Runnable {
 					message = message.replace(" <EOM>", "");
 					message = message.replace("<EOM>", "");
 					String[] users = message.split(" ");
-					//System.out.println(users.toString());
+					//System.out.println(users.toStringString());
 					for (int i = 0; i < users.length; i++){
 						activeUsers.add(users[i]);
 					}
@@ -433,15 +435,32 @@ public class BAAC extends Peer implements Runnable {
 			// join a game as an observer
 			break;
 		case PRIVATE_CHAT:
-			// create a new private chat
+			JFrame frame = new JFrame();
+	        String chatBuddy  = (String) JOptionPane.showInputDialog(frame, "Choose a chat buddy:", "Private Chat Setup",
+	        		3, null, activeUsers.toArray(), activeUsers.get(0));	    
+			if (chatBuddy != null)	{
+		        PrivateChat p = new PrivateChat(mediator, chatBuddy);
+				privateChatList.add(p);
+			}
 			break;
 		case EXIT_GAME:
 			// leave the current game
 			break;
 		case EXIT_BAAC:
-			// disconnect from server and exit the client
+			queueUpToSendToServer("108 " + Player.getUsername());
 			break;
 		}
+	}
+	
+	/**
+	 * Initializes all windows and classes necessary for the lobby
+	 */
+	private void setupLobby()	{
+		lobbyChat = new LobbyChat(mediator);
+		mainMenu = new MainMenuWindow(this);
+		// TODO: make sure these are setup correctly and let 'em rip
+		// activeUsersWindow = new ActiveUsersWindow(this);
+		// activeTablesWindow = new ActiveTablesWindow(this);
 	}
 
 

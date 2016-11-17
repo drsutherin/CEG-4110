@@ -6,6 +6,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import baac.BAAC;
+
 /*********************************************************************************
  * The MainMenuWindow allows a player to select their actions from a GUI window
  * 
@@ -18,7 +20,8 @@ public class MainMenuWindow extends Observable {
 	/**
 	 * Instantiating a MainMenuWindow causes it to run immediately
 	 */
-	public MainMenuWindow()	{
+	public MainMenuWindow(BAAC b)	{
+		addObserver(b);
 		setupGUI();
 	}
 	
