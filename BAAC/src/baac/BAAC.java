@@ -185,7 +185,7 @@ public class BAAC extends Peer implements Runnable {
 					lobbyChat.start();
 					
 					//Uncomment this to 
-					requestCreateTable();
+					//requestCreateTable();
 					
 					break;
 				case ServerMessage.OUT_LOBBY:
