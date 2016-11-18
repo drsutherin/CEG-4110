@@ -6,6 +6,8 @@ import java.util.Observable;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -60,6 +62,9 @@ public class GameBoardWindow extends Observable {
 					c = Color.BLACK;
 				}
 				thisButton = buttonFactory(c, buttonSize);
+				if ((row == 'A' && j % 2 == 1) || (row == 'B' && j % 2 == 0)) {
+					thisButton.setIcon(new ImageIcon("black.png"));
+				}
 				position = row + String.valueOf(j);
 				thisButton.setName(position);
 				thisRow.add(thisButton);
@@ -87,7 +92,19 @@ public class GameBoardWindow extends Observable {
 	}
 	
 	public void handleClick(JButton b){
-		
+		System.out.println("You clicked " + b.getName());
+		if (b.getBackground() == Color.RED)	{
+			b.setBackground(Color.PINK);
+		}
+		else if (b.getBackground() == Color.BLACK)	{
+			b.setBackground(Color.GRAY);
+		}
+		else if (b.getBackground() == Color.PINK)	{
+			b.setBackground(Color.RED);
+		}
+		else	{
+			b.setBackground(Color.BLACK);
+		}
 		setChanged();
 		notifyObservers();
 	}
