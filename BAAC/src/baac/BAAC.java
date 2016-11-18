@@ -303,7 +303,10 @@ public class BAAC extends Peer implements Runnable {
 					String[] tables = message.split(" ");
 					//put the table ids into the active tables vector
 					for (int i = 0; i < tables.length; i++){
-						tblHold.add(Integer.parseInt(tables[i]));
+						//make sure tables include something other than the empty string
+						if (!tables[i].equals("")){
+							tblHold.add(Integer.parseInt(tables[i]));
+						}
 					}
 					for (int i = 0; i < tblHold.size(); i++){
 						sendToServer.put("109 " + Player.getUsername() + " " + tblHold.get(i) + " <EOM>");
