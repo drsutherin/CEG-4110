@@ -48,7 +48,7 @@ public class GameBoardWindow extends Observable {
 		JPanel thisRow;
 		JButton thisButton;
 		Color c;
-		for (int i = 65; i < 72; i++)	{
+		for (int i = 65; i < 73; i++)	{
 			thisRow = new JPanel();
 			container.add(thisRow);
 			row = (char) i;
