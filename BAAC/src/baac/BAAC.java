@@ -440,6 +440,7 @@ public class BAAC extends Peer implements Runnable {
 			break;
 		case PRIVATE_CHAT:
 			JFrame frame = new JFrame();
+			System.out.println(activeUsers);
 	        String chatBuddy  = (String) JOptionPane.showInputDialog(frame, "Choose a chat buddy:", "Private Chat Setup",
 	        		3, null, activeUsers.toArray(), activeUsers.get(0));	    
 			if (chatBuddy != null)	{

@@ -18,9 +18,12 @@ public class PrivateChatWindow extends Observable {
 	private Vector<String> rawMessages;
 	private JList<String>messagesList;
 	String chatBuddy;
+	Thread myThread;
+	PrivateChat myPChat;
 	
 	public PrivateChatWindow(PrivateChat p, String buddy){
 		addObserver(p);
+		myPChat = p;
 		viewableMessages = new Vector<String>();
 		rawMessages = new Vector<String>();
 		chatBuddy = buddy;
@@ -63,7 +66,16 @@ public class PrivateChatWindow extends Observable {
 			setChanged();
 			notifyObservers();
 		});
+		
+		
+		JButton closeButton = new JButton("Close");
+		closeButton.addActionListener(e -> {
+			stopChat();
+			frame.setVisible(false);
+			frame.dispose();
+		});
 		panel.add(sendButton);
+		panel.add(closeButton);
 		
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
@@ -96,5 +108,11 @@ public class PrivateChatWindow extends Observable {
 	 */
 	public String getLastMessage()	{
 		return rawMessages.lastElement();
+	}
+	/*
+	 * Stops the thread for the private chat that this window is running
+	 */
+	private void stopChat(){
+		myPChat.stop();
 	}
 }

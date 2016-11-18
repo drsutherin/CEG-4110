@@ -25,7 +25,7 @@ public class PrivateChat extends Peer implements Runnable {
 	private PeerMediator mediator;
 	
 	private String chatBuddy;
-	
+	private Boolean chatBool;
 	private PrivateChatWindow chatWindow;
 	
 	/***
@@ -37,6 +37,7 @@ public class PrivateChat extends Peer implements Runnable {
 		mediator = passedMediator;
 		mediator.addPeerClass(this);
 		chatBuddy = passedChatBuddy;
+		chatBool = true;
 		chatWindow = new PrivateChatWindow(this, chatBuddy);
 	}
 	
@@ -102,7 +103,7 @@ public class PrivateChat extends Peer implements Runnable {
 	 */
 	@Override
 	public void run() {
-		while(true){
+		while(chatBool){
 			//send message to server
 			String outgoingMessage;
 			while (!sendToServer.isEmpty()){
@@ -162,5 +163,12 @@ public class PrivateChat extends Peer implements Runnable {
 	 */
 	public String getBuddy()	{
 		return chatBuddy;
+	}
+	
+	/**
+	 * Switches chatBool to false so that the thread can end
+	 */
+	public void stop(){
+		chatBool = false;
 	}
 }
