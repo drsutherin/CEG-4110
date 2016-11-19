@@ -100,10 +100,13 @@ public class GameBoardWindow extends Observable {
 	
 	/**
 	 * Handles button clicks during play
+	 * First click is piece to move, second click is where to move it
 	 * @param b is the button that was clicked
 	 */
 	public void handleClick(JButton b){
 		String name = b.getName();
+		
+		// Initial code for testing clicks
 		System.out.println("You clicked " + name);
 		if (b.getBackground() == Color.RED)	{
 			b.setBackground(Color.PINK);
@@ -118,9 +121,10 @@ public class GameBoardWindow extends Observable {
 			b.setBackground(Color.BLACK);
 		}
 		
+		// Create the string array corresponding to the move based on user clicks
+		// Clicks should always be 0 or 1
 		if (clicks == 0){
-			
-			move[0] = b.getName();
+			move[0] = name;
 			clicks++;
 		}
 		else	{
@@ -129,13 +133,19 @@ public class GameBoardWindow extends Observable {
 				move[0] = "";
 				clicks = 0;
 			}
+			else if (move[1] == name)	{
+				move[1] = "";
+				clicks = 1;
+			}
 			// If this is the second click and it's a different space
 			else	{
-				
+				move[1] = name;
+				clicks = 0;  // reset clicks for next turn
+				moving = true;
+				setChanged();
+				notifyObservers();
 			}
 		}
-		setChanged();
-		notifyObservers();
 	}
 	
 	/**
@@ -143,6 +153,28 @@ public class GameBoardWindow extends Observable {
 	 * @param c is the color that the user has been assigned by the server
 	 */
 	public void setPlayerColor(Color c)	{
+		// TODO: Set up game pieces on the board
+		int row, col;
+		if (c == Color.RED){
+			// Set up red pieces on bottom of board
+			for (JButton b : boardSpacesVector){
+				col = (int) b.getName().charAt(0);
+				row = (int) b.getName().charAt(1);
+				
+				// if in row 1 or 3 & odd column, add black piece
+				if ((row == 1 || row == 3) && (col % 2 == 1))	{
+					b.setIcon(new ImageIcon(getClass().getResource("resources//one.png")));
+				}
+				// if in row 2 & even column, add black piece
+				
+				// if in row 6 or 8 & odd column, add red piece
+				
+				// if in row 7 & even column, add red piece
+			}
+		}
+		else	{
+			// Set up black pieces on bottom of board
+		}
 		
 	}
 	
@@ -154,8 +186,8 @@ public class GameBoardWindow extends Observable {
 	public void setTurn(Turn t)	{
 		turn = t;
 		
-		if (turn == Turn.YOURS){
-			// Make all buttons clickable
+		if (turn == Turn.THEIRS){
+			// Make all buttons unclickable
 			for (JButton b : boardSpacesVector) {
 				b.addActionListener(e -> {
 					JFrame frame = new JFrame("Hold your horses");
@@ -164,6 +196,7 @@ public class GameBoardWindow extends Observable {
 			}
 		}
 		else {
+			// Make the buttons clickable
 			for (JButton b : boardSpacesVector) {
 				b.addActionListener(e -> {
 					handleClick(b);
