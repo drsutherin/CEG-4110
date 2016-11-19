@@ -55,8 +55,6 @@ public class Game extends Peer implements Runnable {
 		boardState = "";
 		mediator = passedMediator;
 		mediator.addPeerClass(this);
-		gameGUI = new GameBoardWindow(this);
-		gameMenu = new InGameMenuWindow(this);
 	}
 
 	/***
@@ -85,6 +83,9 @@ public class Game extends Peer implements Runnable {
 	 * Check the buffers for messages from the server and messages to be sent to the server 
 	 */
 	public void run() {
+		gameGUI = new GameBoardWindow(this);
+		gameMenu = new InGameMenuWindow(this);
+		
 		while(activeThread){
 			//send message to server
 			String outgoingMessage;
