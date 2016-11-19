@@ -3,6 +3,12 @@ package baac;
 import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import java.util.Observable;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import gui.GameBoardWindow;
+import gui.InGameMenuWindow;
+
 /**
  * * Will contain information regarding the current game:
   * Players
@@ -27,6 +33,8 @@ public class Game extends Peer implements Runnable {
 	String boardState;		// Same format as sent from server (see CheckersServerDocumentation)
 	BAAC client;
 	String tableID;			// Received from server
+	GameBoardWindow gameGUI;
+	InGameMenuWindow gameMenu;
 	
 	Boolean activeThread = true;
 	Mediator mediator;
@@ -47,6 +55,8 @@ public class Game extends Peer implements Runnable {
 		boardState = "";
 		mediator = passedMediator;
 		mediator.addPeerClass(this);
+		gameGUI = new GameBoardWindow(this);
+		gameMenu = new InGameMenuWindow(this);
 	}
 
 	/***
@@ -214,16 +224,32 @@ public class Game extends Peer implements Runnable {
 	//6| |R| |R| |R| |R|/
 	//7|R| |R| |R| |R| |/
 	//-----------------
-	 * @param currentRow
-	 * @param currentColumn
-	 * @param newRow
-	 * @param newColumn
+	 * @param moveArray: enters as an array {string1, string2} where string = "A1" , Row = A, Column = 1 
 	 * places a string in mediator's queue:<106><clientName><currentPosition><newPosition><EOM>
 	 */
-	public void clientMoveRequest(String currentRow, String currentColumn, String newRow, String newColumn ){
+	public void clientMoveRequest(String[] moveArray){
+		//example input array{A1, B2}
+		String currentPositionString = moveArray[0];
+		String newPositionString = moveArray[1];
+		
+		//Rows are characters, columns are ints
+		int currentRow = (int)currentPositionString.charAt(0) - 65; //will return 65(A) - 72(H) need 0-7
+		int currentColumn = (int)currentPositionString.charAt(1) - 1; //will return 1-8 need 0-7
+		int newRow = (int)newPositionString.charAt(0) - 65; //will return 65(A) - 72(H) need 0-7
+		int newColumn = (int)newPositionString.charAt(1) - 1; //will return 1-8 need 0-7
+
+		//check for player color is black (is player 1) in which case the values are inverted
+		if(Player.getUsername().equals(player1)){
+			//invert everything
+			currentRow = Math.abs(currentRow - 7);
+			currentColumn = Math.abs(currentColumn - 7);
+			newRow = Math.abs(newRow - 7);
+			newColumn = Math.abs(newColumn - 7);
+		}
+		
 		//format the request to the server
 		String currentPosition = "(" + currentRow + "," + currentColumn + ")";
-		String newPosition = "(" + currentRow + "," + currentColumn + ")";
+		String newPosition = "(" + newRow + "," + newColumn + ")";
 		String move = "106 " + player1 + " " + currentPosition + " " + newPosition + "<EOM>"; 
 		placeMessageInIntermediateQueue(move);
 	}
@@ -258,11 +284,43 @@ public class Game extends Peer implements Runnable {
 	}
 	
 
+	/***
+	 * Responds to updates from the GUI
+	 * Updates can be arriving from either the GameWindow or the GameMenuWindow
+	 * If it is the game window, it will check for the GUI's flags and change the flags 
+	 * once the request is processed
+	 * If it is the game menu window, it will check for the GUI's enum and respond appropriatly
+	 * 
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
+		//check flag		
+		if (o.equals(gameGUI)){
+			if(gameGUI.getReadyFlag()){
+				gameGUI.setReadyFlag(false);
+				if(gameGUI.getReadyFlag()){
+					clientStartGameRequest();
+				}
+			}
+			
+			//if(gameGUI.getMoveFlag()){
+			//	gameGUI.setMoveFlag(false);
+			//	String[] unParsedMove = gameGUI.getMove();//enters as an array {string1, string2} where string = "A1" , Row = A, Column = 1 
+			//	clientMoveRequest(unParsedMove);
+			//}
+			//otherwise it was the ingame menu window
+		 } else if (o.equals(gameMenu)){
+		 
+			//if(gameMenu.getLeaveFlag()){
+				//gameMenu.setLeaveFlag(false);
+				//if (gameMenu.getLeaveStatus()){
+					//clientLeaveTableRequest();
+		}
+	}
 		
-	}	
-}
-	
+		
+		
+}	
+
+		
 	
