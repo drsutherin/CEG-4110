@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.util.*;
 
 import javax.swing.BoxLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import baac.Game;
+import gui.GameBoardWindow.Turn;
 
 public class GameBoardWindow extends Observable {
 
@@ -137,13 +137,22 @@ public class GameBoardWindow extends Observable {
 				move[1] = "";
 				clicks = 1;
 			}
-			// If this is the second click and it's a different space
-			else	{
+			// If this is the second click, it's a different space, and original selection has a piece on it
+			else if (boardSpacesDict.get(move[0]).getIcon() != null)	{
 				move[1] = name;
 				clicks = 0;  // reset clicks for next turn
 				moving = true;
+				// Set icon on space moving to
+				boardSpacesDict.get(move[1]).setIcon(boardSpacesDict.get(move[0]).getIcon());
+				// Set icon on space moving from
+				boardSpacesDict.get(move[0]).setIcon(null);
+				setTurn(Turn.THEIRS);
 				setChanged();
 				notifyObservers();
+			}
+			else	{
+				move[0] = move[1] = "";
+				clicks = 0;
 			}
 		}
 	}
