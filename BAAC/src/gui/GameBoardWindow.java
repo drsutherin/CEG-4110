@@ -170,11 +170,11 @@ public class GameBoardWindow extends Observable {
 					b.setIcon(new ImageIcon(getClass().getResource("black.png")));
 				}
 				// if in row 6 or 8 & odd column, add red piece
-				else if ((row == 6 || row == 8) && (col % 2 == 1))	{
+				else if ((row == 6 || row == 8) && (col % 2 == 0))	{
 					b.setIcon(new ImageIcon(getClass().getResource("red.png")));
 				}
 				// if in row 7 & even column, add red piece
-				else if ((row == 7) && (col % 2 == 0))	{
+				else if ((row == 7) && (col % 2 == 1))	{
 					b.setIcon(new ImageIcon(getClass().getResource("red.png")));
 				}
 			}
@@ -194,11 +194,11 @@ public class GameBoardWindow extends Observable {
 					b.setIcon(new ImageIcon(getClass().getResource("red.png")));
 				}
 				// if in row 6 or 8 & odd column, add red piece
-				else if ((row == 6 || row == 8) && (col % 2 == 1))	{
+				else if ((row == 6 || row == 8) && (col % 2 == 0))	{
 					b.setIcon(new ImageIcon(getClass().getResource("black.png")));
 				}
 				// if in row 7 & even column, add red piece
-				else if ((row == 7) && (col % 2 == 0))	{
+				else if ((row == 7) && (col % 2 == 1))	{
 					b.setIcon(new ImageIcon(getClass().getResource("black.png")));
 				}
 			}
@@ -263,5 +263,46 @@ public class GameBoardWindow extends Observable {
 	 */
 	public void setMoveFlag(boolean b){
 		moving = b;
+	}
+	
+	
+	/**
+	 * Allows the Game class to get the last move
+	 * @return move is a string array where [0]=original position [1]=new position
+	 */
+	public String[] getMove()	{
+		return move;
+	}
+	
+	/**
+	 * Updates the positions of all pieces on the board
+	 * @param b is a byte array corresponding to board locations as represented by the server 
+	 */
+	public void updateBoard(byte[][] b)	{
+		int k = 0;
+		JButton current;
+		for (int i = 0; i < b.length; i++){
+			for (int j = 0; j < b[i].length; j++){
+				current = boardSpacesVector.get(i);
+				switch (b[i][j])	{
+				case 0: // nothing
+					current.setIcon(new ImageIcon(getClass().getResource("")));
+					break;
+				case 1: // black
+					current.setIcon(new ImageIcon(getClass().getResource("black.png")));
+					break;
+				case 2: // red
+					current.setIcon(new ImageIcon(getClass().getResource("red.png")));
+					break;
+				case 3: // black king
+					current.setIcon(new ImageIcon(getClass().getResource("black-king.png")));
+					break;
+				case 4: // red king
+					current.setIcon(new ImageIcon(getClass().getResource("red-king.png")));
+					break;
+				}
+			}
+			
+		}
 	}
 }
