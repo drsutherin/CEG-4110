@@ -84,6 +84,12 @@ public class GameBoardWindow extends Observable {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Creates buttons to correspond to game board spaces
+	 * @param c is the color of the button/space
+	 * @param d is the size of the button/space
+	 * @return the new JButton that was created
+	 */
 	public JButton buttonFactory(Color c, Dimension d)	{
 		JButton newButton = new JButton();
 		newButton.setBackground(c);
@@ -92,6 +98,10 @@ public class GameBoardWindow extends Observable {
 		return newButton;
 	}
 	
+	/**
+	 * Handles button clicks during play
+	 * @param b is the button that was clicked
+	 */
 	public void handleClick(JButton b){
 		String name = b.getName();
 		System.out.println("You clicked " + name);
@@ -128,6 +138,19 @@ public class GameBoardWindow extends Observable {
 		notifyObservers();
 	}
 	
+	/**
+	 * Populates the game board with pieces with the Player's color at the bottom
+	 * @param c is the color that the user has been assigned by the server
+	 */
+	public void setPlayerColor(Color c)	{
+		
+	}
+	
+	/**
+	 * Sets the event handlers for all of the game board buttons based on
+	 * whether it's the user's turn or not
+	 * @param t is whose turn it is
+	 */
 	public void setTurn(Turn t)	{
 		turn = t;
 		
@@ -136,7 +159,6 @@ public class GameBoardWindow extends Observable {
 			for (JButton b : boardSpacesVector) {
 				b.addActionListener(e -> {
 					JFrame frame = new JFrame("Hold your horses");
-			        // prompt the user to enter their name
 			        JOptionPane.showMessageDialog(frame, "It's not your turn");
 				});
 			}
@@ -150,18 +172,34 @@ public class GameBoardWindow extends Observable {
 		}
 	}
 	
+	/**
+	 * Allows the Game class to check whether the user is ready
+	 * @return ready corresponds to whether the user is ready to play
+	 */
 	public boolean getReadyFlag(){
 		return ready;
 	}
 	
+	/**
+	 * Allows the Game class to set the user's ready status
+	 * @param b is the user's new status
+	 */
 	public void setReadyFlag(boolean b)	{
 		ready = b;
 	}
 	
+	/**
+	 * Allows the Game class to check whether the user is trying to send a move
+	 * @return moving corresponds to whether the user is ready to move
+	 */
 	public boolean getMoveFlag(){
 		return moving;
 	}
 	
+	/**
+	 * Allows the Game class to set the user's moving status
+	 * @param b is the user's new status
+	 */
 	public void setMoveFlag(boolean b){
 		moving = b;
 	}
