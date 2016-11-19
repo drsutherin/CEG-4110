@@ -50,16 +50,7 @@ public class GameBoardWindow extends Observable {
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 		Dimension buttonSize = new Dimension(80,80);
 		
-//		JPanel rowA = new JPanel();
-//		rowA.setSize(300,400);;
-//		frame.getContentPane().add(rowA);
-//		
-//		JButton a1 = buttonFactory(Color.RED, buttonSize);
-//		a1.addActionListener(e -> {
-//			
-//		});
-//		rowA.add(a1);
-		
+		// Create the board
 		String position;
 		char col;
 		JPanel thisRow;
@@ -77,10 +68,6 @@ public class GameBoardWindow extends Observable {
 					c = Color.BLACK;
 				}
 				thisButton = buttonFactory(c, buttonSize);
-				// adds pieces onto buttons
-//				if ((row == 'A' && j % 2 == 1) || (row == 'B' && j % 2 == 0)) {
-//					thisButton.setIcon(new ImageIcon("black.png"));
-//				}
 				position = col + String.valueOf(i);
 				thisButton.setName(position);
 				thisRow.add(thisButton);
@@ -161,5 +148,21 @@ public class GameBoardWindow extends Observable {
 				});
 			}
 		}
+	}
+	
+	public boolean getReadyFlag(){
+		return ready;
+	}
+	
+	public void setReadyFlag(boolean b)	{
+		ready = b;
+	}
+	
+	public boolean getMoveFlag(){
+		return moving;
+	}
+	
+	public void setMoveFlag(boolean b){
+		moving = b;
 	}
 }
