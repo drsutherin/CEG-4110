@@ -16,6 +16,8 @@ import baac.Game;
 
 public class InGameMenuWindow extends Observable {
 	private MenuButtonStatus lastPressed = null;
+	JFrame frame;
+	JPanel panel;
 	
 	/**
 	 * Instantiating a InGameMenuWindow causes it to run immediately
@@ -30,9 +32,9 @@ public class InGameMenuWindow extends Observable {
 	 * It also includes lambda functions for button event handlers
 	 */
 	public void setupGUI() {
-		JFrame frame = new JFrame("Main Menu");
+		frame = new JFrame("Main Menu");
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setSize(300,400);
 		panel.setLayout(new BoxLayout(panel, JFrame.EXIT_ON_CLOSE));
 		frame.getContentPane().add(panel);
@@ -63,6 +65,14 @@ public class InGameMenuWindow extends Observable {
 		frame.setTitle("Main Menu");
 		frame.pack();
 		frame.setVisible(true);
+	}
+	
+	/**
+	 * Called by Game class to shutdown windows
+	 */
+	public void closeWindow(){
+		frame.setVisible(false); 
+		frame.dispose(); 
 	}
 	
 	/**

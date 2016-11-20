@@ -24,6 +24,7 @@ public class GameBoardWindow extends Observable {
 	Vector<JButton> boardSpacesVector;
 	boolean ready, moving;
 	Turn turn;
+	JFrame frame;
 	
 	/**
 	 * Instantiating a GameBoardWindow creates the GUI immediately
@@ -45,7 +46,7 @@ public class GameBoardWindow extends Observable {
 	 */	
 	public void setupGUI() {
 		// Initial window setup
-		JFrame frame = new JFrame("Lobby Users List");
+		frame = new JFrame("Lobby Users List");
 		JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 		Dimension buttonSize = new Dimension(80,80);
@@ -314,4 +315,10 @@ public class GameBoardWindow extends Observable {
 			
 		}
 	}
+	
+	public void closeWindow(){
+		frame.setVisible(false); 
+		frame.dispose(); 
+	}
+	
 }

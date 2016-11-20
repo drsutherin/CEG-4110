@@ -36,7 +36,7 @@ public class BAAC extends Peer implements Runnable {
 
 	Player you = Player.getInstance();//ensures there is a player
 	PeerMediator mediator = new PeerMediator();
-	LobbyChat lobbyChat;
+	LobbyChat lobbyChat = null;
 
 	Game theGame = new Game(mediator);
 
@@ -188,48 +188,24 @@ public class BAAC extends Peer implements Runnable {
 					//System.out.println("Connected to Server");
 					break;
 				case ServerMessage.IN_LOBBY:
-					lobbyChatThread = new Thread(lobbyChat);
-					lobbyChatThread.start();
+					if(lobbyChatThread == null){
+						lobbyChatThread = new Thread(lobbyChat);
+						lobbyChatThread.start();
+					}
 					Player.setUserStatus(Status.IN_LOBBY);
-
-					//Uncomment this to
-					//requestCreateTable();
-
 					break;
-//				case ServerMessage.MSG:
-//					String[] messageSplit = message.split(" ");
-//					String sender, receiver, msg;
-//					sender = messageSplit[1];
-//					receiver = messageSplit[2];
-//					msg = messageSplit[3];
-//
-//					if (receiver == "1")	{
-//						boolean found = false;
-//						for (int i = 0; i < privateChatList.size(); i++)	{
-//							if (privateChatList.get(i).getBuddy() == sender)	{
-//								privateChatList.get(i).formatMessageFromServer(message);
-//								found = true;
-//								break;
-//							}
-//						}
-//						if (!found) {
-//							PrivateChat newChat = new PrivateChat(mediator, sender);
-//							newChat.formatMessageFromServer(message);
-//							privateChatList.add(newChat);
-//						}
-//					}
-//					else {
-//						lobby.formatMessageFromServer(message);
-//					}
-//					break;
 				case ServerMessage.OUT_LOBBY:
-					lobbyChatThread.stop();
+					//do nothing, don't try to shut down the lobbyThread from here, it leads to intermittent exceptions 
+					//and thread may not restart properly. Instead, the lobbyThread will not print or send messages if 
+					//user status is not "in lobby"
 					break;
 				case ServerMessage.NEW_TBL:
-					message = message.replace(ServerMessage.NEW_TBL + " ", "");
-					message = message.replace(" <EOM>", "");
-					message = message.replace("<EOM>", "");
-					sendToServer.put("109 " + Player.getUsername() + " " + message + " <EOM>");
+					//Do nothing, the server will send a 219 message to all client automatically
+					//Next message: 219 WHO_ON_TABLE
+					//message = message.replace(ServerMessage.NEW_TBL + " ", "");
+					//message = message.replace(" <EOM>", "");
+					//message = message.replace("<EOM>", "");
+					//sendToServer.put("109 " + Player.getUsername() + " " + message + " <EOM>");
 					//update gui elements
 					break;
 				case ServerMessage.TBL_JOINED:
@@ -246,7 +222,7 @@ public class BAAC extends Peer implements Runnable {
 					gameThread.start();
 					break;
 				case ServerMessage.TBL_LEFT:
-					theGame.stop();
+					theGame.stopGame();
 					break;
 				case ServerMessage.WHO_IN_LOBBY:
 					//System.out.println("Users in lobby are:");
@@ -392,15 +368,10 @@ public class BAAC extends Peer implements Runnable {
 	 * @return the desired username
 	 */
 	private void enterUsername(String out){
-		//when gui elements established place prompt in the gui and obtain
-		//username from gui elements
-		//System.out.println(prompt);
-		//String out = in.nextLine();
 		out.replaceAll("\n", "");
 		try {
 			sendToServer.put(out);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Player.setUsername(out);
