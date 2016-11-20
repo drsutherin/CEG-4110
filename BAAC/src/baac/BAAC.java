@@ -33,6 +33,7 @@ public class BAAC extends Peer implements Runnable {
 	Vector<Vector<String>> activeTableStatus;
 	String message = "";
 	Scanner in = new Scanner(System.in);
+	Boolean shutdown = false;
 
 	Player you = Player.getInstance();//ensures there is a player
 	PeerMediator mediator = new PeerMediator();
@@ -73,7 +74,7 @@ public class BAAC extends Peer implements Runnable {
 	 * Check the buffers for messages from the server and messages to be sent to the server
 	 */
 	public void run() {
-		while(true){
+		while(!shutdown){
 			//send message to server
 			String outgoingMessage;
 			while (!sendToServer.isEmpty()){
@@ -149,6 +150,37 @@ public class BAAC extends Peer implements Runnable {
 			message = "107 "+ Player.getUsername() + "<EOM>";
 			queueUpToSendToServer(message);
 		}
+	}
+	
+	/**
+	 * A gracefull way to shutdown 
+	 */
+	public void shutDownBaac(){
+		
+		//Stop the mediator from dispatching messages
+		mediator.setShutdown();
+		
+		//Shutdown the Server Interface
+		//TODO: Fix server interface, why two threads??
+		//serverInterface.shutdown();
+		
+		//TODO: Shutdown any private chats, this doesn't work bc Baac doesn't have a complete list of pchats
+		//for (PrivateChat pchat : privateChatList){
+			//pchat.shutdown();
+		//}
+		
+		//TODO: verify games are shut down before getting here
+		
+		//Empty BAAC's message queues
+		sendToServer.clear();
+		receiveFromServer.clear();
+		
+		//Shutdown Lobby Chat
+		lobbyChat.shutdown();
+		
+		//Shutdown Baac's thread
+		shutdown = true;
+		System.out.println("Shutdown complete");
 	}
 
 	/**

@@ -20,6 +20,7 @@ public class LobbyChat extends Peer implements Runnable {
 	
 	private String username = Player.getUsername();
 	private PeerMediator mediator;
+	private boolean shutdown = false;
 	
 	private Status playerStatus = Player.getUserStatus();
 	
@@ -103,7 +104,7 @@ public class LobbyChat extends Peer implements Runnable {
 	 */
 	@Override
 	public void run() {
-		while(true){
+		while(!shutdown){
 			//send message to server
 			String outgoingMessage;
 			while (!sendToServer.isEmpty()){
@@ -158,6 +159,10 @@ public class LobbyChat extends Peer implements Runnable {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 		}
+	}
+	
+	public void shutdown(){
+		shutdown = true;
 	}
 	
 	

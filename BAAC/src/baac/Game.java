@@ -61,6 +61,7 @@ public class Game extends Peer implements Runnable {
 	 * Override the stop function
 	 */
 	public void stopGame(){
+		mediator.removePeerClass(this);
 		shutdownPlayableGame();
 		gameMenu.closeWindow();
 		gameGUI.closeWindow();

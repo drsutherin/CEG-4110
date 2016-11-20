@@ -16,7 +16,8 @@ public class LobbyChatWindow extends Observable {
 
 	private Vector<String> viewableMessages;
 	private Vector<String> rawMessages;
-	private JList<String>messagesList;
+	private JList<String>messagesList;	
+	private JFrame frame;
 	
 	public LobbyChatWindow(LobbyChat l){
 		addObserver(l);
@@ -30,7 +31,7 @@ public class LobbyChatWindow extends Observable {
 	 */
 	private void setupGUI()	{
 		// Initial window setup
-		JFrame frame = new JFrame("Lobby Chat");
+		frame = new JFrame("Lobby Chat");
 		
 		JPanel panel = new JPanel();
 		panel.setSize(300,400);
@@ -94,5 +95,10 @@ public class LobbyChatWindow extends Observable {
 	 */
 	public String getLastMessage()	{
 		return rawMessages.lastElement();
+	}
+	
+	public void closeWindow(){
+		frame.setVisible(false); 
+		frame.dispose(); 
 	}
 }

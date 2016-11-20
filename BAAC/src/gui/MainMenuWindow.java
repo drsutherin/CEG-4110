@@ -16,6 +16,7 @@ import baac.BAAC;
 
 public class MainMenuWindow extends Observable {
 	private MenuButtonStatus lastPressed = null;
+	private JFrame frame;
 	
 	/**
 	 * Instantiating a MainMenuWindow causes it to run immediately
@@ -30,7 +31,7 @@ public class MainMenuWindow extends Observable {
 	 * It also includes lambda functions for button event handlers
 	 */
 	public void setupGUI() {
-		JFrame frame = new JFrame("Main Menu");
+		frame = new JFrame("Main Menu");
 		
 		JPanel panel = new JPanel();
 		panel.setSize(300,400);
@@ -110,6 +111,11 @@ public class MainMenuWindow extends Observable {
 	 */
 	public MenuButtonStatus getLastPressed()	{
 		return lastPressed;
+	}
+	
+	public void closeWindow(){
+		frame.setVisible(false); 
+		frame.dispose(); 
 	}
 
 }

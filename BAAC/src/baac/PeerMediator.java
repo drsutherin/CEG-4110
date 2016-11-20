@@ -26,15 +26,28 @@ public class PeerMediator implements Mediator {
 	private final LinkedBlockingQueue<Peer> serverInterfaceList = new LinkedBlockingQueue<Peer>(); //
 	private final LinkedBlockingQueue<Peer> peerList = new LinkedBlockingQueue<Peer>();
 	
+	private boolean shutdown = false;
+	
+	
+	
+	/**
+	 * Stops Mediator from dispatching any other messages
+	 */
+	public void setShutdown(){
+		shutdown = true;
+	}
+	
 	
 	/**
 	 * Hands messages from the peer to the server interface
 	 */
 	@Override
 	public synchronized void receiveFromPeer(String message) {
-		for(Peer peer : serverInterfaceList){
-			peer.receiveFromMediator(message);
-			}
+		if (!shutdown){
+			for(Peer peer : serverInterfaceList){
+				peer.receiveFromMediator(message);
+				}
+		}
 	}
 
 	/**
@@ -71,9 +84,11 @@ public class PeerMediator implements Mediator {
 	 */
 	@Override
 	public synchronized void receiveFromServer(String message) {
-		for(Peer peer : peerList){
-			peer.receiveFromMediator(message);
-		}		
+		if (!shutdown){
+			for(Peer peer : peerList){
+				peer.receiveFromMediator(message);
+			}
+		}
 	}
 
 	/** 
