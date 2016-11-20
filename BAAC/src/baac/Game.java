@@ -8,6 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import gui.GameBoardWindow;
 import gui.InGameMenuWindow;
+import gui.MenuButtonStatus;
 
 /**
  * * Will contain information regarding the current game:
@@ -35,6 +36,7 @@ public class Game extends Peer implements Runnable {
 	String tableID;			// Received from server
 	GameBoardWindow gameGUI;
 	InGameMenuWindow gameMenu;
+	String username = Player.getUsername();
 	
 	Boolean activeThread = true;
 	Mediator mediator;
@@ -56,22 +58,14 @@ public class Game extends Peer implements Runnable {
 		mediator.addPeerClass(this);
 	}
 
-	/***
-	 * Override the stop function
-	 */
-	public void stopGame(){
-		mediator.removePeerClass(this);
-		shutdownPlayableGame();
-		gameMenu.closeWindow();
-		gameGUI.closeWindow();
-	}
+
+
+
 	
-	/**
-	 * Shutdown thread
-	 */
-	public void shutdownPlayableGame(){
-		activeThread = false;
-	}
+     /*****************************/
+	       /* Setup Game */
+	/*****************************/
+	
 
 	/**
 	 * Set table number 
@@ -143,15 +137,15 @@ public class Game extends Peer implements Runnable {
             case ServerMessage.GAME_START:
             	status = GameStatus.active;
         		isTurn = false;
-        		if(Player.getUsername() == player1){
+        		if(username == player1){
         			isTurn = true;
         		}
                 break;
             case ServerMessage.COLOR_BLACK:
-        		player1 = Player.getUsername();		
+        		player1 = username;		
                 break;
             case ServerMessage.COLOR_RED:
-        		player1 = Player.getUsername();
+        		player2 = username;
                 break;
             case ServerMessage.OPP_MOVE: 
         		isTurn = false;
@@ -235,8 +229,27 @@ public class Game extends Peer implements Runnable {
 			} 
 		}
 		gameGUI.updateBoard(boardState);
-		
 	}
+	
+	/***
+	 * Gracefully end process
+	 */
+	public void stopGame(){
+		//stop getting updates from server
+		mediator.removePeerClass(this);
+		
+		//set the run flag end on next loop
+		activeThread = false;
+		
+		//clear both queues, otherwise might end up in an error condition
+		sendToServer.clear();
+		receiveFromServer.clear();
+		
+		//close the GUI's
+		gameMenu.closeWindow();
+		gameGUI.closeWindow();
+	}
+	
 	
 	/******************************************************/
 				/* Handle Events From GUI */
@@ -271,8 +284,8 @@ public class Game extends Peer implements Runnable {
 		int newRow = (int)newPositionString.charAt(0) - 65; //will return 65(A) - 72(H) need 0-7
 		int newColumn = (int)newPositionString.charAt(1) - 1; //will return 1-8 need 0-7
 
-		//check for player color is black (is player 1) in which case the values are inverted
-		if(Player.getUsername().equals(player1)){
+		//check for client player color is black (is player 1) in which case the values are inverted
+		if(username.equals(player1)){
 			//invert everything
 			currentRow = Math.abs(currentRow - 7);
 			currentColumn = Math.abs(currentColumn - 7);
@@ -283,7 +296,7 @@ public class Game extends Peer implements Runnable {
 		//format the request to the server
 		String currentPosition = "(" + currentRow + "," + currentColumn + ")";
 		String newPosition = "(" + newRow + "," + newColumn + ")";
-		String move = "106 " + player1 + " " + currentPosition + " " + newPosition + "<EOM>"; 
+		String move = "106 " + username + " " + currentPosition + " " + newPosition + "<EOM>"; 
 		placeMessageInIntermediateQueue(move);
 	}
 	
@@ -293,7 +306,7 @@ public class Game extends Peer implements Runnable {
 	 */
 	public void clientLeaveTableRequest(){
 		//format the request to the server
-		String leaveGame =  "107 " + player1 + "<EOM>";
+		String leaveGame =  "107 " + username + "<EOM>";
 		placeMessageInIntermediateQueue(leaveGame);
 	}
 	
@@ -304,7 +317,7 @@ public class Game extends Peer implements Runnable {
 	 */
 	public void clientStartGameRequest(){
 		//format the request to the server
-		String startGame = "105 " + player1 + "<EOM>";
+		String startGame = "105 " + username + "<EOM>";
 		placeMessageInIntermediateQueue(startGame);
 	}
 	
@@ -336,14 +349,43 @@ public class Game extends Peer implements Runnable {
 				}
 			}
 			
-			//if(gameGUI.getMoveFlag()){
-			//	gameGUI.setMoveFlag(false);
-			//	String[] unParsedMove = gameGUI.getMove();//enters as an array {string1, string2} where string = "A1" , Row = A, Column = 1 
-			//	clientMoveRequest(unParsedMove);
-			//}
+			if(gameGUI.getMoveFlag()){
+				gameGUI.setMoveFlag(false);
+				String[] unParsedMove = gameGUI.getMove();//enters as an array {string1, string2} where string = "A1" , Row = A, Column = 1 
+				clientMoveRequest(unParsedMove);
+			}
+			
 			//otherwise it was the ingame menu window
 		 } else if (o.equals(gameMenu)){
-		 
+		 	MenuButtonStatus last;
+			if (Player.getUserStatus() == Status.PLAYING)	{
+				last = gameMenu.getLastPressed();
+				
+				switch(last){
+				
+				case EXIT_GAME:
+					clientLeaveTableRequest();
+					break;
+				case PRIVATE_CHAT:
+					break;
+				case EXIT_BAAC:
+					break;
+				case JOIN:
+					break;
+				case OBSERVE:
+					break;
+				case START:
+					break;
+				default:
+					break;
+					
+				}
+					
+				
+				
+				
+			}
+
 			//if(gameMenu.getLeaveFlag()){
 				//gameMenu.setLeaveFlag(false);
 				//if (gameMenu.getLeaveStatus()){
