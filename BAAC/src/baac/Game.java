@@ -30,7 +30,7 @@ public class Game extends Peer implements Runnable {
 	String player1, player2;
 	GameStatus status;
 	Boolean isTurn;
-	String boardState;		// Same format as sent from server (see CheckersServerDocumentation)
+	byte[][] boardState;		// Same format as sent from server (see CheckersServerDocumentation)
 	BAAC client;
 	String tableID;			// Received from server
 	GameBoardWindow gameGUI;
@@ -52,7 +52,6 @@ public class Game extends Peer implements Runnable {
 		player1 = "";
 		player2 = "";
 		isTurn = false;
-		boardState = "";
 		mediator = passedMediator;
 		mediator.addPeerClass(this);
 	}
@@ -162,7 +161,8 @@ public class Game extends Peer implements Runnable {
             	//split the string into three parts based on first two spaces
             	inMessage = message.split(" ", 3);
             	if(inMessage[1] == tableID){
-            		boardState = inMessage[2];
+            		String boardString = inMessage[2];
+            		sendBoardToGUI(boardString);
             	}
                 break;
             case ServerMessage.GAME_WIN: 
@@ -208,6 +208,35 @@ public class Game extends Peer implements Runnable {
    }
 		
 	
+	/******************************************************/
+		/*Helper Methods for sending updates to GUI*/
+	/******************************************************/
+	
+	
+	public void sendBoardToGUI(String state){
+		//state = stateof(i,j)isatindex(8*i)+jofstring
+		byte[][]boardState = new byte[8][8];
+		for(int i=0; i<8; i++){
+			for(int j=0; j<8; j++){
+				boardState[i][j]=Byte.parseByte(String.valueOf(state.charAt((8*i)+j)));
+			}
+		}
+		//if the player is black, need to flip the board before sending
+		if(Player.getUsername() == player1){
+			byte[][] tempBoard = boardState;
+			int iFlip;
+			int jFlip;
+			for(int i=0; i<8; i++){
+				iFlip = 7 - i;
+				for(int j=0; j<8; j++){	
+					jFlip = 7 - j;
+					boardState[i][j]=tempBoard[iFlip][jFlip];
+				}
+			} 
+		}
+		gameGUI.updateBoard(boardState);
+		
+	}
 	
 	/******************************************************/
 				/* Handle Events From GUI */
