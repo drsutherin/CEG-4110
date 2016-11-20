@@ -61,6 +61,8 @@ public class Game extends Peer implements Runnable {
 	 * Override the stop function
 	 */
 	public void stop(){
+		gameMenu.closeWindow();
+		gameGUI.closeWindow();
 		shutdownPlayableGame();
 	}
 	

@@ -143,12 +143,11 @@ public class BAAC extends Peer implements Runnable {
 	/**
 	 * This method sends the "leave table" message to the server for this user
 	 */
-	public void leaveGame(){
+	public void requestLeaveGame(){
 		//can only leave game if we are in or observing a game
 		if (Player.getUserStatus() != Status.IN_LOBBY){
 			message = "107 "+ Player.getUsername() + "<EOM>";
 			queueUpToSendToServer(message);
-			Player.setUserStatus(Status.IN_LOBBY);
 		}
 	}
 
@@ -191,6 +190,7 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.IN_LOBBY:
 					lobbyChatThread = new Thread(lobbyChat);
 					lobbyChatThread.start();
+					Player.setUserStatus(Status.IN_LOBBY);
 
 					//Uncomment this to
 					//requestCreateTable();
@@ -242,10 +242,10 @@ public class BAAC extends Peer implements Runnable {
 					theGame.setTableID(tableNum);
 					//create the thread
 					Thread gameThread = new Thread(theGame);
+					Player.setUserStatus(Status.PLAYING);
 					gameThread.start();
 					break;
 				case ServerMessage.TBL_LEFT:
-
 					theGame.stop();
 					break;
 				case ServerMessage.WHO_IN_LOBBY:
@@ -321,6 +321,7 @@ public class BAAC extends Peer implements Runnable {
 					break;
 				case ServerMessage.NOW_OBSERVING:
 					//start observe game thread
+					Player.setUserStatus(Status.OBSERVING);
 					break;
 
 
@@ -432,14 +433,22 @@ public class BAAC extends Peer implements Runnable {
 		}
 		switch (last)	{
 		case START:
-			// create a new game
+			requestCreateTable();
 			break;
 		case JOIN:
 			// prompt user for which game to join
+				//int table = TableSelectionWindow.getTable();
+			
 			// attempt to join selected game
+				//requestJoinGame(GameMode.PLAY, table);
 			break;
 		case OBSERVE:
 			// join a game as an observer
+			// prompt user for which game to join
+				//int table = TableSelectionWindow.getTable();
+		
+			// attempt to join selected game
+				//requestJoinGame(GameMode.PLAY, table);
 			break;
 		case PRIVATE_CHAT:
 			JFrame frame = new JFrame();
@@ -453,7 +462,8 @@ public class BAAC extends Peer implements Runnable {
 			}
 			break;
 		case EXIT_GAME:
-			// leave the current game
+			// ask the server to leave the current game
+			requestLeaveGame();
 			break;
 		case EXIT_BAAC:
 			queueUpToSendToServer("108 " + Player.getUsername());
