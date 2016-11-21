@@ -287,8 +287,13 @@ public class BAAC extends Peer implements Runnable {
 					Thread gameThread = new Thread(theGame);
 					Player.setUserStatus(Status.PLAYING);
 					gameThread.start();
+					//Create an ingame menu
+					
+					
 					break;
 				case ServerMessage.TBL_LEFT:
+					//leave the in game menu
+					
 					theGame.stopGame();
 					break;
 				case ServerMessage.WHO_IN_LOBBY:
