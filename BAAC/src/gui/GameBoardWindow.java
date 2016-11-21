@@ -262,12 +262,11 @@ public class GameBoardWindow extends Observable {
 				// Make all buttons unclickable
 				b.addActionListener(e -> {
 					JFrame frame = new JFrame("Hold your horses");
-			        JOptionPane.showMessageDialog(frame, "It's not your turn");
+			        JOptionPane.showMessageDialog(frame, "It's not your turn", "Hold your horses", JOptionPane.ERROR_MESSAGE);
 				});
 			}
 		}
 		else {
-
 			for (JButton b : boardSpacesVector) {
 				// Remove all event listeners on the buttons
 				ActionListener[] a = b.getActionListeners();
@@ -279,6 +278,8 @@ public class GameBoardWindow extends Observable {
 					handleClick(b);
 				});
 			}
+			JFrame frame = new JFrame("Your turn");
+	        JOptionPane.showMessageDialog(frame, "It's your turn");
 		}
 	}
 	
