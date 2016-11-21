@@ -154,7 +154,7 @@ public class Game extends Peer implements Runnable {
             	//<code><tableID><boardState>
             	//split the string into three parts based on first two spaces
             	inMessage = message.split(" ", 3);
-            	if(inMessage[1] == tableID){
+            	if(inMessage[1].equals(tableID)){
             		String boardString = inMessage[2];
             		sendBoardToGUI(boardString);
             	}
@@ -172,7 +172,7 @@ public class Game extends Peer implements Runnable {
             	inMessage = message.split(" ", 4);
             	if (tableID.equals(inMessage[1])){
             		//set player 1
-            		if (inMessage[2] == "-1"){
+            		if (inMessage[2].equals("-1")){
             			status = GameStatus.waiting_opponent;
             			gameGUI.setOpponent("-1");
             			
@@ -183,7 +183,7 @@ public class Game extends Peer implements Runnable {
             			}
             		}
             		//set player 2
-            		if (inMessage[3] == "-1"){
+            		if (inMessage[3].equals("-1")){
             			status = GameStatus.waiting_opponent;
             			gameGUI.setOpponent("-1");
             			
