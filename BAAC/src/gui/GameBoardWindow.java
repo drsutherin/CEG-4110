@@ -332,7 +332,9 @@ public class GameBoardWindow extends Observable {
 			while (result != JOptionPane.YES_OPTION) {
 				result = JOptionPane.showConfirmDialog(frame, "Ready to play?", "Ready Prompt", JOptionPane.YES_NO_OPTION);
 			}
-			
+			ready = true;
+			setChanged();
+			notifyObservers();
 		}
 	}
 	
