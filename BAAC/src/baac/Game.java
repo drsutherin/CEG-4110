@@ -172,26 +172,16 @@ public class Game extends Peer implements Runnable {
             	inMessage = message.split(" ", 4);
             	if (tableID.equals(inMessage[1])){
             		//set player 1
-            		if (inMessage[2].equals("-1")){
+            		player1 = inMessage[2];
+            		player2 = inMessage[3];
+            		
+            		if (player1.equals("-1") || player2.equals("-1")){
             			status = GameStatus.waiting_opponent;
-            			gameGUI.setOpponent("-1");
-            			
+            			gameGUI.setOpponent("-1");            			
+            		} else if(player1.equals(username)){
+            			gameGUI.setOpponent(player2);
             		} else {
-            			player1 = inMessage[2];
-            			if (!player1.equals(username)){
-            				gameGUI.setOpponent(player1);
-            			}
-            		}
-            		//set player 2
-            		if (inMessage[3].equals("-1")){
-            			status = GameStatus.waiting_opponent;
-            			gameGUI.setOpponent("-1");
-            			
-            		} else {
-            			player2 = inMessage[3];
-            			if (!player2.equals(username)){
-            				gameGUI.setOpponent(player2);
-            			}   
+            			gameGUI.setOpponent(player1);
             		}
             	}
             	break;
