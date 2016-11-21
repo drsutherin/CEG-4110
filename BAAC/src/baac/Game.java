@@ -61,14 +61,10 @@ public class Game extends Peer implements Runnable {
 	}
 
 
-
-
-	
      /*****************************/
 	       /* Setup Game */
 	/*****************************/
 	
-
 	/**
 	 * Set table number 
 	 * @param tableNumber
@@ -96,8 +92,7 @@ public class Game extends Peer implements Runnable {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				};
-			}
-				
+			}				
 			//process messages from server
 			String incomingMessage;
 			while (!receiveFromServer.isEmpty()){
@@ -182,15 +177,23 @@ public class Game extends Peer implements Runnable {
             		if (inMessage[2] == "-1"){
             			status = GameStatus.waiting_opponent;
             			gameGUI.setOpponent("-1");
+            			
             		} else {
             			player1 = inMessage[2];
+            			if (!player1.equals(username)){
+            				gameGUI.setOpponent(player1);
+            			}
             		}
             		//set player 2
             		if (inMessage[3] == "-1"){
             			status = GameStatus.waiting_opponent;
             			gameGUI.setOpponent("-1");
+            			
             		} else {
             			player2 = inMessage[3];
+            			if (!player2.equals(username)){
+            				gameGUI.setOpponent(player2);
+            			}   
             		}
             	}
             	break;
