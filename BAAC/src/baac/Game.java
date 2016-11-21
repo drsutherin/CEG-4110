@@ -109,8 +109,7 @@ public class Game extends Peer implements Runnable {
 				}catch (InterruptedException e) {
 					e.printStackTrace();
 				};			
-			}
-			
+			}		
 			sleepyThread();
 		}		
 	}
@@ -147,10 +146,12 @@ public class Game extends Peer implements Runnable {
             case ServerMessage.COLOR_BLACK:
         		player1 = username;
         		gameGUI.setPlayerColor(Color.BLACK);
+        		gameGUI.setOpponent(player2);
                 break;
             case ServerMessage.COLOR_RED:
         		player2 = username;
         		gameGUI.setPlayerColor(Color.RED);
+        		gameGUI.setOpponent(player1);
                 break;
             case ServerMessage.OPP_MOVE: 
             	gameGUI.setTurn(Turn.THEIRS);
@@ -180,12 +181,14 @@ public class Game extends Peer implements Runnable {
             		//set player 1
             		if (inMessage[2] == "-1"){
             			status = GameStatus.waiting_opponent;
+            			gameGUI.setOpponent("-1");
             		} else {
             			player1 = inMessage[2];
             		}
             		//set player 2
             		if (inMessage[3] == "-1"){
             			status = GameStatus.waiting_opponent;
+            			gameGUI.setOpponent("-1");
             		} else {
             			player2 = inMessage[3];
             		}
