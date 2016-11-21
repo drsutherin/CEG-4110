@@ -97,6 +97,7 @@ public class GameBoardWindow extends Observable {
 				thisButton.setName(position);
 				thisRow.add(thisButton);
 				boardSpacesDict.put(position,thisButton);
+				boardSpacesVector.add(thisButton);
 			}
 		}
 		frame.getContentPane().add(container);
