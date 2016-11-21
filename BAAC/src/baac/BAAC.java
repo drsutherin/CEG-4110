@@ -98,7 +98,7 @@ public class BAAC extends Peer implements Runnable {
 	}
 
 	/**
-	 *
+	 * Type of Game
 	 */
 	public enum GameMode{
 		OBSERVE, PLAY
@@ -200,7 +200,6 @@ public class BAAC extends Peer implements Runnable {
 	/***
 	 * Looks at all the messages from server and determines which ones to process
 	 */
-
 	private void decodeMessageFromServer(){
 		String message;
 		String out;
@@ -328,11 +327,19 @@ public class BAAC extends Peer implements Runnable {
 					//indicate that a user has left the lobby
 					break;
 				case ServerMessage.NOW_OBSERVING:
-					//start observe game thread
+					//get the table number from the message
+					message = message.replace("<EOM>", "");
+					String[] obsMessageArray = message.split(" ", 2);
+					String obsTableNum = obsMessageArray[1];
+					theGame.setTableID(obsTableNum);
+					//leave the game if you were in one (which you shouldn't be because the observe game
+					//button is not accessible from in-game menu
+					theGame.stopGame();
+					Thread obsThread = new Thread(theGame);
+					//create the thread
 					Player.setUserStatus(Status.OBSERVING);
+					obsThread.start();
 					break;
-
-
 				case ServerMessage.STOPPED_OBSERVING:
 					//end observe game thread
 					break;
