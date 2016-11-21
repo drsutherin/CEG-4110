@@ -32,6 +32,7 @@ public class GameBoardWindow extends Observable {
 	boolean ready, moving;
 	Turn turn;
 	JFrame frame;
+	String opponent;
 	
 	/**
 	 * Instantiating a GameBoardWindow creates the GUI immediately
@@ -360,6 +361,7 @@ public class GameBoardWindow extends Observable {
 			JOptionPane.showMessageDialog(frame, "Waiting for opponent...");
 		}
 		else	{
+			opponent = s;
 			// Resistance is futile
 			while (result != JOptionPane.YES_OPTION) {
 				result = JOptionPane.showConfirmDialog(frame, "Ready to play?", "Ready Prompt", JOptionPane.YES_NO_OPTION);
