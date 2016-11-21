@@ -1,5 +1,6 @@
 package baac;
 
+import java.awt.Color;
 import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -7,6 +8,7 @@ import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import gui.GameBoardWindow;
+import gui.GameBoardWindow.Turn;
 import gui.InGameMenuWindow;
 import gui.MenuButtonStatus;
 
@@ -139,15 +141,19 @@ public class Game extends Peer implements Runnable {
         		isTurn = false;
         		if(username == player1){
         			isTurn = true;
+        			gameGUI.setTurn(Turn.YOURS);
         		}
                 break;
             case ServerMessage.COLOR_BLACK:
-        		player1 = username;		
+        		player1 = username;
+        		gameGUI.setPlayerColor(Color.BLACK);
                 break;
             case ServerMessage.COLOR_RED:
         		player2 = username;
+        		gameGUI.setPlayerColor(Color.RED);
                 break;
             case ServerMessage.OPP_MOVE: 
+            	gameGUI.setTurn(Turn.THEIRS);
         		isTurn = false;
                 break;
             case ServerMessage.BOARD_STATE:
@@ -190,6 +196,7 @@ public class Game extends Peer implements Runnable {
             	break;
             case ServerMessage.YOUR_TURN:
             	isTurn = true;
+            	gameGUI.setTurn(Turn.YOURS);
             	break;
             default:
             	noMatch = true;
