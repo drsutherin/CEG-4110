@@ -13,7 +13,13 @@ import javax.swing.JPanel;
 
 import baac.Game;
 import baac.ObservableGame;
-import gui.GameBoardWindow.Turn;
+
+/*********************************************************************************
+ * The GameBoardWindow is the GUI which the user will interact with to control
+ * their moves during the game
+ * 
+ * D. Sutherin, November 2016
+ ********************************************************************************/
 
 public class GameBoardWindow extends Observable {
 
@@ -333,11 +339,18 @@ public class GameBoardWindow extends Observable {
 		}
 	}
 	
+	/**
+	 * Closes the GameBoardWindow
+	 */
 	public void closeWindow(){
 		frame.setVisible(false); 
 		frame.dispose(); 
 	}
 	
+	/**
+	 * Sets the opponent for the game when Game receives WHO_ON_TBL
+	 * @param s is the name of the opponent, "-1" means waiting for opponent, anything else is assumed to be a valid username
+	 */
 	public void setOpponent(String s)	{
 		JFrame frame = new JFrame();
 		int result = -1;

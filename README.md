@@ -117,3 +117,10 @@ Since Java is a pass-by-reference language, all classes will be passed the BAAC 
 * Information will be received from Game class
 * Viewable while on a table (waiting/playing/observing)
 * Will show users playing and turn (if user is playing)
+
+# Development Quotes
+* "I don't use a git GUI, I'm not a trifling bitch"
+* "Fuck yes, I pulled!"
+* "No one cares about Mac, Michael!"
+* "DID YOU TOUCH MY BANANA?!?"
+* "Night sass"
