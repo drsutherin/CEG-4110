@@ -331,8 +331,8 @@ public class GameBoardWindow extends Observable {
 	public void updateBoard(byte[][] b)	{
 		int k = 0;
 		JButton current;
-		for (int i = 0; i < b.length; i++){
-			for (int j = 0; j < b[i].length; j++){
+		for (int i = 0; i < 8; i++){
+			for (int j = 0; j < 8; j++){
 				current = boardSpacesVector.get(i);
 				switch (b[i][j])	{
 				case 0: // nothing
