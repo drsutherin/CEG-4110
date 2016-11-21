@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/gui/black-king.png</name>
-			<type>1</type>
-			<location>/home/reuintern/fall16/CEG-4110/BAAC/src/gui/black-king.png</location>
-		</link>
-	</linkedResources>
 </projectDescription>
