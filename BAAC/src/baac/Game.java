@@ -13,7 +13,7 @@ import gui.InGameMenuWindow;
 import gui.MenuButtonStatus;
 
 /**
- * * Will contain information regarding the current game:
+ * * Will contain informatemptyion regarding the current game:
   * Players
   * Status (active, waiting_for_opponent, waiting_for_server)
   * Turn

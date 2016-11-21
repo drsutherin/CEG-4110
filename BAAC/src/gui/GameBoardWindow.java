@@ -338,4 +338,19 @@ public class GameBoardWindow extends Observable {
 		frame.dispose(); 
 	}
 	
+	public void setOpponent(String s)	{
+		JFrame frame = new JFrame();
+		int result = -1;
+		if (s == "-1")	{
+			JOptionPane.showMessageDialog(frame, "Waiting for opponent...");
+		}
+		else	{
+			// Resistance is futile
+			while (result != JOptionPane.YES_OPTION) {
+				result = JOptionPane.showConfirmDialog(frame, "Ready to play?", "Ready Prompt", JOptionPane.YES_NO_OPTION);
+			}
+			
+		}
+	}
+	
 }
