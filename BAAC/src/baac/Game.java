@@ -214,6 +214,9 @@ public class Game extends Peer implements Runnable {
             	isTurn = true;
             	gameGUI.setTurn(Turn.YOURS);
             	break;
+            case ServerMessage.ILLEGAL:
+            	gameGUI.updateBoard(boardState);
+            	gameGUI.setTurn(Turn.YOURS);
             default:
             	noMatch = true;
             	break;
