@@ -29,11 +29,13 @@ public class BAAC extends Peer implements Runnable {
 	Thread lobbyChatThread;
 	Vector<PrivateChat> privateChatList;	// Contains all active private chats
 	Vector<String> activeUsers;
-	Vector<Integer> activeTables;
+	Vector<String[]> activeTables;		// [0]=table id, [1]=player1, [2]=player2
 	Vector<Vector<String>> activeTableStatus;
 	String message = "";
 	Scanner in = new Scanner(System.in);
 	Boolean shutdown = false;
+	Vector<String> statusHold;
+	Vector<String> tblHold;
 
 	Player you = Player.getInstance();//ensures there is a player
 	PeerMediator mediator = new PeerMediator();
@@ -64,9 +66,13 @@ public class BAAC extends Peer implements Runnable {
 		//buffer for passing messages within the client (from classes to this interface)
 		serverInterface = new Thread(new ServerInterface(mediator)); //"mchlrtkwski.tk", 45322, this);
 		activeUsers = new Vector<String>();
-		activeTables = new Vector<Integer>();
+		activeTables = new Vector<String[]>();
 		activeTableStatus = new Vector<Vector<String>>();
 		privateChatList = new Vector<PrivateChat>();
+		//instantiate string to hold the players on the table
+		//this will be added to the activeTablesStatus vector
+		statusHold = new Vector<String>();
+		tblHold = new Vector<String>();
 		setupLobby();
 	}
 
@@ -281,29 +287,26 @@ public class BAAC extends Peer implements Runnable {
 					message = message.replace(ServerMessage.WHO_ON_TBL + " ", "");
 					message = message.replace(" <EOM>", "");
 					message = message.replace("<EOM>", "");
-					//instantiate string to hold the players on the table
-					//this will be added to the activeTablesStatus vector
-					Vector<String> statusHold = new Vector<String>();
 					//split the message into an array of strings by spaces
 					//we will end up with an array of 3 strings
 					String[] split = message.split(" ");
-
-					//add the table id as an int to its vector
-					activeTables.add(Integer.parseInt(split[0]));
+					//add the table id to its vector
+					String[] thisTable = new String[3];
+					thisTable[0] = split[0];
 
 					//run through the rest of the array aFnd add the name of the person in that spot or
 					//vacant if there is nobody
 					for (int i = 1; i < split.length; i++){
 						if (split[i].equalsIgnoreCase("-1")){
-							statusHold.add("free seat");
+							thisTable[i] = "free seat";
 						}else{
-							statusHold.add(split[i]);
+							thisTable[i] = split[i];
 						}
 					}
-					activeTableStatus.add(statusHold);
+					//activeTableStatus.add(statusHold);
+					activeTables.add(thisTable);
 					break;
 				case ServerMessage.TBL_LIST:
-					Vector<Integer> tblHold = new Vector<Integer>();
 					message = message.replace(ServerMessage.TBL_LIST + " ", "");
 					message = message.replace(" <EOM>", "");
 					message = message.replace("<EOM>", "");
@@ -313,7 +316,7 @@ public class BAAC extends Peer implements Runnable {
 					for (int i = 0; i < tables.length; i++){
 						//make sure tables include something other than the empty string
 						if (!tables[i].equals("")){
-							tblHold.add(Integer.parseInt(tables[i]));
+							tblHold.add(tables[i]);
 						}
 					}
 					for (int i = 0; i < tblHold.size(); i++){
@@ -440,10 +443,24 @@ public class BAAC extends Peer implements Runnable {
 			break;
 		case JOIN:
 			// prompt user for which game to join
-				//int table = TableSelectionWindow.getTable();
-			
-			// attempt to join selected game
-				//requestJoinGame(GameMode.PLAY, table);
+			Vector<String> joinableTables = new Vector<String>();
+			String[] currentTable = new String[3];
+			for (int i = 0; i < activeTables.size(); i++){
+				currentTable = activeTables.get(i);
+				if (currentTable[1].equals("empty seat") || currentTable[2].equals("free seat"))	{
+					joinableTables.add(currentTable[0]);
+				}
+			}
+			// Show dialog window
+			JFrame jframe = new JFrame();
+	        String tableToJoin  = (String) JOptionPane.showInputDialog(jframe, "Choose a Table to Join:",
+	        		"Join Table Dialog", 3, null, joinableTables.toArray(), 0);
+	        
+	        // Attempt to join selected game
+			if (tableToJoin != null)	{
+				//	public boolean requestJoinGame(GameMode gameMode, int gameID){
+		        requestJoinGame(GameMode.PLAY, Integer.parseInt(tableToJoin));
+			}
 			break;
 		case OBSERVE:
 			// join a game as an observer
