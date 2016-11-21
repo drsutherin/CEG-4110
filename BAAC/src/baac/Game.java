@@ -126,6 +126,8 @@ public class Game extends Peer implements Runnable {
 	 * Directs message to the proper class method for further processing.
 	 */
 	public void scanMessageFromServer(String message){
+		message = message.replace(" <EOM>", "");
+		message = message.replace("<EOM>", "");
 		boolean noMatch = false;
 		String inMessage[];
 		String messageCode = message.substring(0, 3);
@@ -154,7 +156,7 @@ public class Game extends Peer implements Runnable {
             	//<code><tableID><boardState>
             	//split the string into three parts based on first two spaces
             	inMessage = message.split(" ", 3);
-            	if(inMessage[1].equals(tableID)){
+            	if(inMessage[1] == tableID){
             		String boardString = inMessage[2];
             		sendBoardToGUI(boardString);
             	}
@@ -170,28 +172,40 @@ public class Game extends Peer implements Runnable {
             	//split  this string into four parts based on the first three spaces
             	//TODO: Player Username cannot have spaces
             	inMessage = message.split(" ", 4);
-            	if (tableID.equals(inMessage[1])){
-            		//set player 1
-            		if (inMessage[2].equals("-1")){
-            			status = GameStatus.waiting_opponent;
-            			gameGUI.setOpponent("-1");
-            			
-            		} else {
-            			player1 = inMessage[2];
-            			if (!player1.equals(username)){
-            				gameGUI.setOpponent(player1);
+            	String tbl, p1, p2;
+            	tbl = inMessage[1];
+            	p1 = inMessage[2];
+            	p2 = inMessage[3];
+            	if (tableID.equals(tbl)){
+            		// user is player 2 in server message
+            		if (p2.equals(Player.getUsername())){
+            			player2 = p2;
+            			// other seat is empty
+            			if (p1.equals("-1")) {
+	            			status = GameStatus.waiting_opponent;
+	            			gameGUI.setOpponent("-1");
+            			}
+            			// other seat is taken
+            			else {
+            				status = GameStatus.active;
+            				player1 = p1;
+            				gameGUI.setOpponent(p1);
             			}
             		}
-            		//set player 2
-            		if (inMessage[3].equals("-1")){
-            			status = GameStatus.waiting_opponent;
-            			gameGUI.setOpponent("-1");
-            			
-            		} else {
-            			player2 = inMessage[3];
-            			if (!player2.equals(username)){
-            				gameGUI.setOpponent(player2);
-            			}   
+            		// user is player 1 in server message
+            		else if (p1.equals(Player.getUsername())){
+            			player1 = p1;
+            			// other seat is empty
+            			if (p2.equals("-1")) {
+	            			status = GameStatus.waiting_opponent;
+	            			gameGUI.setOpponent("-1");
+            			}
+            			// other seat is taken
+            			else {
+            				status = GameStatus.active;
+            				player2 = p2;
+            				gameGUI.setOpponent(p2);
+            			}
             		}
             	}
             	break;

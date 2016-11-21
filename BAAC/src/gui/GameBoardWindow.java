@@ -356,16 +356,17 @@ public class GameBoardWindow extends Observable {
 	 */
 	public void setOpponent(String s)	{
 		JFrame frame = new JFrame();
-		int result = -1;
 		if (s.equals("-1"))	{
 			JOptionPane.showMessageDialog(frame, "Waiting for opponent...");
 		}
 		else	{
 			opponent = s;
-			JOptionPane.showConfirmDialog(frame, "Ready to play?");
-			ready = true;
-			setChanged();
-			notifyObservers();
+			if (!ready) {
+				JOptionPane.showMessageDialog(frame, "Ready to play?");
+				ready = true;
+				setChanged();
+				notifyObservers();
+			}
 		}
 	}
 	
