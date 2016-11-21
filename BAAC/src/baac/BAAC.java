@@ -523,6 +523,7 @@ public class BAAC extends Peer implements Runnable {
 			break;
 		case EXIT_BAAC:
 			queueUpToSendToServer("108 " + Player.getUsername());
+			
 			break;
 		}
 	}

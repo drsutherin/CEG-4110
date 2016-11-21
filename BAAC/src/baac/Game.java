@@ -37,7 +37,6 @@ public class Game extends Peer implements Runnable {
 	BAAC client;
 	String tableID;			// Received from server
 	GameBoardWindow gameGUI;
-	InGameMenuWindow gameMenu;
 	String username = Player.getUsername();
 	
 	Boolean activeThread = true;
@@ -270,7 +269,6 @@ public class Game extends Peer implements Runnable {
 		receiveFromServer.clear();
 		
 		//close the GUI's
-		gameMenu.closeWindow();
 		gameGUI.closeWindow();
 	}
 	
