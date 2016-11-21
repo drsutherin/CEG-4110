@@ -13,7 +13,13 @@ import javax.swing.JPanel;
 
 import baac.Game;
 import baac.ObservableGame;
-import gui.GameBoardWindow.Turn;
+
+/*********************************************************************************
+ * The GameBoardWindow is the GUI which the user will interact with to control
+ * their moves during the game
+ * 
+ * D. Sutherin, November 2016
+ ********************************************************************************/
 
 public class GameBoardWindow extends Observable {
 
@@ -80,10 +86,10 @@ public class GameBoardWindow extends Observable {
 			for (int j = 65; j < 73; j++) {
 				col = (char) j;
 				if ((i % 2 == 1 && j % 2 == 1) || (i % 2 == 0 && j % 2 == 0))	{
-					c = Color.RED;
+					c = java.awt.Color.RED;
 				}
 				else	{
-					c = Color.BLACK;
+					c = java.awt.Color.BLACK;
 				}
 				thisButton = buttonFactory(c, buttonSize);
 				position = col + String.valueOf(i);
@@ -111,6 +117,8 @@ public class GameBoardWindow extends Observable {
 	public JButton buttonFactory(Color c, Dimension d)	{
 		JButton newButton = new JButton();
 		newButton.setBackground(c);
+		newButton.setOpaque(true);
+		newButton.setBorderPainted(false);
 		newButton.setMinimumSize(d);
 		newButton.setPreferredSize(d);
 		return newButton;
@@ -333,11 +341,18 @@ public class GameBoardWindow extends Observable {
 		}
 	}
 	
+	/**
+	 * Closes the GameBoardWindow
+	 */
 	public void closeWindow(){
 		frame.setVisible(false); 
 		frame.dispose(); 
 	}
 	
+	/**
+	 * Sets the opponent for the game when Game receives WHO_ON_TBL
+	 * @param s is the name of the opponent, "-1" means waiting for opponent, anything else is assumed to be a valid username
+	 */
 	public void setOpponent(String s)	{
 		JFrame frame = new JFrame();
 		int result = -1;
@@ -349,7 +364,9 @@ public class GameBoardWindow extends Observable {
 			while (result != JOptionPane.YES_OPTION) {
 				result = JOptionPane.showConfirmDialog(frame, "Ready to play?", "Ready Prompt", JOptionPane.YES_NO_OPTION);
 			}
-			
+			ready = true;
+			setChanged();
+			notifyObservers();
 		}
 	}
 	
