@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import baac.Game;
+import baac.ObservableGame;
 import gui.GameBoardWindow.Turn;
 
 public class GameBoardWindow extends Observable {
@@ -40,6 +41,22 @@ public class GameBoardWindow extends Observable {
 		addObserver(g);
 		setupGUI();
 	}
+	
+	/**
+	 * Instantiating a GameBoardWindow creates the GUI immediately
+	 * @param g is the Game to be displayed
+	 */
+	public GameBoardWindow(ObservableGame g)	{
+		clicks = 0;
+		move = new String[2];
+		boardSpacesDict = new Hashtable<String,JButton>();
+		boardSpacesVector = new Vector<JButton>();
+		ready = moving = false;
+		turn = null;
+		addObserver(g);
+		setupGUI();
+	}
+	
 	
 	/**
 	 * setupGUI defines the initial setup of the LobbyUsersWindow

@@ -104,7 +104,7 @@ public class BAAC extends Peer implements Runnable {
 	}
 
 	/**
-	 *
+	 * Type of Game
 	 */
 	public enum GameMode{
 		OBSERVE, PLAY
@@ -206,7 +206,6 @@ public class BAAC extends Peer implements Runnable {
 	/***
 	 * Looks at all the messages from server and determines which ones to process
 	 */
-
 	private void decodeMessageFromServer(){
 		String message;
 		String out;
@@ -232,6 +231,36 @@ public class BAAC extends Peer implements Runnable {
 					}
 					Player.setUserStatus(Status.IN_LOBBY);
 					break;
+				//This checks for private messages sent to the client	
+				case ServerMessage.MSG:
+					 String[] messageSplit = message.split(" ");
+					 String sender, receiver, msg;
+					 sender = messageSplit[1];
+					 receiver = messageSplit[2];
+					 msg = messageSplit[3];
+					 
+					 if (receiver == "1"){
+						 //checks the list of private chats. If the sender is
+						 //not on the list, then it will open a new instance of private chat
+						 boolean found = false;
+						 for (int i = 0; i < privateChatList.size(); i++)	{
+					 		if (privateChatList.get(i).getBuddy() == sender)	{
+					 			privateChatList.get(i).formatMessageFromServer(message);
+					 			found = true;
+					 			break;
+					 		}
+						 }
+					 if (!found) {
+					 	PrivateChat newChat = new PrivateChat(mediator, sender);
+					 	newChat.formatMessageFromServer(message);
+					 	privateChatList.add(newChat);
+					 	}
+					 }
+					 else {
+						 //lobby.formatMessageFromServer(message);
+					 }
+					 break;	
+				
 				case ServerMessage.OUT_LOBBY:
 					//do nothing, don't try to shut down the lobbyThread from here, it leads to intermittent exceptions 
 					//and thread may not restart properly. Instead, the lobbyThread will not print or send messages if 
@@ -331,11 +360,19 @@ public class BAAC extends Peer implements Runnable {
 					//indicate that a user has left the lobby
 					break;
 				case ServerMessage.NOW_OBSERVING:
-					//start observe game thread
+					//get the table number from the message
+					message = message.replace("<EOM>", "");
+					String[] obsMessageArray = message.split(" ", 2);
+					String obsTableNum = obsMessageArray[1];
+					theGame.setTableID(obsTableNum);
+					//leave the game if you were in one (which you shouldn't be because the observe game
+					//button is not accessible from in-game menu
+					theGame.stopGame();
+					Thread obsThread = new Thread(theGame);
+					//create the thread
 					Player.setUserStatus(Status.OBSERVING);
+					obsThread.start();
 					break;
-
-
 				case ServerMessage.STOPPED_OBSERVING:
 					//end observe game thread
 					break;
@@ -348,7 +385,7 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.USER_PROFILE:
 					break;
 				//4 codes start here
-
+				
 
 				case ServerMessage.NET_EXCEPTION:
 					System.out.println("NET EXCEPTION");

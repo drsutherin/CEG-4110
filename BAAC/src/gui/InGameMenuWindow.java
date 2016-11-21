@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import baac.Game;
+import baac.ObservableGame;
 
 /*********************************************************************************
  * The InGameMenuWindow allows a player to select their actions from a GUI window
@@ -23,6 +24,11 @@ public class InGameMenuWindow extends Observable {
 	 * Instantiating a InGameMenuWindow causes it to run immediately
 	 */
 	public InGameMenuWindow(Game g)	{
+		addObserver(g);
+		setupGUI();
+	}
+	
+	public InGameMenuWindow(ObservableGame g)	{
 		addObserver(g);
 		setupGUI();
 	}
