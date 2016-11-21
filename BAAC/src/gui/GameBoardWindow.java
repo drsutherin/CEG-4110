@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.util.*;
 
 import javax.swing.BoxLayout;
@@ -252,8 +253,13 @@ public class GameBoardWindow extends Observable {
 		turn = t;
 		
 		if (turn == Turn.THEIRS){
-			// Make all buttons unclickable
 			for (JButton b : boardSpacesVector) {
+				// Remove all event listeners on the buttons
+				ActionListener[] a = b.getActionListeners();
+				for (ActionListener act : a){
+					b.removeActionListener(act);
+				}
+				// Make all buttons unclickable
 				b.addActionListener(e -> {
 					JFrame frame = new JFrame("Hold your horses");
 			        JOptionPane.showMessageDialog(frame, "It's not your turn");
@@ -261,8 +267,14 @@ public class GameBoardWindow extends Observable {
 			}
 		}
 		else {
-			// Make the buttons clickable
+
 			for (JButton b : boardSpacesVector) {
+				// Remove all event listeners on the buttons
+				ActionListener[] a = b.getActionListeners();
+				for (ActionListener act : a){
+					b.removeActionListener(act);
+				}
+				// Make the buttons clickable
 				b.addActionListener(e -> {
 					handleClick(b);
 				});
