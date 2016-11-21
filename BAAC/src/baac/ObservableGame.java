@@ -101,8 +101,6 @@ public class ObservableGame extends Peer implements Runnable {
 		}	
 	}
 	
-	
-	
 	/**
 	 * Shutdown thread
 	 */

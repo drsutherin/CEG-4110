@@ -141,12 +141,10 @@ public class Game extends Peer implements Runnable {
             case ServerMessage.COLOR_BLACK:
         		player1 = username;
         		gameGUI.setPlayerColor(Color.BLACK);
-        		gameGUI.setOpponent(player2);
                 break;
             case ServerMessage.COLOR_RED:
         		player2 = username;
         		gameGUI.setPlayerColor(Color.RED);
-        		gameGUI.setOpponent(player1);
                 break;
             case ServerMessage.OPP_MOVE: 
             	gameGUI.setTurn(Turn.THEIRS);
