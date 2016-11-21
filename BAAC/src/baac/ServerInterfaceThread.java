@@ -87,7 +87,7 @@ public class ServerInterfaceThread extends Thread {
 					message = message.replaceAll("\n", "");
 					//client.pushReceiveMessage(message);
 					client.handle(message);
-					if (message.contains("108")){
+					if (message.startsWith("108")){
 						System.out.println("108 received.");
 						client.stop();
 					}
