@@ -355,9 +355,7 @@ public class Game extends Peer implements Runnable {
 		if (o.equals(gameGUI)){
 			if(gameGUI.getReadyFlag()){
 				gameGUI.setReadyFlag(false);
-				if(gameGUI.getReadyFlag()){
-					clientStartGameRequest();
-				}
+				clientStartGameRequest();
 			}
 			
 			if(gameGUI.getMoveFlag()){
