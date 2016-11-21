@@ -236,7 +236,7 @@ public class Game extends Peer implements Runnable {
 	
 	public void sendBoardToGUI(String state){
 		//state = stateof(i,j)isatindex(8*i)+jofstring
-		byte[][]boardState = new byte[8][8];
+		boardState = new byte[8][8];
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
 				boardState[i][j]=Byte.parseByte(String.valueOf(state.charAt((8*i)+j)));
