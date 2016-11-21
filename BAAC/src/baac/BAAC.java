@@ -488,7 +488,7 @@ public class BAAC extends Peer implements Runnable {
 			String[] currentTable = new String[3];
 			for (int i = 0; i < activeTables.size(); i++){
 				currentTable = activeTables.get(i);
-				if (currentTable[1].equals("empty seat") || currentTable[2].equals("free seat"))	{
+				if (currentTable[1].equals("free seat") || currentTable[2].equals("free seat"))	{
 					joinableTables.add(currentTable[0]);
 				}
 			}

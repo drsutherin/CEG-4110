@@ -172,7 +172,7 @@ public class Game extends Peer implements Runnable {
             	//split  this string into four parts based on the first three spaces
             	//TODO: Player Username cannot have spaces
             	inMessage = message.split(" ", 4);
-            	if (tableID == inMessage[1]){
+            	if (tableID.equals(inMessage[1])){
             		//set player 1
             		if (inMessage[2] == "-1"){
             			status = GameStatus.waiting_opponent;
