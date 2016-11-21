@@ -33,7 +33,7 @@ public class Game extends Peer implements Runnable {
 	String player1, player2;
 	GameStatus status;
 	Boolean isTurn;
-	byte[][] boardState = new byte[8][8];;		// Same format as sent from server (see CheckersServerDocumentation)
+	byte[][] boardState = new byte[8][8];		// Same format as sent from server (see CheckersServerDocumentation)
 	BAAC client;
 	String tableID;			// Received from server
 	GameBoardWindow gameGUI;
