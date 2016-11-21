@@ -25,7 +25,7 @@ import gui.MenuButtonStatus;
   * Valid vs. invalid moves
 * Sends updates to GUI (for inGameToolBarWindow)
 * 
- * @author reuintern
+ * @author Dave, Zuli
  *
  */
 public class Game extends Peer implements Runnable {
@@ -375,28 +375,15 @@ public class Game extends Peer implements Runnable {
 					break;
 				case PRIVATE_CHAT:
 					break;
-				case EXIT_BAAC:
-					break;
-				case JOIN:
-					break;
-				case OBSERVE:
-					break;
 				case START:
 					break;
 				default:
 					break;
 					
 				}
-					
-				
-				
-				
+									
 			}
 
-			//if(gameMenu.getLeaveFlag()){
-				//gameMenu.setLeaveFlag(false);
-				//if (gameMenu.getLeaveStatus()){
-					//clientLeaveTableRequest();
 		}
 	}
 		

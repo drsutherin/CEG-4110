@@ -3,13 +3,23 @@ package baac;
 import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import gui.GameBoardWindow;
+import gui.InGameMenuWindow;
+import gui.MenuButtonStatus;
+
+/**
+ * ObservableGame controls logic for observing a game and owns the GUI
+ * windows
+ * @author Zuli
+ */
 public class ObservableGame extends Peer implements Runnable {
 
 	String player1, player2;
 	GameStatus status;
-	String boardState;		// Same format as sent from server (see CheckersServerDocumentation)
-	BAAC client;
+	byte[][] boardState;
 	String tableID;			// Received from server
+	GameBoardWindow gameGUI;
+	InGameMenuWindow gameMenu;
 	
 	Boolean activeThread = true; //the thread will be active until this is switched off
 	Mediator mediator;
@@ -26,16 +36,28 @@ public class ObservableGame extends Peer implements Runnable {
 	public ObservableGame(String tid, PeerMediator passedMediator)	{
 		player1 = "";
 		player2 = "";
-		boardState = "";
 		tableID = tid;
 		mediator = passedMediator;
 		mediator.addPeerClass(this);
 	}
 	
+	/***
+	 * Set table number
+	 * @param tableNumber
+	 */
+	public void setTableID(String tableNumber){
+		tableID = tableNumber;
+	}	
+	
+	
+	
 	/**
 	 * Check the buffers for messages from the server and messages to be sent to the server 
 	 */
 	public void run() {
+		gameGUI = new GameBoardWindow(this);
+		gameMenu = new InGameMenuWindow(this);		
+	
 		while(activeThread){
 			//send message to server
 			String outgoingMessage;
@@ -102,7 +124,8 @@ public class ObservableGame extends Peer implements Runnable {
             	//split the string into three parts based on first two spaces
             	inMessage = message.split(" ", 3);
             	if(inMessage[1] == tableID){
-            		boardState = inMessage[2];
+            		String boardString = inMessage[2];
+            		sendBoardToGUI(boardString);
             	}
                 break;
             case ServerMessage.WHO_ON_TBL:
@@ -126,14 +149,47 @@ public class ObservableGame extends Peer implements Runnable {
             	}
             	break;
             default:
-            	noMatch = true;
+            	//do nothing
             	break;
         }
-        //if the messages matched a code, update the GUI
-        if (noMatch == false){
-        	//TODO: Update GUI with game vars
-        }
+  
    }
+	
+	/******************************************************/
+	/*Helper Methods for sending updates to GUI*/
+/******************************************************/
+
+
+	public void sendBoardToGUI(String state){
+		//state = stateof(i,j)isatindex(8*i)+jofstring
+		byte[][]boardState = new byte[8][8];
+		for(int i=0; i<8; i++){
+			for(int j=0; j<8; j++){
+				boardState[i][j]=Byte.parseByte(String.valueOf(state.charAt((8*i)+j)));
+			}
+		}
+		gameGUI.updateBoard(boardState);
+	}
+	
+	/***
+	 * Gracefully end process
+	 */
+	public void stopGame(){
+		//stop getting updates from server
+		mediator.removePeerClass(this);
+		
+		//set the run flag end on next loop
+		activeThread = false;
+		
+		//clear both queues, otherwise might end up in an error condition
+		sendToServer.clear();
+		receiveFromServer.clear();
+		
+		//close the GUI's
+		gameMenu.closeWindow();
+		gameGUI.closeWindow();
+	}
+		
 	
 	
 	/*************************/
@@ -156,10 +212,25 @@ public class ObservableGame extends Peer implements Runnable {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
+		if (o.equals(gameMenu)){
+		 	MenuButtonStatus last;
+			if (Player.getUserStatus() == Status.PLAYING)	{
+				last = gameMenu.getLastPressed();
+				
+				switch(last){
+				
+				case EXIT_GAME:
+					clientLeaveTableRequest();
+					break;
+				case PRIVATE_CHAT:
+					break;
+				default:
+					break;
+					
+				}
+							
+			}		
+		}
 		
 	}
-	
-	
-	
 }
