@@ -117,7 +117,7 @@ public class BAAC extends Peer implements Runnable {
 	 * @param gameID the game that the user wishes to join/observe
 	 * @return whether or not the message succeeded
 	 */
-	public boolean requestJoinGame(GameMode gameMode, int gameID){
+	public boolean requestJoinGame(GameMode gameMode, String gameID){
 		boolean returnBool = true;
 
 		if (gameMode == GameMode.PLAY){
@@ -451,16 +451,14 @@ public class BAAC extends Peer implements Runnable {
 					joinableTables.add(currentTable[0]);
 				}
 			}
-			// Show dialog window
 			JFrame jframe = new JFrame();
 	        String tableToJoin  = (String) JOptionPane.showInputDialog(jframe, "Choose a Table to Join:",
-	        		"Join Table Dialog", 3, null, joinableTables.toArray(), 0);
-	        
-	        // Attempt to join selected game
+	        		"Join Table Dialog", 3, null, joinableTables.toArray(), 0);	    
 			if (tableToJoin != null)	{
-				//	public boolean requestJoinGame(GameMode gameMode, int gameID){
-		        requestJoinGame(GameMode.PLAY, Integer.parseInt(tableToJoin));
+		        requestJoinGame(GameMode.PLAY, tableToJoin);
 			}
+			// attempt to join selected game
+				//requestJoinGame(GameMode.PLAY, table);
 			break;
 		case OBSERVE:
 			// join a game as an observer
