@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.util.*;
 
 import javax.swing.BoxLayout;
@@ -97,6 +98,7 @@ public class GameBoardWindow extends Observable {
 				thisButton.setName(position);
 				thisRow.add(thisButton);
 				boardSpacesDict.put(position,thisButton);
+				boardSpacesVector.add(thisButton);
 			}
 		}
 		frame.getContentPane().add(container);
@@ -198,19 +200,19 @@ public class GameBoardWindow extends Observable {
 				row = Character.getNumericValue(b.getName().charAt(1));
 				
 				// if in row 1 or 3 & odd column, add black piece
-				if ((row == 1 || row == 3) && (col % 2 == 1))	{
+				if ((row == 1 || row == 3) && (col % 2 == 0))	{
 					b.setIcon(new ImageIcon(getClass().getResource("black.png")));
 				}
 				// if in row 2 & even column, add black piece
-				else if ((row == 2) && (col % 2 == 0))	{
+				else if ((row == 2) && (col % 2 == 1))	{
 					b.setIcon(new ImageIcon(getClass().getResource("black.png")));
 				}
 				// if in row 6 or 8 & odd column, add red piece
-				else if ((row == 6 || row == 8) && (col % 2 == 0))	{
+				else if ((row == 6 || row == 8) && (col % 2 == 1))	{
 					b.setIcon(new ImageIcon(getClass().getResource("red.png")));
 				}
 				// if in row 7 & even column, add red piece
-				else if ((row == 7) && (col % 2 == 1))	{
+				else if ((row == 7) && (col % 2 == 0))	{
 					b.setIcon(new ImageIcon(getClass().getResource("red.png")));
 				}
 			}
@@ -251,21 +253,33 @@ public class GameBoardWindow extends Observable {
 		turn = t;
 		
 		if (turn == Turn.THEIRS){
-			// Make all buttons unclickable
 			for (JButton b : boardSpacesVector) {
+				// Remove all event listeners on the buttons
+				ActionListener[] a = b.getActionListeners();
+				for (ActionListener act : a){
+					b.removeActionListener(act);
+				}
+				// Make all buttons unclickable
 				b.addActionListener(e -> {
 					JFrame frame = new JFrame("Hold your horses");
-			        JOptionPane.showMessageDialog(frame, "It's not your turn");
+			        JOptionPane.showMessageDialog(frame, "It's not your turn", "Hold your horses", JOptionPane.ERROR_MESSAGE);
 				});
 			}
 		}
 		else {
-			// Make the buttons clickable
 			for (JButton b : boardSpacesVector) {
+				// Remove all event listeners on the buttons
+				ActionListener[] a = b.getActionListeners();
+				for (ActionListener act : a){
+					b.removeActionListener(act);
+				}
+				// Make the buttons clickable
 				b.addActionListener(e -> {
 					handleClick(b);
 				});
 			}
+			JFrame frame = new JFrame("Your turn");
+	        JOptionPane.showMessageDialog(frame, "It's your turn");
 		}
 	}
 	

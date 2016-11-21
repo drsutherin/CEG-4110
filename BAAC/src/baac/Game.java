@@ -41,10 +41,11 @@ public class Game extends Peer implements Runnable {
 	
 	Boolean activeThread = true;
 	Mediator mediator;
-	
+	private Color myColor;	
 	//Thread safe buffers used to add/remove messages from this thread
 	private final LinkedBlockingQueue<String> sendToServer = new LinkedBlockingQueue<String>();	
 	private final LinkedBlockingQueue<String> receiveFromServer = new LinkedBlockingQueue<String>();
+
 	
 	/**
 	 * Constructor for creating a new table
@@ -139,11 +140,11 @@ public class Game extends Peer implements Runnable {
         		}
                 break;
             case ServerMessage.COLOR_BLACK:
-        		player1 = username;
+        		myColor = Color.BLACK;
         		gameGUI.setPlayerColor(Color.BLACK);
                 break;
             case ServerMessage.COLOR_RED:
-        		player2 = username;
+        		myColor = Color.RED;
         		gameGUI.setPlayerColor(Color.RED);
                 break;
             case ServerMessage.OPP_MOVE: 
@@ -310,7 +311,7 @@ public class Game extends Peer implements Runnable {
 		int newColumn = (int)newPositionString.charAt(1) - 1; //will return 1-8 need 0-7
 
 		//check for client player color is black (is player 1) in which case the values are inverted
-		if(username.equals(player1)){
+		if(myColor == Color.BLACK){
 			//invert everything
 			currentRow = Math.abs(currentRow - 7);
 			currentColumn = Math.abs(currentColumn - 7);
@@ -319,9 +320,9 @@ public class Game extends Peer implements Runnable {
 		}
 		
 		//format the request to the server
-		String currentPosition = "(" + currentRow + "," + currentColumn + ")";
-		String newPosition = "(" + newRow + "," + newColumn + ")";
-		String move = "106 " + username + " " + currentPosition + " " + newPosition + "<EOM>"; 
+		String currentPosition = String.valueOf(currentRow) + String.valueOf(currentColumn);
+		String newPosition = String.valueOf(newRow) + String.valueOf(newColumn);
+		String move = "106 " + username + " " + currentPosition + " " + newPosition + " <EOM>"; 
 		placeMessageInIntermediateQueue(move);
 	}
 	
