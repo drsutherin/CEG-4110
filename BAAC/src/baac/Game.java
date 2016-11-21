@@ -33,7 +33,7 @@ public class Game extends Peer implements Runnable {
 	String player1, player2;
 	GameStatus status;
 	Boolean isTurn;
-	byte[][] boardState;		// Same format as sent from server (see CheckersServerDocumentation)
+	byte[][] boardState = new byte[8][8];		// Same format as sent from server (see CheckersServerDocumentation)
 	BAAC client;
 	String tableID;			// Received from server
 	GameBoardWindow gameGUI;
@@ -236,7 +236,6 @@ public class Game extends Peer implements Runnable {
 	
 	public void sendBoardToGUI(String state){
 		//state = stateof(i,j)isatindex(8*i)+jofstring
-		boardState = new byte[8][8];
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
 				boardState[i][j]=Byte.parseByte(String.valueOf(state.charAt((8*i)+j)));
