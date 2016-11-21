@@ -80,10 +80,10 @@ public class GameBoardWindow extends Observable {
 			for (int j = 65; j < 73; j++) {
 				col = (char) j;
 				if ((i % 2 == 1 && j % 2 == 1) || (i % 2 == 0 && j % 2 == 0))	{
-					c = Color.RED;
+					c = java.awt.Color.RED;
 				}
 				else	{
-					c = Color.BLACK;
+					c = java.awt.Color.BLACK;
 				}
 				thisButton = buttonFactory(c, buttonSize);
 				position = col + String.valueOf(i);
@@ -111,6 +111,8 @@ public class GameBoardWindow extends Observable {
 	public JButton buttonFactory(Color c, Dimension d)	{
 		JButton newButton = new JButton();
 		newButton.setBackground(c);
+		newButton.setOpaque(true);
+		newButton.setBorderPainted(false);
 		newButton.setMinimumSize(d);
 		newButton.setPreferredSize(d);
 		return newButton;
