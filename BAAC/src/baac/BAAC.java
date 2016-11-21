@@ -269,11 +269,10 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.NEW_TBL:
 					//Do nothing, the server will send a 219 message to all client automatically
 					//Next message: 219 WHO_ON_TABLE
-					//message = message.replace(ServerMessage.NEW_TBL + " ", "");
-					//message = message.replace(" <EOM>", "");
-					//message = message.replace("<EOM>", "");
-					//sendToServer.put("109 " + Player.getUsername() + " " + message + " <EOM>");
-					//update gui elements
+					message = message.replace(ServerMessage.NEW_TBL + " ", "");
+					message = message.replace(" <EOM>", "");
+					message = message.replace("<EOM>", "");
+					sendToServer.put("109 " + Player.getUsername() + " " + message + " <EOM>");
 					break;
 				case ServerMessage.TBL_JOINED:
 					//TODO: tell the user that they joined a new table
