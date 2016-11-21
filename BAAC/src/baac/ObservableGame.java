@@ -56,8 +56,7 @@ public class ObservableGame extends Peer implements Runnable {
 	 */
 	public void run() {
 		gameGUI = new GameBoardWindow(this);
-		gameMenu = new InGameMenuWindow(this);		
-	
+
 		while(activeThread){
 			//send message to server
 			String outgoingMessage;
@@ -209,26 +208,8 @@ public class ObservableGame extends Peer implements Runnable {
 	}
 
 	@Override
-	public void update(Observable o, Object arg) {
-		if (o.equals(gameMenu)){
-		 	MenuButtonStatus last;
-			if (Player.getUserStatus() == Status.PLAYING)	{
-				last = gameMenu.getLastPressed();
-				
-				switch(last){
-				
-				case EXIT_GAME:
-					clientLeaveTableRequest();
-					break;
-				case PRIVATE_CHAT:
-					break;
-				default:
-					break;
-					
-				}
-							
-			}		
-		}
+	public void update(Observable arg0, Object arg1) {
+		// Does nothing
 		
-	}
+	}	
 }

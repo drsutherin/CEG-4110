@@ -42,6 +42,7 @@ public class BAAC extends Peer implements Runnable {
 	LobbyChat lobbyChat = null;
 
 	Game theGame = new Game(mediator);
+	InGameMenuWindow inGameMenu;
 
 	//Thread safe buffers used to add/remove messages from this thread
 	private final LinkedBlockingQueue<String> sendToServer = new LinkedBlockingQueue<String>();
@@ -136,8 +137,6 @@ public class BAAC extends Peer implements Runnable {
 		}
 		return returnBool;
 	}
-
-
 
 	/***
 	 * Asks the server to create a new table and place the user in a seat at the new table
@@ -287,13 +286,14 @@ public class BAAC extends Peer implements Runnable {
 					Player.setUserStatus(Status.PLAYING);
 					gameThread.start();
 					//Create an ingame menu
-					
+					inGameMenu = new InGameMenuWindow(this);
 					
 					break;
 				case ServerMessage.TBL_LEFT:
 					//leave the in game menu
 					
 					theGame.stopGame();
+					inGameMenu.closeWindow();
 					break;
 				case ServerMessage.WHO_IN_LOBBY:
 					//System.out.println("Users in lobby are:");
@@ -472,11 +472,8 @@ public class BAAC extends Peer implements Runnable {
 		MenuButtonStatus last;
 		if (Player.getUserStatus() == Status.IN_LOBBY)	{
 			last = mainMenu.getLastPressed();
-		}
-		else {
-			// TODO: Update this once inGameMenu is created
-			//last = inGameMenu.getlastPressed();
-			last = null;
+		}else {
+			last = inGameMenu.getLastPressed();
 		}
 		switch (last)	{
 		case START:
@@ -522,7 +519,7 @@ public class BAAC extends Peer implements Runnable {
 			break;
 		case EXIT_GAME:
 			// ask the server to leave the current game
-			requestLeaveGame();
+			theGame.clientLeaveTableRequest();
 			break;
 		case EXIT_BAAC:
 			queueUpToSendToServer("108 " + Player.getUsername());
@@ -540,6 +537,9 @@ public class BAAC extends Peer implements Runnable {
 		// activeUsersWindow = new ActiveUsersWindow(this);
 		// activeTablesWindow = new ActiveTablesWindow(this);
 	}
+	
+
+	
 
 
 }

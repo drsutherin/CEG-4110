@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import baac.BAAC;
 import baac.Game;
 import baac.ObservableGame;
 
@@ -23,12 +24,7 @@ public class InGameMenuWindow extends Observable {
 	/**
 	 * Instantiating a InGameMenuWindow causes it to run immediately
 	 */
-	public InGameMenuWindow(Game g)	{
-		addObserver(g);
-		setupGUI();
-	}
-	
-	public InGameMenuWindow(ObservableGame g)	{
+	public InGameMenuWindow(BAAC g)	{
 		addObserver(g);
 		setupGUI();
 	}

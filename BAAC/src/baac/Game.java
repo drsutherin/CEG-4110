@@ -78,7 +78,6 @@ public class Game extends Peer implements Runnable {
 	 */
 	public void run() {
 		gameGUI = new GameBoardWindow(this);
-		gameMenu = new InGameMenuWindow(this);
 		
 		while(activeThread){
 			//send message to server
@@ -377,34 +376,8 @@ public class Game extends Peer implements Runnable {
 				String[] unParsedMove = gameGUI.getMove();//enters as an array {string1, string2} where string = "A1" , Row = A, Column = 1 
 				clientMoveRequest(unParsedMove);
 			}
-			
-			//otherwise it was the ingame menu window
-		 } else if (o.equals(gameMenu)){
-		 	MenuButtonStatus last;
-			if (Player.getUserStatus() == Status.PLAYING)	{
-				last = gameMenu.getLastPressed();
-				
-				switch(last){
-				
-				case EXIT_GAME:
-					clientLeaveTableRequest();
-					break;
-				case PRIVATE_CHAT:
-					break;
-				case START:
-					break;
-				default:
-					break;
-					
-				}
-									
-			}
-
 		}
-	}
-		
-		
-		
+	}		
 }	
 
 		
