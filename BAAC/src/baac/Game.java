@@ -41,6 +41,7 @@ public class Game extends Peer implements Runnable {
 	String tableID;			// Received from server
 	GameBoardWindow gameGUI;
 	String username = Player.getUsername();
+	int movesPlayed = 0;
 	
 	Boolean activeThread = true;
 	Mediator mediator;
@@ -159,6 +160,7 @@ public class Game extends Peer implements Runnable {
             	//split the string into three parts based on first two spaces
             	inMessage = message.split(" ", 3);
             	if(inMessage[1] == tableID){
+            		movesPlayed++;
             		String boardString = inMessage[2];
             		sendBoardToGUI(boardString);
             	}
@@ -216,6 +218,9 @@ public class Game extends Peer implements Runnable {
             	break;
             case ServerMessage.YOUR_TURN:
             	isTurn = true;
+            	if (movesPlayed > 0)	{
+            		gameGUI.updateBoard(boardState);
+            	}
             	gameGUI.setTurn(Turn.YOURS);
             	break;
             case ServerMessage.ILLEGAL:

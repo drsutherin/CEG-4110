@@ -328,15 +328,24 @@ public class GameBoardWindow extends Observable {
 	 * Updates the positions of all pieces on the board
 	 * @param b is a byte array corresponding to board locations as represented by the server 
 	 */
+	
+	// TODO: Opponent's pieces aren't updating correctly
 	public void updateBoard(byte[][] b)	{
 		int k = 0;
 		JButton current;
 		for (int i = 0; i < 8; i++){
 			for (int j = 0; j < 8; j++){
-				current = boardSpacesVector.get(i);
-				switch (b[i][j])	{
+				current = boardSpacesVector.get(k);
+				
+				// @Zuli:
+				// I just changed this switch to use an int instead of switch(byte[i][j]),
+				// but I haven't tested it yet -Dave, 11/22
+				
+				// TODO: debug this switch
+				int piece = b[i][j];
+				switch (piece)	{
 				case 0: // nothing
-					current.setIcon(new ImageIcon(getClass().getResource("")));
+					current.setIcon(null);
 					break;
 				case 1: // black
 					current.setIcon(new ImageIcon(getClass().getResource("black.png")));
@@ -351,6 +360,7 @@ public class GameBoardWindow extends Observable {
 					current.setIcon(new ImageIcon(getClass().getResource("red-king.png")));
 					break;
 				}
+				k++;
 			}
 			
 		}
