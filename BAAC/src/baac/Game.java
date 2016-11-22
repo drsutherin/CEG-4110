@@ -137,11 +137,6 @@ public class Game extends Peer implements Runnable {
         switch (messageCode) {
             case ServerMessage.GAME_START:
             	status = GameStatus.active;
-        		isTurn = false;
-        		if(username == player1){
-        			isTurn = true;
-        			gameGUI.setTurn(Turn.YOURS);
-        		}
                 break;
             case ServerMessage.COLOR_BLACK:
         		myColor = Color.BLACK;
@@ -159,7 +154,7 @@ public class Game extends Peer implements Runnable {
             	//<code><tableID><boardState>
             	//split the string into three parts based on first two spaces
             	inMessage = message.split(" ", 3);
-            	if(inMessage[1] == tableID){
+            	if(inMessage[1].equals(tableID)){
             		movesPlayed++;
             		String boardString = inMessage[2];
             		sendBoardToGUI(boardString);
@@ -252,7 +247,7 @@ public class Game extends Peer implements Runnable {
 			}
 		}
 		//if the player is black, need to flip the board before sending
-		if(Player.getUsername() == player1){
+		if(Player.getUsername().equals(player1)){
 			byte[][] tempBoard = boardState;
 			int iFlip;
 			int jFlip;
@@ -322,7 +317,7 @@ public class Game extends Peer implements Runnable {
 		int newRow= (int)newPositionString.charAt(1) - 49; //will return 49(1)-56(8) need 0-7
 
 		//check for client player color is black (is player 1) in which case the values are inverted
-		if(myColor == Color.BLACK){
+		if(myColor.equals(Color.BLACK)){
 			//invert everything
 			currentRow = Math.abs(currentRow - 7);
 			currentColumn = Math.abs(currentColumn - 7);
