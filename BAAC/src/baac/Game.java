@@ -311,10 +311,10 @@ public class Game extends Peer implements Runnable {
 		String newPositionString = moveArray[1];
 		
 		//Rows are characters, columns are ints
-		int currentRow = (int)currentPositionString.charAt(0) - 65; //will return 65(A) - 72(H) need 0-7
-		int currentColumn = (int)currentPositionString.charAt(1) - 49; //will return 49(1)-56(8) need 0-7
-		int newRow = (int)newPositionString.charAt(0) - 65; //will return 65(A) - 72(H) need 0-7
-		int newColumn = (int)newPositionString.charAt(1) - 49; //will return 49(1)-56(8) need 0-7
+		int currentColumn = (int)currentPositionString.charAt(0) - 65; //will return 65(A) - 72(H) need 0-7
+		int currentRow = (int)currentPositionString.charAt(1) - 49; //will return 49(1)-56(8) need 0-7
+		int newColumn = (int)newPositionString.charAt(0) - 65; //will return 65(A) - 72(H) need 0-7
+		int newRow= (int)newPositionString.charAt(1) - 49; //will return 49(1)-56(8) need 0-7
 
 		//check for client player color is black (is player 1) in which case the values are inverted
 		if(myColor == Color.BLACK){
