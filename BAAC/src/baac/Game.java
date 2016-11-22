@@ -248,7 +248,15 @@ public class Game extends Peer implements Runnable {
 		}
 		//if the player is black, need to flip the board before sending
 		if(Player.getUsername().equals(player1)){
-			byte[][] tempBoard = boardState;
+			
+			//create a copy of boardState
+			byte[][] tempBoard = new byte[8][8];
+			for(int i=0; i<8; i++){
+				for(int j=0; j<8; j++){
+					 tempBoard[i][j] = boardState[i][j];
+				}
+			}
+			
 			int iFlip;
 			int jFlip;
 			for(int i=0; i<8; i++){
