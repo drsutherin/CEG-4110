@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -216,6 +219,8 @@ public class Game extends Peer implements Runnable {
             	gameGUI.setTurn(Turn.YOURS);
             	break;
             case ServerMessage.ILLEGAL:
+            	JFrame frame = new JFrame();
+		        JOptionPane.showMessageDialog(frame, "Invalid move. Please try again.", "Invalid Move", JOptionPane.ERROR_MESSAGE);
             	gameGUI.updateBoard(boardState);
             	gameGUI.setTurn(Turn.YOURS);
             default:
@@ -298,6 +303,8 @@ public class Game extends Peer implements Runnable {
 	 * @param moveArray: enters as an array {string1, string2} where string = "A1" , Row = A, Column = 1 
 	 * places a string in mediator's queue:<106><clientName><currentPosition><newPosition><EOM>
 	 */
+	
+	//TODO: rows and columns are reversed in message to server
 	public void clientMoveRequest(String[] moveArray){
 		//example input array{A1, B2}
 		String currentPositionString = moveArray[0];
@@ -320,7 +327,7 @@ public class Game extends Peer implements Runnable {
 		
 		//format the request to the server
 		String currentPosition = String.valueOf(currentRow) + "," + String.valueOf(currentColumn);
-		String newPosition = String.valueOf(newRow) + ","+ String.valueOf(newColumn);
+		String newPosition = String.valueOf(newRow) + "," + String.valueOf(newColumn);
 		String move = "106 " + username + " " + currentPosition + " " + newPosition + "<EOM>"; 
 		placeMessageInIntermediateQueue(move);
 	}

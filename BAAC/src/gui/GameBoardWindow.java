@@ -136,19 +136,19 @@ public class GameBoardWindow extends Observable {
 		String name = b.getName();
 		
 		// Initial code for testing clicks
-		System.out.println("You clicked " + name);
-		if (b.getBackground() == Color.RED)	{
-			b.setBackground(Color.PINK);
-		}
-		else if (b.getBackground() == Color.BLACK)	{
-			b.setBackground(Color.GRAY);
-		}
-		else if (b.getBackground() == Color.PINK)	{
-			b.setBackground(Color.RED);
-		}
-		else	{
-			b.setBackground(Color.BLACK);
-		}
+//		System.out.println("You clicked " + name);
+//		if (b.getBackground() == Color.RED)	{
+//			b.setBackground(Color.PINK);
+//		}
+//		else if (b.getBackground() == Color.BLACK)	{
+//			b.setBackground(Color.GRAY);
+//		}
+//		else if (b.getBackground() == Color.PINK)	{
+//			b.setBackground(Color.RED);
+//		}
+//		else	{
+//			b.setBackground(Color.BLACK);
+//		}
 		
 		// Create the string array corresponding to the move based on user clicks
 		// Clicks should always be 0 or 1
@@ -199,11 +199,11 @@ public class GameBoardWindow extends Observable {
 				col = (int) b.getName().charAt(0);
 				row = Character.getNumericValue(b.getName().charAt(1));
 				
-				// if in row 1 or 3 & odd column, add black piece
+				// if in row 1 or 3 & even column, add black piece
 				if ((row == 1 || row == 3) && (col % 2 == 0))	{
 					b.setIcon(new ImageIcon(getClass().getResource("black.png")));
 				}
-				// if in row 2 & even column, add black piece
+				// if in row 2 & odd column, add black piece
 				else if ((row == 2) && (col % 2 == 1))	{
 					b.setIcon(new ImageIcon(getClass().getResource("black.png")));
 				}
@@ -224,19 +224,19 @@ public class GameBoardWindow extends Observable {
 				row = Character.getNumericValue(b.getName().charAt(1));
 				
 				// if in row 1 or 3 & odd column, add black piece
-				if ((row == 1 || row == 3) && (col % 2 == 1))	{
+				if ((row == 1 || row == 3) && (col % 2 == 0))	{
 					b.setIcon(new ImageIcon(getClass().getResource("red.png")));
 				}
 				// if in row 2 & even column, add black piece
-				else if ((row == 2) && (col % 2 == 0))	{
+				else if ((row == 2) && (col % 2 == 1))	{
 					b.setIcon(new ImageIcon(getClass().getResource("red.png")));
 				}
 				// if in row 6 or 8 & odd column, add red piece
-				else if ((row == 6 || row == 8) && (col % 2 == 0))	{
+				else if ((row == 6 || row == 8) && (col % 2 == 1))	{
 					b.setIcon(new ImageIcon(getClass().getResource("black.png")));
 				}
 				// if in row 7 & even column, add red piece
-				else if ((row == 7) && (col % 2 == 1))	{
+				else if ((row == 7) && (col % 2 == 0))	{
 					b.setIcon(new ImageIcon(getClass().getResource("black.png")));
 				}
 			}
