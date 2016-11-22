@@ -75,7 +75,7 @@ public class ServerInterface extends Peer implements Runnable {
         String serverPort = JOptionPane.showInputDialog(frame, "Port Number", "45322");
 
         // Don't allow people to not select a server
-        if (serverName == null || serverPort == null)	{
+        if (serverName == null || serverPort == null || serverName.equals("") || serverPort.equals(""))	{
         	System.out.println("No server/port selected. Exiting...");
         	System.exit(1);
         }
