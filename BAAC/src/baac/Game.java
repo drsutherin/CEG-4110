@@ -7,13 +7,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import java.util.Observable;
-import java.util.concurrent.LinkedBlockingQueue;
+// For audio playback
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import gui.GameBoardWindow;
 import gui.GameBoardWindow.Turn;
-import gui.InGameMenuWindow;
-import gui.MenuButtonStatus;
 
 /**
  * * Will contain informatemptyion regarding the current game:
@@ -133,6 +133,7 @@ public class Game extends Peer implements Runnable {
 		message = message.replace("<EOM>", "");
 		boolean noMatch = false;
 		String inMessage[];
+		JFrame frame = new JFrame();
 		String messageCode = message.substring(0, 3);
         switch (messageCode) {
             case ServerMessage.GAME_START:
@@ -161,10 +162,16 @@ public class Game extends Peer implements Runnable {
             	}
                 break;
             case ServerMessage.GAME_WIN: 
-            	status = GameStatus.player_win;
+            	status = GameStatus.player_win;            	
+            	JOptionPane.showMessageDialog(frame, "You Win!", "Winner!", JOptionPane.INFORMATION_MESSAGE);
+            	gameGUI.closeWindow();
+            	// TODO: Return to lobby
             	break;
             case ServerMessage.GAME_LOSE:
             	status = GameStatus.player_lose;
+            	JOptionPane.showMessageDialog(frame, "You Lose...", "Loss", JOptionPane.WARNING_MESSAGE);
+            	gameGUI.closeWindow();
+            	// TODO: Return to lobby
             	break;
             case ServerMessage.WHO_ON_TBL:
             	//<code><tableID><player1><players2> <-- p1 or p2 may be -1 if empty
@@ -219,7 +226,6 @@ public class Game extends Peer implements Runnable {
             	gameGUI.setTurn(Turn.YOURS);
             	break;
             case ServerMessage.ILLEGAL:
-            	JFrame frame = new JFrame();
 		        JOptionPane.showMessageDialog(frame, "Invalid move. Please try again.", "Invalid Move", JOptionPane.ERROR_MESSAGE);
             	gameGUI.updateBoard(boardState);
             	gameGUI.setTurn(Turn.YOURS);
