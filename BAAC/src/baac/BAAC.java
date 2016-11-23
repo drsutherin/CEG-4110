@@ -216,6 +216,7 @@ public class BAAC extends Peer implements Runnable {
 			//this method will only use codes starting with 2 as those are ones that are received from the server
 			//System.out.println(message);
 			String code = message.substring(0, 3);
+			String user;
 			switch(code){
 			//2 codes start here
 				case ServerMessage.ASK_USERNAME:
@@ -310,13 +311,15 @@ public class BAAC extends Peer implements Runnable {
 						activeUsers.add(users[i]);
 					}
 					//send gui info for displaying who is in the lobby
+					lobbyUsersWindow.updateList(activeUsers);
 					break;
 				case ServerMessage.NOW_IN_LOBBY:
-					message = message.replace(ServerMessage.NOW_IN_LOBBY + " ", "");
-					message = message.replace(" <EOM>", "");
-					message = message.replace("<EOM>", "");
-					activeUsers.add(message);
+					user = message.replace(ServerMessage.NOW_IN_LOBBY + " ", "");
+					user = user.replace(" <EOM>", "");
+					user = user.replace("<EOM>", "");
+					activeUsers.add(user);
 					//update gui elements for who is in the lobby
+					lobbyUsersWindow.updateList(activeUsers);
 					break;
 				case ServerMessage.WHO_ON_TBL:
 					//remove code and <EOM> from message
@@ -361,11 +364,12 @@ public class BAAC extends Peer implements Runnable {
 					}
 					break;
 				case ServerMessage.NOW_LEFT_LOBBY:
-					message = message.replace(ServerMessage.NOW_LEFT_LOBBY + " ", "");
-					message = message.replace(" <EOM>", "");
-					message = message.replace("<EOM>", "");
-					activeUsers.remove(message);
+					user = message.replace(ServerMessage.NOW_LEFT_LOBBY + " ", "");
+					user = user.replace(" <EOM>", "");
+					user = user.replace("<EOM>", "");
+					activeUsers.remove(user);
 					//indicate that a user has left the lobby
+					lobbyUsersWindow.updateList(activeUsers);
 					break;
 				case ServerMessage.NOW_OBSERVING:
 					//get the table number from the message
@@ -539,7 +543,7 @@ public class BAAC extends Peer implements Runnable {
 		mainMenu = new MainMenuWindow(this);
 		Player.setUserStatus(Status.IN_LOBBY);
 		// TODO: make sure these are setup correctly and let 'em rip
-		//lobbyUsersWindow = new LobbyUsersWindow();
+		lobbyUsersWindow = new LobbyUsersWindow();
 		activeTablesWindow = new ActiveTablesWindow();
 	}
 	
@@ -553,8 +557,8 @@ public class BAAC extends Peer implements Runnable {
 		mainMenu.closeWindow();
 		mainMenu = null;
 		// TODO: close lobby info windows
-		//activeUsers.closeWindow();
-		//activeTables.closeWindow();
+		lobbyUsersWindow.closeWindow();
+		activeTablesWindow.closeWindow();
 	}
 	
 

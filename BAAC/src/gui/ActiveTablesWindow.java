@@ -40,10 +40,9 @@ public class ActiveTablesWindow {
 		panel.setSize(300,400);
 		panel.setLayout(new BoxLayout(panel, JFrame.EXIT_ON_CLOSE));
 		frame.getContentPane().add(panel);
-		
+		//TODO: frame/panel setPreferredSize and setMinumumSize and make scrollable
+
 		// Add tables list the panel
-		for (int i = 0; i < 5; i++)
-			tablesVector.add("Testing");
 		tablesList.setListData(tablesVector);
 		
 		/* ScrollPane was causing window to be tiny, TODO: fix LobbyUserWindow ScrollPane size */
@@ -119,5 +118,13 @@ public class ActiveTablesWindow {
 		frame.setTitle("Active Tables");
 		frame.pack();
 		frame.setVisible(true);
+	}
+	
+	/**
+	 * Closes the current window
+	 */
+	public void closeWindow(){
+		frame.setVisible(false); 
+		frame.dispose(); 
 	}
 }

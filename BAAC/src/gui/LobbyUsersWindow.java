@@ -13,13 +13,18 @@ import java.util.Vector;
 public class LobbyUsersWindow {
 	JList<String> lobbyUsersList;
 	Vector<String> lobbyUsersVector;
+	JFrame frame;
+	JPanel panel;
 
 	/**
 	 * Instantiating a LobbyUsersWindow causes it to run immediately
 	 * @param users contains the usernames of all users active in the lobby upon creation
 	 */
-	public LobbyUsersWindow(Vector<String> users)	{
-		lobbyUsersVector = users;
+	public LobbyUsersWindow()	{
+		lobbyUsersVector = new Vector<String>();
+		lobbyUsersList = new JList<String>();
+		frame = new JFrame("Lobby Users List");
+		panel = new JPanel();
 		setupGUI();
 	}
 	
@@ -28,17 +33,14 @@ public class LobbyUsersWindow {
 	 */	
 	public void setupGUI() {
 		// Initial window setup
-		JFrame frame = new JFrame("Lobby Users List");
-		
-		JPanel panel = new JPanel();
 		panel.setSize(300,400);
 		panel.setLayout(new BoxLayout(panel, JFrame.EXIT_ON_CLOSE));
 		frame.getContentPane().add(panel);
 		
 		// Add users list the panel
-		lobbyUsersList = new JList<String>();
 		lobbyUsersList.setListData(lobbyUsersVector);
 		
+		//TODO: frame/panel setPreferredSize and setMinumumSize and make scrollable
 		/* ScrollPane was causing window to be tiny, TODO: fix LobbyUserWindow ScrollPane size */
 		//JScrollPane usersPanel = new JScrollPane(lobbyUsersList);
 		//usersPanel.setSize(new Dimension(50,100));
@@ -60,8 +62,19 @@ public class LobbyUsersWindow {
 	 * @param users is a Vector<String> containing all users currently in the lobby
 	 */
 	public void updateList(Vector<String> users)	{
-		lobbyUsersVector = users;
+		lobbyUsersVector.removeAllElements();
+		for (int i = 0; i < users.size(); i ++){
+			lobbyUsersVector.add(users.get(i));
+		}
 		lobbyUsersList.setListData(lobbyUsersVector);
+		panel.removeAll();
+		panel.add(lobbyUsersList);
+		// Display the window.
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
+		frame.setSize(300, 400);
+		frame.setTitle("Users in Lobby");
+		frame.pack();
+		frame.setVisible(true);
 	}
 	
 	/**
@@ -72,6 +85,14 @@ public class LobbyUsersWindow {
 		if (lobbyUsersVector.contains(toRemove))	{
 			lobbyUsersVector.remove(toRemove);
 			lobbyUsersList.setListData(lobbyUsersVector);
+			panel.removeAll();
+			panel.add(lobbyUsersList);
+			// Display the window.
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
+			frame.setSize(300, 400);
+			frame.setTitle("Users in Lobby");
+			frame.pack();
+			frame.setVisible(true);
 		}
 	}
 	
@@ -82,5 +103,22 @@ public class LobbyUsersWindow {
 	public void add(String toAdd)	{
 		lobbyUsersVector.add(toAdd);
 		lobbyUsersList.setListData(lobbyUsersVector);
+		panel.removeAll();
+		panel.add(lobbyUsersList);
+		// Display the window.
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
+		frame.setSize(300, 400);
+		frame.setTitle("Users in Lobby");
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
+
+	/**
+	 * Closes the current window
+	 */
+	public void closeWindow(){
+		frame.setVisible(false); 
+		frame.dispose(); 
 	}
 }
