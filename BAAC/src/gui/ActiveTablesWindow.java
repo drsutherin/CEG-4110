@@ -97,22 +97,27 @@ public class ActiveTablesWindow {
 				if (tbl.equals(toAdd[0]))	{
 					alreadyThere = true;
 				}
-				i++;
+				else {
+					i++;
+				}
 			}
 		}
 		// add the table and update the window
+		String currentTable = toAdd[0] + ": " + toAdd[1] + " vs " + toAdd[2];		
 		if (!alreadyThere){
-			String currentTable = toAdd[0] + ": " + toAdd[1] + " vs " + toAdd[2];
 			tablesVector.add(currentTable);
-			tablesList.setListData(tablesVector);
-			panel.removeAll();
-			panel.add(tablesList);
-			// Display the window.
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
-			frame.setSize(300, 400);
-			frame.setTitle("Active Tables");
-			frame.pack();
-			frame.setVisible(true);
 		}
+		else	{
+			tablesVector.set(i, currentTable);
+		}
+		tablesList.setListData(tablesVector);
+		panel.removeAll();
+		panel.add(tablesList);
+		// Display the window.
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
+		frame.setSize(300, 400);
+		frame.setTitle("Active Tables");
+		frame.pack();
+		frame.setVisible(true);
 	}
 }
