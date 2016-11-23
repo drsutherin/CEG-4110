@@ -14,6 +14,7 @@ import javax.sound.sampled.Clip;
 
 import gui.GameBoardWindow;
 import gui.GameBoardWindow.Turn;
+import gui.InGameToolbarWindow;
 
 /**
  * * Will contain informatemptyion regarding the current game: Players Status
@@ -27,9 +28,10 @@ import gui.GameBoardWindow.Turn;
  */
 public class Game extends Peer implements Runnable {
 
-	String player1, player2;
+	String player1, player2, opponent;
 	GameStatus status;
 	Boolean isTurn;
+	private InGameToolbarWindow gameToolbarWindow;
 	byte[][] boardState = new byte[8][8]; // Same format as sent from server
 											// (see CheckersServerDocumentation)
 	BAAC client;
@@ -81,7 +83,7 @@ public class Game extends Peer implements Runnable {
 	 */
 	public void run() {
 		gameGUI = new GameBoardWindow(this);
-
+		gameToolbarWindow = new InGameToolbarWindow();
 		while (activeThread) {
 			// send message to server
 			String outgoingMessage;
@@ -148,10 +150,12 @@ public class Game extends Peer implements Runnable {
 		case ServerMessage.COLOR_BLACK:
 			myColor = Color.BLACK;
 			gameGUI.setPlayerColor(Color.BLACK);
+			gameToolbarWindow.setPlayerColors(opponent, Player.getUsername());
 			break;
 		case ServerMessage.COLOR_RED:
 			myColor = Color.RED;
 			gameGUI.setPlayerColor(Color.RED);
+			gameToolbarWindow.setPlayerColors(Player.getUsername(), opponent);
 			break;
 		case ServerMessage.OPP_MOVE:
 			gameGUI.setTurn(Turn.THEIRS);
@@ -197,12 +201,14 @@ public class Game extends Peer implements Runnable {
 					if (p1.equals("-1")) {
 						status = GameStatus.waiting_opponent;
 						gameGUI.setOpponent("-1");
+						opponent = "empty";
 					}
 					// other seat is taken
 					else {
 						status = GameStatus.active;
 						player1 = p1;
 						gameGUI.setOpponent(p1);
+						opponent = p1;
 					}
 				}
 				// user is player 1 in server message
@@ -212,12 +218,14 @@ public class Game extends Peer implements Runnable {
 					if (p2.equals("-1")) {
 						status = GameStatus.waiting_opponent;
 						gameGUI.setOpponent("-1");
+						opponent = "empty";
 					}
 					// other seat is taken
 					else {
 						status = GameStatus.active;
 						player2 = p2;
 						gameGUI.setOpponent(p2);
+						opponent = p2;
 					}
 				}
 			}

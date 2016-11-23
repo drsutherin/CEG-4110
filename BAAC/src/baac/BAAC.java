@@ -55,7 +55,7 @@ public class BAAC extends Peer implements Runnable {
 	private MainMenuWindow mainMenu;
 	private ActiveTablesWindow activeTablesWindow;
 	private LobbyUsersWindow lobbyUsersWindow;
-
+	private InGameToolbarWindow gameToolbarWindow;
 
 	/**
 	 * Constructor for BAAC
