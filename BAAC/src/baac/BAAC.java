@@ -76,7 +76,7 @@ public class BAAC extends Peer implements Runnable {
 		//this will be added to the activeTablesStatus vector
 		statusHold = new Vector<String>();
 		tblHold = new Vector<String>();
-		voce.SpeechInterface.init("src/voce", true, true, "src/voce/gram", "every");
+		//voce.SpeechInterface.init("src/voce", true, true, "src/voce/gram", "every");
 		enterLobby();
 	}
 
