@@ -47,7 +47,7 @@ public class BAAC extends Peer implements Runnable {
 	//Thread safe buffers used to add/remove messages from this thread
 	private final LinkedBlockingQueue<String> sendToServer = new LinkedBlockingQueue<String>();
 	private final LinkedBlockingQueue<String> receiveFromServer = new LinkedBlockingQueue<String>();
-
+	
 	// Voce speechInterface;
 	// Stage gui_background;
 
@@ -74,6 +74,7 @@ public class BAAC extends Peer implements Runnable {
 		//this will be added to the activeTablesStatus vector
 		statusHold = new Vector<String>();
 		tblHold = new Vector<String>();
+		voce.SpeechInterface.init("src/voce", true, true, "src/voce/gram", "every");
 		setupLobby();
 	}
 

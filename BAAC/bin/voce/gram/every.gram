@@ -6,4 +6,12 @@
 
 grammar digits;
 
-public <numbers> = (A one | A two | A three | A four | move | computer) * ;
+public <numbers> = (Alfa one | Alfa two | Alfa three | Alfa four | Alfa five | Alfa six | Alfa seven | Alfa eight |
+					Bravo one| Bravo two| Bravo three| Bravo four| Bravo five| Bravo seven| Bravo seven | Bravo eight |
+					Charlie one | Charlie two | Charlie three| Charlie four | Charlie five| Charlie six | Charlie seven| Charlie eight |
+					Delta one | Delta two | Delta three | Delta four | Delta five | Delta six | Delta seven | Delta eight 
+					Echo one | Echo two | Echo three | Echo four | Echo five | Echo six | Echo seven | Echo eight |
+					Fox trot one | Fox trot two | Fox trot three | Fox trot four | Fox trot five | Fox trot six | Fox trot seven | Fox trot eight |
+					Golf one | Golf two | Golf three | Golf four |Golf five | Golf six | Golf seven | Golf eight |
+					Hotel one| Hotel two| Hotel three | Hotel four | Hotel five | Hotel six | Hotel seven | Hotel eight |
+					move | computer) * ;
