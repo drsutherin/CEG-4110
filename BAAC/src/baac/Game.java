@@ -171,13 +171,13 @@ public class Game extends Peer implements Runnable {
 			status = GameStatus.player_win;
 			JOptionPane.showMessageDialog(frame, "You Win!", "Winner!", JOptionPane.INFORMATION_MESSAGE);
 			gameGUI.closeWindow();
-			// TODO: Return to lobby
+			client.enterLobby();
 			break;
 		case ServerMessage.GAME_LOSE:
 			status = GameStatus.player_lose;
 			JOptionPane.showMessageDialog(frame, "You Lose...", "Loss", JOptionPane.WARNING_MESSAGE);
 			gameGUI.closeWindow();
-			// TODO: Return to lobby
+			client.enterLobby();
 			break;
 		case ServerMessage.WHO_ON_TBL:
 			// <code><tableID><player1><players2> <-- p1 or p2 may be -1 if

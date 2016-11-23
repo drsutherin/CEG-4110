@@ -1,5 +1,7 @@
 package gui;
 import javax.swing.*;
+
+import java.awt.Dimension;
 import java.util.Vector;
 
 /*********************************************************************************
@@ -33,22 +35,22 @@ public class LobbyUsersWindow {
 	 */	
 	public void setupGUI() {
 		// Initial window setup
+		Dimension size = new Dimension(200,300);
 		panel.setSize(300,400);
+		frame.setPreferredSize(size);
+		frame.setMinimumSize(size);
+		frame.setMaximumSize(size);
 		panel.setLayout(new BoxLayout(panel, JFrame.EXIT_ON_CLOSE));
 		frame.getContentPane().add(panel);
 		
 		// Add users list the panel
 		lobbyUsersList.setListData(lobbyUsersVector);
 		
-		//TODO: frame/panel setPreferredSize and setMinumumSize and make scrollable
-		/* ScrollPane was causing window to be tiny, TODO: fix LobbyUserWindow ScrollPane size */
-		//JScrollPane usersPanel = new JScrollPane(lobbyUsersList);
-		//usersPanel.setSize(new Dimension(50,100));
-		//usersPanel.add(lobbyUsersList);		
-		//panel.add(usersPanel);
+		// ScrollPane is fucked up
+//		usersPanel.setSize(new Dimension(50,100));
+//		usersPanel.add(lobbyUsersList);	
 		
 		panel.add(lobbyUsersList);
-		
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
 		frame.setSize(300, 400);

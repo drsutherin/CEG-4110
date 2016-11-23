@@ -76,7 +76,7 @@ public class BAAC extends Peer implements Runnable {
 		//this will be added to the activeTablesStatus vector
 		statusHold = new Vector<String>();
 		tblHold = new Vector<String>();
-		//voce.SpeechInterface.init("src/voce", true, true, "src/voce/gram", "every");
+		voce.SpeechInterface.init("src/voce", true, true, "src/voce/gram", "every");
 		enterLobby();
 	}
 
@@ -291,7 +291,7 @@ public class BAAC extends Peer implements Runnable {
 					gameThread.start();
 					//Create an ingame menu
 					inGameMenu = new InGameMenuWindow(this);
-					
+					exitLobby();
 					break;
 				case ServerMessage.TBL_LEFT:
 					//leave the in game menu
@@ -538,7 +538,7 @@ public class BAAC extends Peer implements Runnable {
 	/**
 	 * Initializes all windows and classes necessary for the lobby
 	 */
-	private void enterLobby()	{
+	public void enterLobby()	{
 		lobbyChat = new LobbyChat(mediator);
 		mainMenu = new MainMenuWindow(this);
 		Player.setUserStatus(Status.IN_LOBBY);
@@ -556,7 +556,6 @@ public class BAAC extends Peer implements Runnable {
 		lobbyChat = null;
 		mainMenu.closeWindow();
 		mainMenu = null;
-		// TODO: close lobby info windows
 		lobbyUsersWindow.closeWindow();
 		activeTablesWindow.closeWindow();
 	}
