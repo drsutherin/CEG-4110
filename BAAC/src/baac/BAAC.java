@@ -495,24 +495,16 @@ public class BAAC extends Peer implements Runnable {
 			if (tableToJoin != null)	{
 		        requestJoinGame(GameMode.PLAY, tableToJoin);
 			}
-
+			// attempt to join selected game
+				//requestJoinGame(GameMode.PLAY, table);
 			break;
 		case OBSERVE:
-			
-			Vector<String> observableTables = new Vector<String>();
-			for (int i = 0; i < activeTables.size(); i++){
-				currentTable = activeTables.get(i);
-				observableTables.add(currentTable[0]);
-			}
-			
-			JFrame obsjframe = new JFrame();
-	        String tableToObserve  = (String) JOptionPane.showInputDialog(obsjframe, "Choose a Table to Observe:",
-	        		"Observe Table Dialog", 3, null, observableTables.toArray(), 0);	    
-			
-	        if (tableToObserve != null)	{
-		        requestJoinGame(GameMode.PLAY, tableToObserve);
-			}
-			
+			// join a game as an observer
+			// prompt user for which game to join
+				//int table = TableSelectionWindow.getTable();
+		
+			// attempt to join selected game
+				//requestJoinGame(GameMode.PLAY, table);
 			break;
 		case PRIVATE_CHAT:
 			JFrame frame = new JFrame();
