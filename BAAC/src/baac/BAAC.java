@@ -52,7 +52,9 @@ public class BAAC extends Peer implements Runnable {
 	// Stage gui_background;
 
 	// GUI Windows
-	MainMenuWindow mainMenu;
+	private MainMenuWindow mainMenu;
+	private ActiveTablesWindow activeTablesWindow;
+	private LobbyUsersWindow lobbyUsersWindow;
 
 
 	/**
@@ -74,8 +76,8 @@ public class BAAC extends Peer implements Runnable {
 		//this will be added to the activeTablesStatus vector
 		statusHold = new Vector<String>();
 		tblHold = new Vector<String>();
-		voce.SpeechInterface.init("src/voce", true, true, "src/voce/gram", "every");
-		setupLobby();
+		//voce.SpeechInterface.init("src/voce", true, true, "src/voce/gram", "every");
+		enterLobby();
 	}
 
 	/**
@@ -339,6 +341,7 @@ public class BAAC extends Peer implements Runnable {
 					}
 					//activeTableStatus.add(statusHold);
 					activeTables.add(thisTable);
+					activeTablesWindow.add(thisTable);
 					break;
 				case ServerMessage.TBL_LIST:
 					message = message.replace(ServerMessage.TBL_LIST + " ", "");
@@ -400,8 +403,6 @@ public class BAAC extends Peer implements Runnable {
 					JFrame frame2 = new JFrame("Username Error");
 			        // prompt the user to enter their name
 			        out = JOptionPane.showInputDialog(frame2, "Username error. Re-enter username:").replaceAll("\n","");
-					//Scanner to halt works here because the server needs a username before we can do anything else
-					//This will be replaced with gui elements in the future
 					enterUsername(out);
 				case ServerMessage.TBL_FULL:
 					System.out.println("Cannot join, table is full");
@@ -481,6 +482,7 @@ public class BAAC extends Peer implements Runnable {
 			requestCreateTable();
 			break;
 		case JOIN:
+		// Change this so it displays in a nicer format:
 			// prompt user for which game to join
 			Vector<String> joinableTables = new Vector<String>();
 			String[] currentTable = new String[3];
@@ -532,12 +534,27 @@ public class BAAC extends Peer implements Runnable {
 	/**
 	 * Initializes all windows and classes necessary for the lobby
 	 */
-	private void setupLobby()	{
+	private void enterLobby()	{
 		lobbyChat = new LobbyChat(mediator);
 		mainMenu = new MainMenuWindow(this);
+		Player.setUserStatus(Status.IN_LOBBY);
 		// TODO: make sure these are setup correctly and let 'em rip
-		// activeUsersWindow = new ActiveUsersWindow(this);
-		// activeTablesWindow = new ActiveTablesWindow(this);
+		//lobbyUsersWindow = new LobbyUsersWindow();
+		activeTablesWindow = new ActiveTablesWindow();
+	}
+	
+	/**
+	 * Exits the lobby by closing all open windows and dereferencing containing classes
+	 * @param newStatus
+	 */
+	private void exitLobby()	{
+		lobbyChat.shutdown();
+		lobbyChat = null;
+		mainMenu.closeWindow();
+		mainMenu = null;
+		// TODO: close lobby info windows
+		//activeUsers.closeWindow();
+		//activeTables.closeWindow();
 	}
 	
 

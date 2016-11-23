@@ -13,18 +13,22 @@ import java.util.Vector;
 public class ActiveTablesWindow {
 	JList<String> tablesList;
 	Vector<String> tablesVector;
-
+	JFrame frame;
+	JPanel panel;
 	/**
 	 * Instantiating a ActiveTablesWindow causes it to run immediately
-	 * @param tables contains a list of the IDs of all active tables
 	 */
-	public ActiveTablesWindow(Vector<Integer> tables, Vector<Vector<String>> players)	{
-		String currentTable;
-		for (int i = 0; i < tables.size(); i++)	{
-			currentTable = "Table ID:" + tables.get(i).toString() + players.get(i).get(0)
-					+ " vs " + players.get(i).get(1);
-			tablesVector.add(currentTable);
-		}
+	public ActiveTablesWindow()	{
+//		String currentTable;
+//		for (int i = 0; i < tables.size(); i++)	{
+//			currentTable = "Table " + tables.get(i)[0] + ": " + tables.get(i)[1]
+//					+ " vs " + tables.get(i)[2];
+//			tablesVector.add(currentTable);
+//		}
+		tablesList = new JList<String>();
+		tablesVector = new Vector<String>();
+		frame = new JFrame("Active Tables");
+		panel = new JPanel();
 		setupGUI();
 	}
 	
@@ -33,15 +37,13 @@ public class ActiveTablesWindow {
 	 */	
 	public void setupGUI() {
 		// Initial window setup
-		JFrame frame = new JFrame("Active Tables");
-		
-		JPanel panel = new JPanel();
 		panel.setSize(300,400);
 		panel.setLayout(new BoxLayout(panel, JFrame.EXIT_ON_CLOSE));
 		frame.getContentPane().add(panel);
 		
 		// Add tables list the panel
-		tablesList = new JList<String>();
+		for (int i = 0; i < 5; i++)
+			tablesVector.add("Testing");
 		tablesList.setListData(tablesVector);
 		
 		/* ScrollPane was causing window to be tiny, TODO: fix LobbyUserWindow ScrollPane size */
@@ -51,7 +53,6 @@ public class ActiveTablesWindow {
 		//panel.add(usersPanel);
 		
 		panel.add(tablesList);
-		
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
 		frame.setSize(300, 400);
@@ -83,11 +84,35 @@ public class ActiveTablesWindow {
 	
 	/**
 	 * add is used when a new table is created
-	 * @param toAdd is the new table's ID number
+	 * @param toAdd is a String array where [0]=table id, [1]=player1 username, [2]=player2 username
 	 */
-	public void add(String toAdd)	{
-		tablesVector.add(toAdd);
-		// Change this so it displays in a nicer format
-		tablesList.setListData(tablesVector);
+	public void add(String[] toAdd)	{
+		// test whether table is already in the list before adding 
+		boolean alreadyThere = false;
+		int i = 0;
+		String tbl;
+		if (tablesVector.size() > 0) { // if the vector is empty, the table is obviously not there
+			while (!alreadyThere && i < tablesVector.size()){
+				tbl = tablesVector.get(i).substring(0,4);
+				if (tbl.equals(toAdd[0]))	{
+					alreadyThere = true;
+				}
+				i++;
+			}
+		}
+		// add the table and update the window
+		if (!alreadyThere){
+			String currentTable = toAdd[0] + ": " + toAdd[1] + " vs " + toAdd[2];
+			tablesVector.add(currentTable);
+			tablesList.setListData(tablesVector);
+			panel.removeAll();
+			panel.add(tablesList);
+			// Display the window.
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
+			frame.setSize(300, 400);
+			frame.setTitle("Active Tables");
+			frame.pack();
+			frame.setVisible(true);
+		}
 	}
 }

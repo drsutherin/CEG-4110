@@ -163,6 +163,7 @@ public class LobbyChat extends Peer implements Runnable {
 	
 	public void shutdown(){
 		shutdown = true;
+		chatWindow.closeWindow();
 	}
 	
 	
