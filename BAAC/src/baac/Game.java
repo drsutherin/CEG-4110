@@ -242,41 +242,41 @@ public class Game extends Peer implements Runnable {
 			gameGUI.setTurn(Turn.YOURS);
 			
 			//Remove all speech on the buffer before listening
-			while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
-				voce.SpeechInterface.popRecognizedString();
-			}
-			while (!quit) {
-				try {
-					Thread.sleep(200);
-				} catch (InterruptedException e) {
+			//while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
+				//voce.SpeechInterface.popRecognizedString();
+			//}
+			//while (!quit) {
+				//try {
+					//Thread.sleep(200);
+				//} catch (InterruptedException e) {
 
-				}
+				//}
 
-				while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
+				//while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
 
-					String s = voce.SpeechInterface.popRecognizedString();
+					//String s = voce.SpeechInterface.popRecognizedString();
 
 					// Checks the listener work "computer"
-					if (s.indexOf("computer") == 0) {
+					//if (s.indexOf("computer") == 0) {
 
-						s = s.replaceAll("one", "1");
-						s = s.replaceAll("two", "2");
-						s = s.replaceAll("three", "3");
-						s = s.replaceAll("four", "4");
-						s = s.replaceAll("five", "5");
-						s = s.replaceAll("six", "6");
-						s = s.replaceAll("seven", "7");
-						s = s.replaceAll("eight", "8");
-						s = s.replaceAll(" ", "");
-						s = s.replaceAll("move", " move ");
-						s = s.replaceAll("computer", "");
+						//s = s.replaceAll("one", "1");
+					//	s = s.replaceAll("two", "2");
+						//s = s.replaceAll("three", "3");
+						//s = s.replaceAll("four", "4");
+						//s = s.replaceAll("five", "5");
+						//s = s.replaceAll("six", "6");
+						//s = s.replaceAll("seven", "7");
+						//s = s.replaceAll("eight", "8");
+						//s = s.replaceAll(" ", "");
+						//s = s.replaceAll("move", " move ");
+						//s = s.replaceAll("computer", "");
 
-						System.out.println("You said: " + s);
+						//System.out.println("You said: " + s);
 						//voce.SpeechInterface.synthesize(s);
-						quit = true;
-					}
-				}
-			}
+						//quit = true;
+					//}
+				//}
+			//}
 			break;
 		case ServerMessage.ILLEGAL:
 			JOptionPane.showMessageDialog(frame, "Invalid move. Please try again.", "Invalid Move",
