@@ -118,7 +118,7 @@ public class ActiveTablesWindow {
 		}
 		tablesList.setListData(tablesVector);
 		panel.removeAll();
-		panel.add(tablesList);
+		panel.add(new JScrollPane(tablesList));
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
 		frame.setSize(300, 400);

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Observable;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -154,6 +155,7 @@ public class MainMenuWindow extends Observable {
 		frame.dispose(); 
 	}
 	public void setButtonColors(JButton rainbow){
+		rainbow.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 		rainbow.setBackground(Color.black);
 		rainbow.setForeground(Color.red);
 	}
