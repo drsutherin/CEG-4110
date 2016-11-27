@@ -40,13 +40,15 @@ public class MainMenuWindow extends Observable {
 	public void setupGUI() {
 		frame = new JFrame("Main Menu");
 		JPanel panel = new JPanel();
-		panel.setSize(300,800);
+		panel.setSize(800,800);
 		panel.setLayout(new BoxLayout(panel, JFrame.EXIT_ON_CLOSE));
 		frame.getContentPane().add(panel);
 		// Add buttons to menu window
 		
 		JLabel logoLabel = new JLabel();
 		logoLabel.setIcon(new ImageIcon(getClass().getResource("logo.png")));
+		logoLabel.setAlignmentX(logoLabel.CENTER_ALIGNMENT);
+
 		panel.add(logoLabel);
 		// Add the 'Start Game' button
 		JButton startButton = new JButton("Start Game");
@@ -58,6 +60,8 @@ public class MainMenuWindow extends Observable {
 			setChanged();
 			notifyObservers();
 		});
+		startButton.setAlignmentX(startButton.CENTER_ALIGNMENT);
+
 		panel.add(startButton);
 		
 		// Add the 'Join Game' button
@@ -69,6 +73,7 @@ public class MainMenuWindow extends Observable {
 			setChanged();
 			notifyObservers();
 		});
+		joinButton.setAlignmentX(joinButton.CENTER_ALIGNMENT);
 		panel.add(joinButton);
 		
 		// Add the 'Observe Game' button
@@ -80,6 +85,8 @@ public class MainMenuWindow extends Observable {
 			setChanged();
 			notifyObservers();
 		});
+		observeButton.setAlignmentX(observeButton.CENTER_ALIGNMENT);
+
 		panel.add(observeButton);
 
 		// Add the 'Start Private Chat' button
@@ -92,6 +99,8 @@ public class MainMenuWindow extends Observable {
 			setChanged();
 			notifyObservers();
 		});
+		chatButton.setAlignmentX(chatButton.CENTER_ALIGNMENT);
+
 		panel.add(chatButton);
 
 		// Add the 'Exit' button
@@ -104,6 +113,8 @@ public class MainMenuWindow extends Observable {
 			notifyObservers();
 		});
 		panel.add(exitButton);
+		exitButton.setAlignmentX(exitButton.CENTER_ALIGNMENT);
+
 		
 		
 		// Display the window.
