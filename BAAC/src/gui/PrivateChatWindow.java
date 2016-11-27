@@ -68,6 +68,8 @@ public class PrivateChatWindow extends Observable {
 		});
 		
 		
+		
+		
 		JButton closeButton = new JButton("Close");
 		closeButton.addActionListener(e -> {
 			stopChat();

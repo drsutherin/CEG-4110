@@ -1,8 +1,12 @@
 package gui;
 
+import java.awt.event.ActionEvent;
 import java.util.Observable;
 import java.util.Vector;
 import javax.swing.*;
+
+import com.sun.glass.events.KeyEvent;
+
 import chat.LobbyChat;
 
 /*********************************************************************************
@@ -18,6 +22,17 @@ public class LobbyChatWindow extends Observable {
 	private Vector<String> rawMessages;
 	private JList<String>messagesList;	
 	private JFrame frame;
+	JButton sendButton = new JButton("Send");
+	private KeyStroke keyStroke;
+	
+	private Action enterClick = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            sendButton.doClick();
+        }
+    };
+	
+	
 	
 	public LobbyChatWindow(LobbyChat l){
 		addObserver(l);
@@ -32,6 +47,8 @@ public class LobbyChatWindow extends Observable {
 	private void setupGUI()	{
 		// Initial window setup
 		frame = new JFrame("Lobby Chat");
+		
+		
 		
 		JPanel panel = new JPanel();
 		panel.setSize(300,400);
@@ -48,8 +65,13 @@ public class LobbyChatWindow extends Observable {
 		outbox.setLineWrap(true);
 		panel.add(outbox);
 		
+		keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+		Object actionKey = outbox.getInputMap(
+                JComponent.WHEN_FOCUSED).get(keyStroke);
+		
+		outbox.getActionMap().put(actionKey, enterClick);
 		// Add 'Send' button w/ listener that calls setChanged and notifyObservers
-		JButton sendButton = new JButton("Send");
+		
 		sendButton.addActionListener(e -> {
 			//TODO: Interact w/ BAAC
 			String msg = outbox.getText();
@@ -63,6 +85,8 @@ public class LobbyChatWindow extends Observable {
 			notifyObservers();
 		});
 		panel.add(sendButton);
+		
+		
 		
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons

@@ -103,7 +103,7 @@ public class MainMenuWindow extends Observable {
 		JButton chatButton = new JButton("Start Private Chat");
 		chatButton.addActionListener(e -> {
 			//TODO: Interact w/ BAAC
-			chatButton.setSize(300,400);
+			//chatButton.setSize(300,400);
 			System.out.println("Starting private chat...");
 			lastPressed = MenuButtonStatus.PRIVATE_CHAT;
 			setChanged();
