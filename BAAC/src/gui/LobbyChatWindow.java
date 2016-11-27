@@ -24,6 +24,7 @@ public class LobbyChatWindow extends Observable {
 	private Vector<String> rawMessages;
 	private JList<String>messagesList;	
 	private JFrame frame;
+	private SoundEffects sound = new SoundEffects();
 	private JButton sendButton = new JButton("Send");
 	private KeyStroke keyStroke;
 	private Action enterClick = new AbstractAction() {
@@ -115,6 +116,7 @@ public class LobbyChatWindow extends Observable {
 		String newText = incoming[0]+":    "+incoming[1];
 		viewableMessages.add(newText);
 		messagesList.setListData(viewableMessages);
+		sound.pop();
 	}
 	
 	/**

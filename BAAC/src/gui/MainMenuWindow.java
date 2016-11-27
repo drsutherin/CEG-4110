@@ -33,6 +33,7 @@ import baac.BAAC;
 public class MainMenuWindow extends Observable {
 	private MenuButtonStatus lastPressed = null;
 	private JFrame frame;
+	private SoundEffects sound = new SoundEffects();
 	
 	/**
 	 * Instantiating a MainMenuWindow causes it to run immediately
@@ -81,7 +82,7 @@ public class MainMenuWindow extends Observable {
 			//TODO: Interact w/ BAAC
 			System.out.println("Starting game...");
 			lastPressed = MenuButtonStatus.START;
-			play();
+			sound.click();
 			setChanged();
 			notifyObservers();
 		});
@@ -96,7 +97,7 @@ public class MainMenuWindow extends Observable {
 			//TODO: Interact w/ BAAC
 			System.out.println("Joining game...");
 			lastPressed = MenuButtonStatus.JOIN;
-			play();
+			sound.click();
 			setChanged();
 			notifyObservers();
 		});
@@ -112,7 +113,7 @@ public class MainMenuWindow extends Observable {
 			//TODO: Interact w/ BAAC
 			System.out.println("Observing game...");
 			lastPressed = MenuButtonStatus.OBSERVE;
-			play();
+			sound.click();
 			setChanged();
 			notifyObservers();
 		});
@@ -128,7 +129,7 @@ public class MainMenuWindow extends Observable {
 			//chatButton.setSize(300,400);
 			System.out.println("Starting private chat...");
 			lastPressed = MenuButtonStatus.PRIVATE_CHAT;
-			play();
+			sound.click();
 			setChanged();
 			notifyObservers();
 		});
@@ -143,7 +144,7 @@ public class MainMenuWindow extends Observable {
 			//TODO: Interact w/ BAAC
 			System.out.println("Exiting...");
 			lastPressed = MenuButtonStatus.EXIT_BAAC;
-			play();
+			sound.click();
 			setChanged();
 			notifyObservers();
 			
@@ -205,26 +206,5 @@ public class MainMenuWindow extends Observable {
 	/**
 	 * This method plays a click sound effect
 	 */
-	public void play(){
-		AudioInputStream clickSound = null;
-		Clip click = null;
-		try {
-			clickSound = AudioSystem.getAudioInputStream(getClass().getResource("click.wav"));
-		} catch (UnsupportedAudioFileException | IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		try {
-			click = AudioSystem.getClip();
-			click.open(clickSound);
-			click.start();
-		} catch (LineUnavailableException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
 
 }

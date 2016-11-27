@@ -3,6 +3,8 @@ package chat;
 import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
 
+
+
 import baac.*;
 import gui.LobbyChatWindow;
 
@@ -21,6 +23,7 @@ public class LobbyChat extends Peer implements Runnable {
 	private String username = Player.getUsername();
 	private PeerMediator mediator;
 	private boolean shutdown = false;
+	
 	
 	private Status playerStatus = Player.getUserStatus();
 	
@@ -166,6 +169,8 @@ public class LobbyChat extends Peer implements Runnable {
 		shutdown = true;
 		chatWindow.closeWindow();
 	}
+	
+
 	
 	
 	

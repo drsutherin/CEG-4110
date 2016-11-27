@@ -421,26 +421,6 @@ public class GameBoardWindow extends Observable {
 			e1.printStackTrace();
 		}
 	}
-	public void playGameStart(){
-		AudioInputStream clickSound = null;
-		Clip click = null;
-		try {
-			clickSound = AudioSystem.getAudioInputStream(getClass().getResource("gameStart.wav"));
-		} catch (UnsupportedAudioFileException | IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		try {
-			click = AudioSystem.getClip();
-			click.open(clickSound);
-			click.start();
-		} catch (LineUnavailableException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
+
 	
 }
