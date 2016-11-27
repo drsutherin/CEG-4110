@@ -476,7 +476,7 @@ public class BAAC extends Peer implements Runnable {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		MenuButtonStatus last;
-		if (Player.getUserStatus() == Status.IN_LOBBY)	{
+		if (Player.getUserStatus().equals(Status.IN_LOBBY))	{
 			last = mainMenu.getLastPressed();
 		}else {
 			last = inGameMenu.getLastPressed();
@@ -506,13 +506,23 @@ public class BAAC extends Peer implements Runnable {
 				//requestJoinGame(GameMode.PLAY, table);
 			break;
 		case OBSERVE:
-			
-			// join a game as an observer
+			// Change this so it displays in a nicer format:
 			// prompt user for which game to join
-				//int table = TableSelectionWindow.getTable();
-		
-			// attempt to join selected game
-				//requestJoinGame(GameMode.PLAY, table);
+			Vector<String> observableTables = new Vector<String>();
+			String[] thisTable = new String[3];
+			for (int i = 0; i < activeTables.size(); i++){
+				thisTable = activeTables.get(i);
+				if (thisTable[1].equals("free seat") || thisTable[2].equals("free seat"))	{
+					observableTables.add(thisTable[0]);
+				}
+			}
+			JFrame myjframe = new JFrame();
+	        String tableToObserve  = (String) JOptionPane.showInputDialog(myjframe, "Choose a Table to Observe:",
+	        		"Observe Table Dialog", 3, null, observableTables.toArray(), 0);	    
+			if (tableToObserve != null)	{
+		        requestJoinGame(GameMode.OBSERVE, tableToObserve);
+			}			
+
 			break;
 		case PRIVATE_CHAT:
 			JFrame frame = new JFrame();

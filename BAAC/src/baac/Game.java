@@ -350,8 +350,6 @@ public class Game extends Peer implements Runnable {
 		sendToServer.clear();
 		receiveFromServer.clear();
 
-		// close the GUI's
-		gameGUI.closeWindow();
 	}
 
 	/******************************************************/
