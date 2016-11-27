@@ -81,11 +81,13 @@ public class MainMenuWindow extends Observable {
 			//TODO: Interact w/ BAAC
 			System.out.println("Starting game...");
 			lastPressed = MenuButtonStatus.START;
+			play();
 			setChanged();
 			notifyObservers();
 		});
 		startButton.setAlignmentX(startButton.CENTER_ALIGNMENT);
 		panel.add(startButton);
+		
 		panel.add(Box.createRigidArea(gap));
 		
 		// Add the 'Join Game' button
@@ -144,6 +146,7 @@ public class MainMenuWindow extends Observable {
 			play();
 			setChanged();
 			notifyObservers();
+			
 			//give other threads time to execute before close
 			try {
 				Thread.sleep(3000);
