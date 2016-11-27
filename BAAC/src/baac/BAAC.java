@@ -41,6 +41,7 @@ public class BAAC extends Peer implements Runnable {
 	PeerMediator mediator = new PeerMediator();
 	LobbyChat lobbyChat = null;
 
+	ObservableGame obsGame = new ObservableGame(mediator);
 	Game theGame = new Game(mediator);
 	InGameMenuWindow inGameMenu;
 
@@ -275,7 +276,7 @@ public class BAAC extends Peer implements Runnable {
 					message = message.replace(ServerMessage.NEW_TBL + " ", "");
 					message = message.replace(" <EOM>", "");
 					message = message.replace("<EOM>", "");
-					sendToServer.put("109 " + Player.getUsername() + " " + message + " <EOM>");
+					queueUpToSendToServer("109 " + Player.getUsername() + " " + message + " <EOM>");
 					break;
 				case ServerMessage.TBL_JOINED:
 					//TODO: tell the user that they joined a new table
@@ -362,6 +363,7 @@ public class BAAC extends Peer implements Runnable {
 					for (int i = 0; i < tblHold.size(); i++){
 						String requestWhoOnTbl = "109 " + Player.getUsername() + " " + tblHold.get(i) + " <EOM>";
 						queueUpToSendToServer(requestWhoOnTbl);//need to use indirect method due to blocking issues
+						//Thread.sleep(100);//Was causing errors when not in debug mode so I slowed it down :(
 					}
 					break;
 				case ServerMessage.NOW_LEFT_LOBBY:
@@ -377,11 +379,11 @@ public class BAAC extends Peer implements Runnable {
 					message = message.replace("<EOM>", "");
 					String[] obsMessageArray = message.split(" ", 2);
 					String obsTableNum = obsMessageArray[1];
-					theGame.setTableID(obsTableNum);
+					obsGame.setTableID(obsTableNum);
 					//leave the game if you were in one (which you shouldn't be because the observe game
 					//button is not accessible from in-game menu
 					theGame.stopGame();
-					Thread obsThread = new Thread(theGame);
+					Thread obsThread = new Thread(obsGame);
 					//create the thread
 					Player.setUserStatus(Status.OBSERVING);
 					obsThread.start();
@@ -452,11 +454,9 @@ public class BAAC extends Peer implements Runnable {
 	 */
 	private void enterUsername(String out){
 		out.replaceAll("\n", "");
-		try {
-			sendToServer.put(out);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+
+		queueUpToSendToServer(out);
+
 		Player.setUsername(out);
 	}
 
@@ -513,10 +513,9 @@ public class BAAC extends Peer implements Runnable {
 			String[] thisTable = new String[3];
 			for (int i = 0; i < activeTables.size(); i++){
 				thisTable = activeTables.get(i);
-				if (thisTable[1].equals("free seat") || thisTable[2].equals("free seat"))	{
-					observableTables.add(thisTable[0]);
-				}
+				observableTables.add(thisTable[0]);
 			}
+			
 			JFrame myjframe = new JFrame();
 	        String tableToObserve  = (String) JOptionPane.showInputDialog(myjframe, "Choose a Table to Observe:",
 	        		"Observe Table Dialog", 3, null, observableTables.toArray(), 0);	    

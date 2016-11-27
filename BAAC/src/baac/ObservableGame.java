@@ -33,10 +33,9 @@ public class ObservableGame extends Peer implements Runnable {
 	 * @param tid is the table ID
 	 * @param passedMediator is the Mediator used to pass messages between peers
 	 */
-	public ObservableGame(String tid, PeerMediator passedMediator)	{
+	public ObservableGame(PeerMediator passedMediator)	{
 		player1 = "";
 		player2 = "";
-		tableID = tid;
 		mediator = passedMediator;
 		mediator.addPeerClass(this);
 	}
