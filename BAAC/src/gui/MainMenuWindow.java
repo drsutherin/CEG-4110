@@ -43,7 +43,7 @@ public class MainMenuWindow extends Observable {
 	 */
 	public void setupGUI() {
 		frame = new JFrame("Main Menu");
-		Dimension gap = new Dimension(5,5);
+		Dimension gap = new Dimension(2,2);
 		JPanel panel = new JPanel();
 		panel.setSize(800,800);
 		BoxLayout boxy = new BoxLayout(panel, JFrame.EXIT_ON_CLOSE);
@@ -78,8 +78,9 @@ public class MainMenuWindow extends Observable {
 			notifyObservers();
 		});
 		startButton.setAlignmentX(startButton.CENTER_ALIGNMENT);
-
 		panel.add(startButton);
+		panel.add(Box.createRigidArea(gap));
+		
 		// Add the 'Join Game' button
 		JButton joinButton = new JButton("Join Game");
 		joinButton.addActionListener(e -> {
@@ -91,7 +92,7 @@ public class MainMenuWindow extends Observable {
 		});
 		joinButton.setAlignmentX(joinButton.CENTER_ALIGNMENT);
 		panel.add(joinButton);
-		
+		panel.add(Box.createRigidArea(gap));
 		// Add the 'Observe Game' button
 		JButton observeButton = new JButton("Observe Game");
 		observeButton.addActionListener(e -> {
@@ -102,9 +103,9 @@ public class MainMenuWindow extends Observable {
 			notifyObservers();
 		});
 		observeButton.setAlignmentX(observeButton.CENTER_ALIGNMENT);
-
 		panel.add(observeButton);
-
+		panel.add(Box.createRigidArea(gap));
+		
 		// Add the 'Start Private Chat' button
 		JButton chatButton = new JButton("Start Private Chat");
 		chatButton.addActionListener(e -> {
@@ -116,8 +117,8 @@ public class MainMenuWindow extends Observable {
 			notifyObservers();
 		});
 		chatButton.setAlignmentX(chatButton.CENTER_ALIGNMENT);
-
 		panel.add(chatButton);
+		panel.add(Box.createRigidArea(gap));
 
 		// Add the 'Exit' button
 		JButton exitButton = new JButton("Exit");
@@ -130,9 +131,11 @@ public class MainMenuWindow extends Observable {
 		});
 		exitButton.setAlignmentX(exitButton.CENTER_ALIGNMENT);
 		panel.add(exitButton);
+		panel.add(Box.createRigidArea(gap));
 		
 		panel.setBackground(Color.GRAY);
 		
+		//make the buttons regular colors and sizes
 		regularButtons(startButton);
 		regularButtons(joinButton);
 		regularButtons(observeButton);
@@ -159,6 +162,12 @@ public class MainMenuWindow extends Observable {
 		frame.setVisible(false); 
 		frame.dispose(); 
 	}
+	
+	/**
+	 * Sets the button's color and size
+	 * 
+	 * @param theButton the button to be modified
+	 */
 	public void regularButtons(JButton theButton){
 		theButton.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 		theButton.setMaximumSize(new Dimension(160, theButton.getMinimumSize().height));

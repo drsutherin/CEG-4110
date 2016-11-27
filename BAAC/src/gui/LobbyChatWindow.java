@@ -22,9 +22,8 @@ public class LobbyChatWindow extends Observable {
 	private Vector<String> rawMessages;
 	private JList<String>messagesList;	
 	private JFrame frame;
-	JButton sendButton = new JButton("Send");
+	private JButton sendButton = new JButton("Send");
 	private KeyStroke keyStroke;
-	
 	private Action enterClick = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {

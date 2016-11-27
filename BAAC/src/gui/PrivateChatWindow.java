@@ -1,8 +1,12 @@
 package gui;
 
+import java.awt.event.ActionEvent;
 import java.util.Observable;
 import java.util.Vector;
 import javax.swing.*;
+
+import com.sun.glass.events.KeyEvent;
+
 import chat.PrivateChat;
 
 /*********************************************************************************
@@ -20,6 +24,14 @@ public class PrivateChatWindow extends Observable {
 	String chatBuddy;
 	Thread myThread;
 	PrivateChat myPChat;
+	private KeyStroke keyStroke;
+	private JButton sendButton = new JButton("Send");
+	private Action enterClick = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            sendButton.doClick();
+        }
+    };
 	
 	public PrivateChatWindow(PrivateChat p, String buddy){
 		addObserver(p);
@@ -53,7 +65,13 @@ public class PrivateChatWindow extends Observable {
 		panel.add(outbox);
 		
 		// Add 'Send' button w/ listener that calls setChanged and notifyObservers
-		JButton sendButton = new JButton("Send");
+		
+		keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+		Object actionKey = outbox.getInputMap(
+                JComponent.WHEN_FOCUSED).get(keyStroke);
+		
+		outbox.getActionMap().put(actionKey, enterClick);
+		
 		sendButton.addActionListener(e -> {
 			//TODO: Interact w/ BAAC
 			String msg = outbox.getText();
