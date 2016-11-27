@@ -58,15 +58,15 @@ public class PeerMediator implements Mediator {
 	public synchronized void addPeerClass(Peer thisClass) {
 		boolean done = false;
 			while(!done){
-			try{
-				//try to add, wait 5 millisec then release the block and try again
-				peerList.offer(thisClass, (long) 5.0, TimeUnit.MILLISECONDS);
-				done = true;
-			} catch (InterruptedException e){
-				e.printStackTrace();
-				done = true;
-			}
-		}		
+				try{
+					//try to add, wait 5 millisec then release the block and try again
+					peerList.offer(thisClass, (long) 5.0, TimeUnit.MILLISECONDS);
+					done = true;
+				} catch (InterruptedException e){
+					e.printStackTrace();
+					done = true;
+				}
+			}		
 	}
 
 	/**

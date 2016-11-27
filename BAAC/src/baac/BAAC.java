@@ -7,6 +7,7 @@ import chat.*;
 import gui.*;
 
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -467,8 +468,11 @@ public class BAAC extends Peer implements Runnable {
 	 */
 	@Override
 	public void receiveFromMediator(String message) {
+		Boolean success = false;
+		while(!success)
 		try {
-			receiveFromServer.put(message);
+			receiveFromServer.offer(message, (long) 200.0, TimeUnit.MILLISECONDS); 
+			success = true;
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

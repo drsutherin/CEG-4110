@@ -117,5 +117,4 @@ public class MainMenuWindow extends Observable {
 		frame.setVisible(false); 
 		frame.dispose(); 
 	}
-
 }
