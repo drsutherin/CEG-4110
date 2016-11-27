@@ -64,7 +64,6 @@ public class LobbyChatWindow extends Observable {
 		messagePanel.setForeground(Color.black);
 		panel.add(messagePanel);
 		messagePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.WHITE));
-		//messagePanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 		
 		// Add text box for user input
 		JTextArea outbox = new JTextArea(5,50);

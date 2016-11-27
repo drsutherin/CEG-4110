@@ -114,7 +114,7 @@ public class GameBoardWindow extends Observable {
 		frame.setSize(300, 400);
 		frame.setTitle("Game Board");
 		frame.pack();
-		playGameStart();
+		//playGameStart();
 		frame.setVisible(true);
 	}
 	

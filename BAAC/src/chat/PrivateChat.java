@@ -75,9 +75,9 @@ public class PrivateChat extends Peer implements Runnable {
 				incomingMessage = incomingMessage.replace("<EOM>", ""); //don't pass EOM to the GUI
 				String inMessage[] = incomingMessage.split(" ", 4);
 				senderName = inMessage[1];
-				if (inMessage[3].equals("1") && senderName.equals(chatBuddy)){
-					senderMessage = inMessage[2];
-					String messageToUI[] = {senderName, senderMessage};
+				if (inMessage[2].equals("1") && senderName.equals(chatBuddy)){
+					senderMessage = inMessage[3];
+					String messageToUI[] = new String[]{senderName, senderMessage};
 					displayInUI(messageToUI);
 				}
 			} catch(ArrayIndexOutOfBoundsException e){

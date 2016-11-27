@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.Observable;
 import java.util.Vector;
@@ -47,10 +49,11 @@ public class PrivateChatWindow extends Observable {
 	 */
 	private void setupGUI()	{
 		// Initial window setup
-		JFrame frame = new JFrame("Private Chat");
+		JFrame frame = new JFrame("Private Chat With " + chatBuddy);
 		
 		JPanel panel = new JPanel();
-		panel.setSize(300,400);
+		panel.setSize(300,300);
+		panel.setPreferredSize(new Dimension(300,300));
 		panel.setLayout(new BoxLayout(panel, JFrame.EXIT_ON_CLOSE));
 		frame.getContentPane().add(panel);
 		
@@ -59,8 +62,17 @@ public class PrivateChatWindow extends Observable {
 		JScrollPane messagePanel = new JScrollPane(messagesList);
 		panel.add(messagePanel);
 		
+		messagesList.setBackground(Color.gray);
+		messagePanel.setForeground(Color.black);
+		panel.add(messagePanel);
+		messagePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.WHITE));
+		
+		
 		// Add text box for user input
 		JTextArea outbox = new JTextArea(5,50);
+		outbox.setBackground(Color.gray);
+		outbox.setForeground(Color.black);
+		outbox.setMaximumSize(new Dimension(Integer.MAX_VALUE, outbox.getMinimumSize().height));
 		outbox.setLineWrap(true);
 		panel.add(outbox);
 		
@@ -111,7 +123,7 @@ public class PrivateChatWindow extends Observable {
 	 */
 	public void addMessage(String[] incoming){
 		rawMessages.add(incoming[1]);
-		String newText = chatBuddy+":    "+incoming;
+		String newText = chatBuddy + ":    "+ incoming[1];
 		viewableMessages.add(newText);
 		messagesList.setListData(viewableMessages);
 	}

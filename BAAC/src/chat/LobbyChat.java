@@ -60,8 +60,8 @@ public class LobbyChat extends Peer implements Runnable {
 		//splits the message into three parts based on the first two spaces it sees,
 		// index = 0 - is the number 101 - not used
 		// index = 1 - the sender's name
-		// index = 3 - the code 0 for public, 1 for private
-		// index = 4 - the sender's message
+		// index = 2 - the code 0 for public, 1 for private
+		// index = 3 - the sender's message
 		String senderName = "";
 		String senderMessage = "";
 		String code = incomingMessage.substring(0, 3);
@@ -72,17 +72,18 @@ public class LobbyChat extends Peer implements Runnable {
 				incomingMessage = incomingMessage.replace("\r ", " ");//Incoming message looks like: 201 Name\r 0 this is a message <EOM>
 				incomingMessage = incomingMessage.replace("<EOM>", ""); //don't pass EOM to the GUI
 				String inMessage[] = incomingMessage.split(" ");
-				senderName = inMessage[1];
-				String username = Player.getUsername();
-				if (!senderName.equals(username))	{
-					for (int i = 3; i < inMessage.length; i++)	{
-						senderMessage = senderMessage + " " + inMessage[i];
-					}
-					String messageToUI[] = new String[]{senderName, senderMessage};
-					//only display the message if the user is in the lobby
-					if (Player.getUserStatus() == Status.IN_LOBBY){
-						displayInUI(messageToUI);
-					}
+				//System.out.println("LOOK AT THIS, SHOULD BE 1 or 0" + inMessage[2]);
+				if (inMessage[2].equals("0")){
+					senderName = inMessage[1];
+					String username = Player.getUsername();
+						if (!senderName.equals(username)){
+							senderMessage = inMessage[3];
+							String messageToUI[] = new String[]{senderName, senderMessage};
+							//only display the message if the user is in the lobby
+							if (Player.getUserStatus() == Status.IN_LOBBY){
+								displayInUI(messageToUI);
+							}
+						}
 				}
 				break;
 			} catch(ArrayIndexOutOfBoundsException e){
