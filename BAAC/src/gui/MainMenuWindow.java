@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.util.Observable;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -51,6 +56,8 @@ public class MainMenuWindow extends Observable {
 		panel.setLayout(boxy);
 		frame.getContentPane().add(panel);
 		
+
+
 		//adding title and logo to main menu
 		JLabel logoLabel = new JLabel();
 		JLabel sparkles = new JLabel();
@@ -87,23 +94,29 @@ public class MainMenuWindow extends Observable {
 			//TODO: Interact w/ BAAC
 			System.out.println("Joining game...");
 			lastPressed = MenuButtonStatus.JOIN;
+			play();
 			setChanged();
 			notifyObservers();
 		});
 		joinButton.setAlignmentX(joinButton.CENTER_ALIGNMENT);
 		panel.add(joinButton);
+		
 		panel.add(Box.createRigidArea(gap));
+		
+		
 		// Add the 'Observe Game' button
 		JButton observeButton = new JButton("Observe Game");
 		observeButton.addActionListener(e -> {
 			//TODO: Interact w/ BAAC
 			System.out.println("Observing game...");
 			lastPressed = MenuButtonStatus.OBSERVE;
+			play();
 			setChanged();
 			notifyObservers();
 		});
 		observeButton.setAlignmentX(observeButton.CENTER_ALIGNMENT);
 		panel.add(observeButton);
+		
 		panel.add(Box.createRigidArea(gap));
 		
 		// Add the 'Start Private Chat' button
@@ -113,9 +126,11 @@ public class MainMenuWindow extends Observable {
 			//chatButton.setSize(300,400);
 			System.out.println("Starting private chat...");
 			lastPressed = MenuButtonStatus.PRIVATE_CHAT;
+			play();
 			setChanged();
 			notifyObservers();
 		});
+		
 		chatButton.setAlignmentX(chatButton.CENTER_ALIGNMENT);
 		panel.add(chatButton);
 		panel.add(Box.createRigidArea(gap));
@@ -126,6 +141,7 @@ public class MainMenuWindow extends Observable {
 			//TODO: Interact w/ BAAC
 			System.out.println("Exiting...");
 			lastPressed = MenuButtonStatus.EXIT_BAAC;
+			play();
 			setChanged();
 			notifyObservers();
 			//give other threads time to execute before close
@@ -181,6 +197,31 @@ public class MainMenuWindow extends Observable {
 		theButton.setMaximumSize(new Dimension(160, theButton.getMinimumSize().height));
 		theButton.setBackground(Color.black);
 		theButton.setForeground(Color.red);
+	}
+	
+	/**
+	 * This method plays a click sound effect
+	 */
+	public void play(){
+		AudioInputStream clickSound = null;
+		Clip click = null;
+		try {
+			clickSound = AudioSystem.getAudioInputStream(getClass().getResource("click.wav"));
+		} catch (UnsupportedAudioFileException | IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		try {
+			click = AudioSystem.getClip();
+			click.open(clickSound);
+			click.start();
+		} catch (LineUnavailableException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 }
