@@ -1,9 +1,16 @@
 package gui;
+import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import baac.BAAC;
@@ -32,17 +39,18 @@ public class MainMenuWindow extends Observable {
 	 */
 	public void setupGUI() {
 		frame = new JFrame("Main Menu");
-		
 		JPanel panel = new JPanel();
-		panel.setSize(300,400);
+		panel.setSize(300,800);
 		panel.setLayout(new BoxLayout(panel, JFrame.EXIT_ON_CLOSE));
 		frame.getContentPane().add(panel);
-		
 		// Add buttons to menu window
 		
+		JLabel logoLabel = new JLabel();
+		logoLabel.setIcon(new ImageIcon(getClass().getResource("logo.png")));
+		panel.add(logoLabel);
 		// Add the 'Start Game' button
 		JButton startButton = new JButton("Start Game");
-		startButton.setSize(280,100);
+		//startButton.setSize(280,100);
 		startButton.addActionListener(e -> {
 			//TODO: Interact w/ BAAC
 			System.out.println("Starting game...");
@@ -78,6 +86,7 @@ public class MainMenuWindow extends Observable {
 		JButton chatButton = new JButton("Start Private Chat");
 		chatButton.addActionListener(e -> {
 			//TODO: Interact w/ BAAC
+			chatButton.setSize(300,400);
 			System.out.println("Starting private chat...");
 			lastPressed = MenuButtonStatus.PRIVATE_CHAT;
 			setChanged();
@@ -99,7 +108,7 @@ public class MainMenuWindow extends Observable {
 		
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
-		frame.setSize(300, 400);
+		frame.setSize(300, 800);
 		frame.setTitle("Main Menu");
 		frame.pack();
 		frame.setVisible(true);
