@@ -64,7 +64,6 @@ public class PeerMediator implements Mediator {
 					done = true;
 				} catch (InterruptedException e){
 					e.printStackTrace();
-					done = true;
 				}
 			}		
 	}

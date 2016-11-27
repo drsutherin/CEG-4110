@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -51,7 +52,6 @@ public class ServerInterface extends Peer implements Runnable {
 	//private BlockingQueue<String> clientMessageQueue;
 	
 	private BlockingQueue<String> messagesFromClient = new LinkedBlockingQueue<String>();
-	private BlockingQueue<String> messagesToClient = new LinkedBlockingQueue<String>();
 
 	/***************************************************************************
 	*METHOD: Constructor()
@@ -204,7 +204,11 @@ public class ServerInterface extends Peer implements Runnable {
 	private String popSendMessage() {
 		String message = null;
 		try {
-			message = messagesFromClient.take();
+			Boolean success = false;
+			while (!success){
+				message = messagesFromClient.poll(100, TimeUnit.MILLISECONDS);
+				success = true;
+			}
 			
 		} catch (InterruptedException e) {
 			// TODO print to log
@@ -240,7 +244,11 @@ public class ServerInterface extends Peer implements Runnable {
 	 * ************************************************************************/
 	public void pushSendMessage(String message) {		
 		try {
-			messagesFromClient.put(message);
+			Boolean success = false;
+			while (!success){
+				messagesFromClient.offer(message, 100, TimeUnit.MICROSECONDS );
+				success = true;
+			}
 		} catch (InterruptedException e) {
 			// TODO print to log
 		}

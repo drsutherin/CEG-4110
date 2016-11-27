@@ -211,10 +211,16 @@ public class BAAC extends Peer implements Runnable {
 	 * Looks at all the messages from server and determines which ones to process
 	 */
 	private void decodeMessageFromServer(){
-		String message;
+		String message = "";
 		String out;
+		
 		try {
-			message = receiveFromServer.take();
+			//prevents deadlock
+			Boolean success = false;
+			while (!success){
+				message = receiveFromServer.poll(100, TimeUnit.MILLISECONDS);
+				success = true;
+			}
 			//this method will only use codes starting with 2 as those are ones that are received from the server
 			//System.out.println(message);
 			String code = message.substring(0, 3);
@@ -575,8 +581,4 @@ public class BAAC extends Peer implements Runnable {
 		activeTablesWindow.closeWindow();
 	}
 	
-
-	
-
-
 }
