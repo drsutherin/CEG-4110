@@ -46,9 +46,10 @@ public class MainMenuWindow extends Observable {
 		// Add buttons to menu window
 		
 		JLabel logoLabel = new JLabel();
+		JLabel sparkles = new JLabel();
 		logoLabel.setIcon(new ImageIcon(getClass().getResource("logo.png")));
 		logoLabel.setAlignmentX(logoLabel.CENTER_ALIGNMENT);
-
+		
 		panel.add(logoLabel);
 		// Add the 'Start Game' button
 		JButton startButton = new JButton("Start Game");
