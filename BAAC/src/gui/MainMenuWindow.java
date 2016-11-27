@@ -128,6 +128,14 @@ public class MainMenuWindow extends Observable {
 			lastPressed = MenuButtonStatus.EXIT_BAAC;
 			setChanged();
 			notifyObservers();
+			//give other threads time to execute before close
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			System.exit(0);
 		});
 		exitButton.setAlignmentX(exitButton.CENTER_ALIGNMENT);
 		panel.add(exitButton);
