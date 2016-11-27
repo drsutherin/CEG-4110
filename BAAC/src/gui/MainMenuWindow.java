@@ -1,5 +1,6 @@
 package gui;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class MainMenuWindow extends Observable {
 		JLabel logoLabel = new JLabel();
 		JLabel sparkles = new JLabel();
 		JLabel titleLabel = new JLabel();
-		titleLabel.setIcon(new ImageIcon(getClass().getResource("title.png")));
+		titleLabel.setIcon(new ImageIcon(getClass().getResource("title2.png")));
 		logoLabel.setIcon(new ImageIcon(getClass().getResource("logo.png")));
 		sparkles.setIcon(new ImageIcon(getClass().getResource("sparkle.gif")));
 		titleLabel.setAlignmentX(titleLabel.CENTER_ALIGNMENT);
@@ -124,7 +125,7 @@ public class MainMenuWindow extends Observable {
 		});
 		panel.add(exitButton);
 		exitButton.setAlignmentX(exitButton.CENTER_ALIGNMENT);
-
+		panel.setBackground(Color.GRAY);
 		
 		
 		// Display the window.
