@@ -494,8 +494,15 @@ public class BAAC extends Peer implements Runnable {
 			String[] currentTable = new String[3];
 			for (int i = 0; i < activeTables.size(); i++){
 				currentTable = activeTables.get(i);
-				if (currentTable[1].equals("free seat") || currentTable[2].equals("free seat"))	{
-					joinableTables.add(currentTable[0]);
+				//if both are empty tell user in join dialog that the table is free
+				if (currentTable[1].equals("free seat") && currentTable[2].equals("free seat")){
+					joinableTables.add(currentTable[0] + ": Free Table");
+				}
+				//if a seat is available with an opponent tell the user who they will play against
+				else if (currentTable[1].equals("free seat")){
+					joinableTables.add(currentTable[0] + ": vs" + currentTable[2]);
+				}else if (currentTable[2].equals("free seat")){
+					joinableTables.add(currentTable[0] + ": vs" + currentTable[1]);
 				}
 			}
 			JFrame jframe = new JFrame();
