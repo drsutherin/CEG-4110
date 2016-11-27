@@ -1,6 +1,7 @@
 package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.util.Observable;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,9 +43,12 @@ public class MainMenuWindow extends Observable {
 	 */
 	public void setupGUI() {
 		frame = new JFrame("Main Menu");
+		Dimension gap = new Dimension(5,5);
 		JPanel panel = new JPanel();
 		panel.setSize(800,800);
-		panel.setLayout(new BoxLayout(panel, JFrame.EXIT_ON_CLOSE));
+		BoxLayout boxy = new BoxLayout(panel, JFrame.EXIT_ON_CLOSE);
+		boxy.preferredLayoutSize(panel);
+		panel.setLayout(boxy);
 		frame.getContentPane().add(panel);
 		
 		//adding title and logo to main menu
@@ -75,7 +80,6 @@ public class MainMenuWindow extends Observable {
 		startButton.setAlignmentX(startButton.CENTER_ALIGNMENT);
 
 		panel.add(startButton);
-		
 		// Add the 'Join Game' button
 		JButton joinButton = new JButton("Join Game");
 		joinButton.addActionListener(e -> {
@@ -124,15 +128,16 @@ public class MainMenuWindow extends Observable {
 			setChanged();
 			notifyObservers();
 		});
-		panel.add(exitButton);
 		exitButton.setAlignmentX(exitButton.CENTER_ALIGNMENT);
+		panel.add(exitButton);
+		
 		panel.setBackground(Color.GRAY);
 		
-		setButtonColors(startButton);
-		setButtonColors(joinButton);
-		setButtonColors(observeButton);
-		setButtonColors(chatButton);
-		setButtonColors(exitButton);
+		regularButtons(startButton);
+		regularButtons(joinButton);
+		regularButtons(observeButton);
+		regularButtons(chatButton);
+		regularButtons(exitButton);
 		
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
@@ -154,10 +159,11 @@ public class MainMenuWindow extends Observable {
 		frame.setVisible(false); 
 		frame.dispose(); 
 	}
-	public void setButtonColors(JButton rainbow){
-		rainbow.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-		rainbow.setBackground(Color.black);
-		rainbow.setForeground(Color.red);
+	public void regularButtons(JButton theButton){
+		theButton.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+		theButton.setMaximumSize(new Dimension(160, theButton.getMinimumSize().height));
+		theButton.setBackground(Color.black);
+		theButton.setForeground(Color.red);
 	}
 
 }
