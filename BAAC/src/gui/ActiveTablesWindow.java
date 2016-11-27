@@ -88,6 +88,7 @@ public class ActiveTablesWindow {
 	public void add(String[] toAdd)	{
 		// test whether table is already in the list before adding 
 		boolean alreadyThere = false;
+		String currentTable = "";
 		int i = 0;
 		String tbl;
 		if (tablesVector.size() > 0) { // if the vector is empty, the table is obviously not there
@@ -102,7 +103,13 @@ public class ActiveTablesWindow {
 			}
 		}
 		// add the table and update the window
-		String currentTable = toAdd[0] + ": " + toAdd[1] + " vs " + toAdd[2];		
+		if (toAdd[1].equals(toAdd[2])){
+			//since same usernames are not allowed if these equal we can assume that
+			//it is "free seat" in both
+			currentTable = toAdd[0] + ": Free Table"; 
+		}else{
+			currentTable = toAdd[0] + ": " + toAdd[1] + " vs " + toAdd[2];
+		}
 		if (!alreadyThere){
 			tablesVector.add(currentTable);
 		}
