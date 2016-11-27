@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.Observable;
 import java.util.Vector;
@@ -50,19 +52,28 @@ public class LobbyChatWindow extends Observable {
 		
 		
 		JPanel panel = new JPanel();
-		panel.setSize(300,400);
+		panel.setSize(300,300);
+		panel.setPreferredSize(new Dimension(300,300));
 		panel.setLayout(new BoxLayout(panel, JFrame.EXIT_ON_CLOSE));
 		frame.getContentPane().add(panel);
-		
+		panel.setBackground(Color.GRAY);
 		// Add list for chat text
 		messagesList = new JList<String>();
 		JScrollPane messagePanel = new JScrollPane(messagesList);
+		messagesList.setBackground(Color.gray);
+		messagePanel.setForeground(Color.black);
 		panel.add(messagePanel);
+		messagePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.WHITE));
+		//messagePanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 		
 		// Add text box for user input
 		JTextArea outbox = new JTextArea(5,50);
 		outbox.setLineWrap(true);
+		outbox.setBackground(Color.gray);
+		outbox.setForeground(Color.black);
+		outbox.setMaximumSize(new Dimension(Integer.MAX_VALUE, outbox.getMinimumSize().height));
 		panel.add(outbox);
+		
 		
 		keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
 		Object actionKey = outbox.getInputMap(
@@ -83,13 +94,14 @@ public class LobbyChatWindow extends Observable {
 			setChanged();
 			notifyObservers();
 		});
+		sendButton.setAlignmentX(sendButton.CENTER_ALIGNMENT);
 		panel.add(sendButton);
 		
 		
 		
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
-		frame.setSize(300, 400);
+		frame.setSize(300, 300);
 		frame.setTitle("Lobby Chat");
 		frame.pack();
 		frame.setVisible(true);
