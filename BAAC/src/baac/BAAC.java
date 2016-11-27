@@ -506,6 +506,7 @@ public class BAAC extends Peer implements Runnable {
 				//requestJoinGame(GameMode.PLAY, table);
 			break;
 		case OBSERVE:
+			
 			// join a game as an observer
 			// prompt user for which game to join
 				//int table = TableSelectionWindow.getTable();
