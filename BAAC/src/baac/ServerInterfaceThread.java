@@ -83,6 +83,8 @@ public class ServerInterfaceThread extends Thread {
 						message = message + (char)streamIn.read();
 						//System.out.println("After");
 					}
+					System.out.println("THIS IS RECEIVED FROM SERVER");
+					System.out.println(message);
 					//System.out.println("Double after");
 					message = message.replaceAll("\n", "");
 					//client.pushReceiveMessage(message);

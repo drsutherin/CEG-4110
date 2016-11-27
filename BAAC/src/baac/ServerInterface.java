@@ -112,6 +112,8 @@ public class ServerInterface extends Peer implements Runnable {
 				//this.pushSendMessage(message);
 				while (!messagesFromClient.isEmpty()){
 					String messageToSend = this.popSendMessage();
+					System.out.println("THIS IS GOING TO SERVER");
+					System.out.println(messageToSend);
 					this.streamOut.print(messageToSend);
 					streamOut.flush();
 					if (messageToSend.startsWith("108")){

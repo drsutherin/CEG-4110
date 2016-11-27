@@ -403,11 +403,13 @@ public class BAAC extends Peer implements Runnable {
 					System.out.println("NET EXCEPTION");
 					break;
 				case ServerMessage.NAME_IN_USE:
-				case ServerMessage.BAD_NAME:
-					JFrame frame2 = new JFrame("Username Error");
 			        // prompt the user to enter their name
-			        out = JOptionPane.showInputDialog(frame2, "Username error. Re-enter username:").replaceAll("\n","");
-					enterUsername(out);
+					JOptionPane.showMessageDialog(null, "Username Error, Name Already In Use:\n Please Restart Client", "Username Error", JOptionPane.ERROR_MESSAGE);
+					break;
+				case ServerMessage.BAD_NAME:
+			        // prompt the user to enter their name
+					JOptionPane.showMessageDialog(null, "Username Error, Name Already Is Bad (did you have spaces?):\n Please Restart Client", "Username Error", JOptionPane.ERROR_MESSAGE);
+					break;
 				case ServerMessage.TBL_FULL:
 					System.out.println("Cannot join, table is full");
 					break;
