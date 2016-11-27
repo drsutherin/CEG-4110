@@ -127,6 +127,11 @@ public class MainMenuWindow extends Observable {
 		exitButton.setAlignmentX(exitButton.CENTER_ALIGNMENT);
 		panel.setBackground(Color.GRAY);
 		
+		setButtonColors(startButton);
+		setButtonColors(joinButton);
+		setButtonColors(observeButton);
+		setButtonColors(chatButton);
+		setButtonColors(exitButton);
 		
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
@@ -147,6 +152,10 @@ public class MainMenuWindow extends Observable {
 	public void closeWindow(){
 		frame.setVisible(false); 
 		frame.dispose(); 
+	}
+	public void setButtonColors(JButton rainbow){
+		rainbow.setBackground(Color.black);
+		rainbow.setForeground(Color.red);
 	}
 
 }
