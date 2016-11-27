@@ -360,7 +360,8 @@ public class BAAC extends Peer implements Runnable {
 						}
 					}
 					for (int i = 0; i < tblHold.size(); i++){
-						sendToServer.put("109 " + Player.getUsername() + " " + tblHold.get(i) + " <EOM>");
+						String requestWhoOnTbl = "109 " + Player.getUsername() + " " + tblHold.get(i) + " <EOM>";
+						queueUpToSendToServer(requestWhoOnTbl);//need to use indirect method due to blocking issues
 					}
 					break;
 				case ServerMessage.NOW_LEFT_LOBBY:
