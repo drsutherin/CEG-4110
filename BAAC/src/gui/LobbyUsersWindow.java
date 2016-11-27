@@ -1,6 +1,7 @@
 package gui;
 import javax.swing.*;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.Vector;
 
@@ -50,7 +51,7 @@ public class LobbyUsersWindow {
 //		usersPanel.setSize(new Dimension(50,100));
 //		usersPanel.add(lobbyUsersList);	
 		
-		panel.add(lobbyUsersList);
+		panel.add(new JScrollPane(lobbyUsersList));
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
 		frame.setSize(300, 400);
@@ -70,7 +71,7 @@ public class LobbyUsersWindow {
 		}
 		lobbyUsersList.setListData(lobbyUsersVector);
 		panel.removeAll();
-		panel.add(lobbyUsersList);
+		panel.add(new JScrollPane(lobbyUsersList));
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
 		frame.setSize(300, 400);
@@ -88,7 +89,7 @@ public class LobbyUsersWindow {
 			lobbyUsersVector.remove(toRemove);
 			lobbyUsersList.setListData(lobbyUsersVector);
 			panel.removeAll();
-			panel.add(lobbyUsersList);
+			panel.add(new JScrollPane(lobbyUsersList));
 			// Display the window.
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
 			frame.setSize(300, 400);
@@ -106,7 +107,7 @@ public class LobbyUsersWindow {
 		lobbyUsersVector.add(toAdd);
 		lobbyUsersList.setListData(lobbyUsersVector);
 		panel.removeAll();
-		panel.add(lobbyUsersList);
+		panel.add(new JScrollPane(lobbyUsersList));
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
 		frame.setSize(300, 400);
