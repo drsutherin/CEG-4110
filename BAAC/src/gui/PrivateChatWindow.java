@@ -10,6 +10,7 @@ import javax.swing.*;
 import com.sun.glass.events.KeyEvent;
 
 import chat.PrivateChat;
+import chat.SoundEffects;
 
 /*********************************************************************************
  * The LobbyUsersWindow displays a list messages and supplies a text area and 
@@ -27,6 +28,7 @@ public class PrivateChatWindow extends Observable {
 	Thread myThread;
 	PrivateChat myPChat;
 	private KeyStroke keyStroke;
+	private SoundEffects sound = new SoundEffects();
 	private JButton sendButton = new JButton("Send");
 	private Action enterClick = new AbstractAction() {
         @Override
@@ -126,6 +128,7 @@ public class PrivateChatWindow extends Observable {
 		String newText = chatBuddy + ":    "+ incoming[1];
 		viewableMessages.add(newText);
 		messagesList.setListData(viewableMessages);
+		sound.pop();
 	}
 	
 	/**
