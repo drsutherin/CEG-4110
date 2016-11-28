@@ -125,3 +125,4 @@ Since Java is a pass-by-reference language, all classes will be passed the BAAC 
 * "DID YOU TOUCH MY BANANA?!?"
 * "Night sass"
 * "Porn?"
+* "Who wants to play a game with themselves so I can watch?"
