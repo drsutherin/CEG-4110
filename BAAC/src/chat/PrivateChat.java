@@ -76,7 +76,6 @@ public class PrivateChat extends Peer implements Runnable {
 				String inMessage[] = incomingMessage.split(" ", 4);
 				senderName = inMessage[1];
 				if (inMessage[2].equals("1") && senderName.equals(chatBuddy)){
-					System.out.println("IF TWICE THEN BAD");
 					for (int i = 3; i < inMessage.length; i++)	{
 						 senderMessage = senderMessage + " " + inMessage[i];
 					}

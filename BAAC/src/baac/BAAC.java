@@ -276,19 +276,18 @@ public class BAAC extends Peer implements Runnable {
 					
 					for (int i = 0; i < privateChatList.size(); i++) {
 						if (privateChatList.get(i).getBuddy().equals(sender)) {
-							privateChatList.get(i).formatMessageFromServer(message);
-							System.out.println("I am ");
+							//privateChatList.get(i).formatMessageFromServer(message);
+							//System.out.println("I am ");
 							found = true;
 							break;
 						}
 					}
 					if (!found) {
 						PrivateChat newChat = new PrivateChat(mediator, sender);
-						newChat.formatMessageFromServer(message);
 						privateChatList.add(newChat);
 						Thread privateChatThread = new Thread(newChat);
 						privateChatThread.start();
-						//privateChatList.get(privateChatList.size() - 1).formatMessageFromServer(message);
+						newChat.formatMessageFromServer(message);
 					}
 				} else {
 					// lobby.formatMessageFromServer(message);
