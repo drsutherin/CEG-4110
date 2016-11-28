@@ -10,7 +10,6 @@ import javax.swing.*;
 import com.sun.glass.events.KeyEvent;
 
 import chat.PrivateChat;
-import chat.SoundEffects;
 
 /*********************************************************************************
  * The LobbyUsersWindow displays a list messages and supplies a text area and 
