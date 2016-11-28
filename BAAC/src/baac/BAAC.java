@@ -568,8 +568,23 @@ public class BAAC extends Peer implements Runnable {
 			break;
 		case PRIVATE_CHAT:
 			JFrame frame = new JFrame();
-			String chatBuddy = (String) JOptionPane.showInputDialog(frame, "Choose a chat buddy:", "Private Chat Setup",
-					3, null, activeUsers.toArray(), activeUsers.get(0));
+			String chatBuddy = null;
+			Vector<String> usersNotMe = new Vector<String>();
+			//add all users that are not the current user to a vector
+			for (int i = 0; i < activeUsers.size(); i++){
+				if (!activeUsers.get(i).equals(Player.getUsername())){
+					usersNotMe.add(activeUsers.get(i));
+				}
+			}
+			//if there are other users show the dialog, otherwise show a message saying there are no other users
+			if (!usersNotMe.isEmpty()){
+				chatBuddy = (String) JOptionPane.showInputDialog(frame, "Choose a chat buddy:", "Private Chat Setup",
+					3, null, usersNotMe.toArray(), usersNotMe.get(0));
+			}else{
+				JOptionPane.showMessageDialog(null,
+						"No other users logged on, cannot open private chat",
+						"Private Chat Error", JOptionPane.ERROR_MESSAGE);
+			}
 			if (chatBuddy != null) {
 				PrivateChat p = new PrivateChat(mediator, chatBuddy);
 				privateChatList.add(p);
