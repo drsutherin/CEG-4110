@@ -223,7 +223,16 @@ public class BAAC extends Peer implements Runnable {
 					JFrame frame = new JFrame("Username Entry");
 			        // prompt the user to enter their name
 					try{
-						out = JOptionPane.showInputDialog(frame, "Enter username:").replaceAll("\n","");
+						boolean goodInput = false;
+						out = "";
+						while (!goodInput){
+							out = JOptionPane.showInputDialog(frame, "Enter username:").replaceAll("\n","");
+							if (!out.equals("")){
+								goodInput = true;
+							}else{
+								JOptionPane.showMessageDialog(null, "Error: Empty Username, please enter a username.", "Username Error", JOptionPane.ERROR_MESSAGE);
+							}
+						}
 						enterUsername(out);
 					}catch(Exception e){
 						System.exit(0);
