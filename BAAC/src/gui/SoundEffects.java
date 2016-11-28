@@ -36,18 +36,18 @@ public class SoundEffects{
 		}
 	}
 	public void fanfare(){
-		AudioInputStream clickSound = null;
-		Clip click = null;
+		AudioInputStream fanfareSound = null;
+		Clip fanfare = null;
 		try {
-			clickSound = AudioSystem.getAudioInputStream(getClass().getResource("gameStart.wav"));
+			fanfareSound = AudioSystem.getAudioInputStream(getClass().getResource("fanfare.wav"));
 		} catch (UnsupportedAudioFileException | IOException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		try {
-			click = AudioSystem.getClip();
-			click.open(clickSound);
-			click.start();
+			fanfare = AudioSystem.getClip();
+			fanfare.open(fanfareSound);
+			fanfare.start();
 		} catch (LineUnavailableException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
@@ -57,18 +57,18 @@ public class SoundEffects{
 		}
 	}
 	public void pop(){
-		AudioInputStream clickSound = null;
-		Clip click = null;
+		AudioInputStream popSound = null;
+		Clip pop = null;
 		try {
-			clickSound = AudioSystem.getAudioInputStream(getClass().getResource("pop.wav"));
+			popSound = AudioSystem.getAudioInputStream(getClass().getResource("pop.wav"));
 		} catch (UnsupportedAudioFileException | IOException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		try {
-			click = AudioSystem.getClip();
-			click.open(clickSound);
-			click.start();
+			pop = AudioSystem.getClip();
+			pop.open(popSound);
+			pop.start();
 		} catch (LineUnavailableException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
