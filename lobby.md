@@ -1,12 +1,12 @@
 # The BAAC Lobby
 Once you've successfully connected to the server and logged in, you will see the BAAC lobby.
-* [lobby screenshot]
+\n[lobby screenshot]\n
 
 The lobby includes several windows, such as:
 * Main menu
 * Lobby chat
 * Lobby users list
-* Active tables list
+* Active tables list\n
 Each of these windows is described in detail below
 
 ### Main Menu
