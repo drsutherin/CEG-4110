@@ -222,8 +222,12 @@ public class BAAC extends Peer implements Runnable {
 				case ServerMessage.ASK_USERNAME:
 					JFrame frame = new JFrame("Username Entry");
 			        // prompt the user to enter their name
-			        out = JOptionPane.showInputDialog(frame, "Enter username:").replaceAll("\n","");
-					enterUsername(out);
+					try{
+						out = JOptionPane.showInputDialog(frame, "Enter username:").replaceAll("\n","");
+						enterUsername(out);
+					}catch(Exception e){
+						System.exit(0);
+					}
 				case ServerMessage.CONN_OK:
 					//System.out.println("Connected to Server");
 					break;
