@@ -16,7 +16,7 @@ public class ObservableGame extends Peer implements Runnable {
 
 	String player1, player2;
 	GameStatus status;
-	byte[][] boardState;
+	byte[][] boardState = new byte[8][8];
 	String tableID;			// Received from server
 	GameBoardWindow gameGUI;
 	InGameMenuWindow gameMenu;
@@ -33,10 +33,9 @@ public class ObservableGame extends Peer implements Runnable {
 	 * @param tid is the table ID
 	 * @param passedMediator is the Mediator used to pass messages between peers
 	 */
-	public ObservableGame(String tid, PeerMediator passedMediator)	{
+	public ObservableGame(PeerMediator passedMediator)	{
 		player1 = "";
 		player2 = "";
-		tableID = tid;
 		mediator = passedMediator;
 		mediator.addPeerClass(this);
 	}
@@ -120,31 +119,54 @@ public class ObservableGame extends Peer implements Runnable {
             	//<code><tableID><boardState>
             	//split the string into three parts based on first two spaces
             	inMessage = message.split(" ", 3);
-            	if(inMessage[1] == tableID){
+            	if(inMessage[1].equals(tableID)){
             		String boardString = inMessage[2];
             		sendBoardToGUI(boardString);
             	}
                 break;
             case ServerMessage.WHO_ON_TBL:
-            	//<code><tableID><player1><players2> <-- p1 or p2 may be -1 if empty
-            	//split  this string into four parts based on the first three spaces
-            	//TODO: Player Username cannot have spaces
-            	inMessage = message.split(" ", 4);
-            	if (tableID == inMessage[1]){
-            		//set player 1
-            		if (inMessage[2] == "-1"){
-            			status = GameStatus.waiting_opponent;
-            		} else {
-            			player1 = inMessage[2];
-            		}
-            		//set player 2
-            		if (inMessage[3] == "-1"){
-            			status = GameStatus.waiting_opponent;
-            		} else {
-            			player2 = inMessage[3];
-            		}
-            	}
-            	break;
+            	// <code><tableID><player1><players2> <-- p1 or p2 may be -1 if
+    			// empty
+    			// split this string into four parts based on the first three spaces
+    			// TODO: Player Username cannot have spaces
+    			inMessage = message.split(" ", 4);
+    			String tbl, p1, p2;
+    			tbl = inMessage[1];
+    			p1 = inMessage[2];
+    			p2 = inMessage[3];
+    			if (tableID.equals(tbl)) {
+    				// user is player 2 in server message
+    				if (p2.equals(Player.getUsername())) {
+    					player2 = p2;
+    					// other seat is empty
+    					if (p1.equals("-1")) {
+    						status = GameStatus.waiting_opponent;
+    						gameGUI.setOpponent("-1");
+    					}
+    					// other seat is taken
+    					else {
+    						status = GameStatus.active;
+    						player1 = p1;
+    						gameGUI.setOpponent(p1);
+    					}
+    				}
+    				// user is player 1 in server message
+    				else if (p1.equals(Player.getUsername())) {
+    					player1 = p1;
+    					// other seat is empty
+    					if (p2.equals("-1")) {
+    						status = GameStatus.waiting_opponent;
+    						gameGUI.setOpponent("-1");
+    					}
+    					// other seat is taken
+    					else {
+    						status = GameStatus.active;
+    						player2 = p2;
+    						gameGUI.setOpponent(p2);
+    					}
+    				}
+    			}
+    			break;
             default:
             	//do nothing
             	break;
@@ -182,9 +204,6 @@ public class ObservableGame extends Peer implements Runnable {
 		sendToServer.clear();
 		receiveFromServer.clear();
 		
-		//close the GUI's
-		gameMenu.closeWindow();
-		gameGUI.closeWindow();
 	}
 		
 	

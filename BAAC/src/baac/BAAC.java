@@ -7,6 +7,7 @@ import chat.*;
 import gui.*;
 
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -37,6 +38,7 @@ public class BAAC extends Peer implements Runnable {
 	PeerMediator mediator = new PeerMediator();
 	LobbyChat lobbyChat = null;
 
+	ObservableGame obsGame = new ObservableGame(mediator);
 	Game theGame = new Game(mediator);
 	InGameMenuWindow inGameMenu;
 
@@ -408,17 +410,16 @@ public class BAAC extends Peer implements Runnable {
 				lobbyUsersWindow.updateList(activeUsers);
 				break;
 			case ServerMessage.NOW_OBSERVING:
-				// get the table number from the message
+				//get the table number from the message
 				message = message.replace("<EOM>", "");
 				String[] obsMessageArray = message.split(" ", 2);
 				String obsTableNum = obsMessageArray[1];
-				theGame.setTableID(obsTableNum);
-				// leave the game if you were in one (which you shouldn't be
-				// because the observe game
-				// button is not accessible from in-game menu
+				obsGame.setTableID(obsTableNum);
+				//leave the game if you were in one (which you shouldn't be because the observe game
+				//button is not accessible from in-game menu
 				theGame.stopGame();
-				Thread obsThread = new Thread(theGame);
-				// create the thread
+				Thread obsThread = new Thread(obsGame);
+				//create the thread
 				Player.setUserStatus(Status.OBSERVING);
 				obsThread.start();
 				break;
@@ -508,8 +509,11 @@ public class BAAC extends Peer implements Runnable {
 	 */
 	@Override
 	public void receiveFromMediator(String message) {
+		Boolean success = false;
+		while(!success)
 		try {
-			receiveFromServer.put(message);
+			receiveFromServer.offer(message, (long) 200.0, TimeUnit.MILLISECONDS); 
+			success = true;
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -518,7 +522,7 @@ public class BAAC extends Peer implements Runnable {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		MenuButtonStatus last;
-		if (Player.getUserStatus() == Status.IN_LOBBY) {
+		if (Player.getUserStatus().equals(Status.IN_LOBBY))	{
 			last = mainMenu.getLastPressed();
 		} else {
 			last = inGameMenu.getLastPressed();
@@ -565,6 +569,20 @@ public class BAAC extends Peer implements Runnable {
 
 			// attempt to join selected game
 			// requestJoinGame(GameMode.PLAY, table);
+			Vector<String> observableTables = new Vector<String>();
+			String[] thisTable = new String[3];
+			for (int i = 0; i < activeTables.size(); i++){
+				thisTable = activeTables.get(i);
+				observableTables.add(thisTable[0]);
+			}
+			
+			JFrame myjframe = new JFrame();
+	        String tableToObserve  = (String) JOptionPane.showInputDialog(myjframe, "Choose a Table to Observe:",
+	        		"Observe Table Dialog", 3, null, observableTables.toArray(), 0);	    
+			if (tableToObserve != null)	{
+		        requestJoinGame(GameMode.OBSERVE, tableToObserve);
+			}			
+
 			break;
 		case PRIVATE_CHAT:
 			JFrame frame = new JFrame();
