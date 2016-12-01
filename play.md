@@ -10,6 +10,8 @@ If you chose Join Game from the main menu, you will see an empty game board and 
 ## Gameplay
 Once the game has started, you will be assigned a color (black or red) and the game board will show game pieces.  If you are assigned black, it will be your turn first, and a dialog window will let you know that it's your turn.  If you are assigned red, you will have to wait until the other player moves.
 
+* <game board screenshot>
+
 ### Making Moves
 When it's your turn, a dialog window will appear informing you that it's your turn.  At this point, click on the square containing the piece you want to move, and then click on the square you'd like to move that piece to.  It's as simple as that!  
 If you click a piece and decide you'd like to move a different one before you've made a move, click the same piece again and then click the piece you'd like to move, followed by the location you'd like to move that piece to.  
