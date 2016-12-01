@@ -27,7 +27,7 @@ public class PrivateChatWindow extends Observable {
 	Thread myThread;
 	PrivateChat myPChat;
 	private KeyStroke keyStroke;
-	private SoundEffects sound = new SoundEffects();
+	//private SoundEffects sound = new SoundEffects();
 	private JButton sendButton = new JButton("Send");
 	private Action enterClick = new AbstractAction() {
         @Override
@@ -127,7 +127,7 @@ public class PrivateChatWindow extends Observable {
 		String newText = chatBuddy + ":    "+ incoming[1];
 		viewableMessages.add(newText);
 		messagesList.setListData(viewableMessages);
-		sound.pop();
+		//sound.pop();
 	}
 	
 	/**

@@ -33,7 +33,7 @@ import baac.BAAC;
 public class MainMenuWindow extends Observable {
 	private MenuButtonStatus lastPressed = null;
 	private JFrame frame;
-	private SoundEffects sound = new SoundEffects();
+	//private SoundEffects sound = new SoundEffects();
 	
 	/**
 	 * Instantiating a MainMenuWindow causes it to run immediately
@@ -82,7 +82,7 @@ public class MainMenuWindow extends Observable {
 			//TODO: Interact w/ BAAC
 			System.out.println("Starting game...");
 			lastPressed = MenuButtonStatus.START;
-			sound.click();
+			//sound.click();
 			setChanged();
 			notifyObservers();
 		});
@@ -97,7 +97,7 @@ public class MainMenuWindow extends Observable {
 			//TODO: Interact w/ BAAC
 			System.out.println("Joining game...");
 			lastPressed = MenuButtonStatus.JOIN;
-			sound.click();
+			//sound.click();
 			setChanged();
 			notifyObservers();
 		});
@@ -113,7 +113,7 @@ public class MainMenuWindow extends Observable {
 			//TODO: Interact w/ BAAC
 			System.out.println("Observing game...");
 			lastPressed = MenuButtonStatus.OBSERVE;
-			sound.click();
+			//sound.click();
 			setChanged();
 			notifyObservers();
 		});
@@ -129,7 +129,7 @@ public class MainMenuWindow extends Observable {
 			//chatButton.setSize(300,400);
 			System.out.println("Starting private chat...");
 			lastPressed = MenuButtonStatus.PRIVATE_CHAT;
-			sound.click();
+			//sound.click();
 			setChanged();
 			notifyObservers();
 		});
@@ -144,7 +144,7 @@ public class MainMenuWindow extends Observable {
 			//TODO: Interact w/ BAAC
 			System.out.println("Exiting...");
 			lastPressed = MenuButtonStatus.EXIT_BAAC;
-			sound.click();
+			//sound.click();
 			setChanged();
 			notifyObservers();
 			
