@@ -7,7 +7,7 @@ import java.util.Observable;
 import java.util.Vector;
 import javax.swing.*;
 
-import com.sun.glass.events.KeyEvent;
+//import com.sun.glass.events.KeyEvent;
 
 import chat.LobbyChat;
 
