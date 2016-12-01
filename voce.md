@@ -18,3 +18,6 @@ Below is a list of letters and their corresponding phonetic representation:
 * F: Foxtrot
 * G: Golf
 * H: Hotel
+
+### Voce
+Speech recognition is performed with open source software called Voce which can be found [on SourceForge](http://voce.sourceforge.net/).  All credit for Voce development goes to Tyler Streeter
