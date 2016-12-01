@@ -9,6 +9,7 @@
 5. [Observing a Game](observe.md)
 6. [Chatting](chat.md)
 7. [Speech Recognition](voce.md)
+8. [Development Team](team.md)
 
 ## Project Goal
 Develop a checkers game playing client in Java. The software will communicate with a game server Dr. Doran has written and will run in his office. We will use the client to log-in, chat, play, and observe other games on the server.

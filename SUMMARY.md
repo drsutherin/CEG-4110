@@ -7,3 +7,4 @@
 * [Observing a Game](observe.md)
 * [Chatting](chat.md)
 * [Speech Recognition](voce.md)
+* [Development Team](team.md)
