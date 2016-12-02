@@ -165,6 +165,7 @@ public class BAAC extends Peer implements Runnable {
 			message = "107 " + Player.getUsername() + "<EOM>";
 			queueUpToSendToServer(message);
 		}
+
 	}
 
 	/**
@@ -174,18 +175,6 @@ public class BAAC extends Peer implements Runnable {
 
 		// Stop the mediator from dispatching messages
 		mediator.setShutdown();
-
-		// Shutdown the Server Interface
-		// TODO: Fix server interface, why two threads??
-		// serverInterface.shutdown();
-
-		// TODO: Shutdown any private chats, this doesn't work bc Baac doesn't
-		// have a complete list of pchats
-		// for (PrivateChat pchat : privateChatList){
-		// pchat.shutdown();
-		// }
-
-		// TODO: verify games are shut down before getting here
 
 		// Empty BAAC's message queues
 		sendToServer.clear();
@@ -297,11 +286,7 @@ public class BAAC extends Peer implements Runnable {
 				break;
 
 			case ServerMessage.OUT_LOBBY:
-				// do nothing, don't try to shut down the lobbyThread from here,
-				// it leads to intermittent exceptions
-				// and thread may not restart properly. Instead, the lobbyThread
-				// will not print or send messages if
-				// user status is not "in lobby"
+				// do nothing, don't try to shut down the lobbyThread from here
 				break;
 			case ServerMessage.NEW_TBL:
 				// Do nothing, the server will send a 219 message to all client
@@ -417,14 +402,19 @@ public class BAAC extends Peer implements Runnable {
 				obsGame.setTableID(obsTableNum);
 				//leave the game if you were in one (which you shouldn't be because the observe game
 				//button is not accessible from in-game menu
-				theGame.stopGame();
+				//theGame.stopGame();
 				Thread obsThread = new Thread(obsGame);
 				//create the thread
 				Player.setUserStatus(Status.OBSERVING);
 				obsThread.start();
+				inGameMenu = new InGameMenuWindow(this);
 				break;
 			case ServerMessage.STOPPED_OBSERVING:
 				// end observe game thread
+				Player.setUserStatus(Status.IN_LOBBY);
+				obsGame.stopGame();
+				inGameMenu.closeWindow();
+				
 				break;
 			case ServerMessage.REGISTER_OK:
 				break;
@@ -612,7 +602,14 @@ public class BAAC extends Peer implements Runnable {
 			break;
 		case EXIT_GAME:
 			// ask the server to leave the current game
-			theGame.clientLeaveTableRequest();
+			if (Player.getUserStatus().equals(Status.PLAYING)){
+				theGame.clientLeaveTableRequest();
+			} else if (Player.getUserStatus().equals(Status.OBSERVING)){
+				//requestLeaveGame();
+				Player.setUserStatus(Status.IN_LOBBY);
+				obsGame.stopGame();
+				inGameMenu.closeWindow();
+			}
 			break;
 		case EXIT_BAAC:
 			queueUpToSendToServer("108 " + Player.getUsername());
