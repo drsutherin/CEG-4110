@@ -1,6 +1,6 @@
 # The BAAC Lobby
 Once you've successfully connected to the server and logged in, you will see the BAAC lobby.  
-[lobby screenshot]  
+![picture alt](images/Lobby.png)
 
 The lobby includes several windows, such as:
 * Main menu

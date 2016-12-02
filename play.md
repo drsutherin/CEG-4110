@@ -10,7 +10,7 @@ If you chose Join Game from the main menu, you will see an empty game board and 
 ## Gameplay
 Once the game has started, you will be assigned a color (black or red) and the game board will show game pieces.  If you are assigned black, it will be your turn first, and a dialog window will let you know that it's your turn.  If you are assigned red, you will have to wait until the other player moves.
 
-* <game board screenshot>
+![picture alt](images/GameTable.png)
 
 ### Making Moves
 When it's your turn, a dialog window will appear informing you that it's your turn.  At this point, click on the square containing the piece you want to move, and then click on the square you'd like to move that piece to.  It's as simple as that!  
@@ -24,5 +24,3 @@ If you make an invalid move, you will see a dialog message you informing you tha
 ## In-Game Menu
 The in-game menu has only two options: Start Private Chat and Exit Game.  You can start a private chat with any player logged in to the server at any point.  See the [Chatting](chat.md) page for more info.  
 You can also exit the current game at any time and you will be taken back to the lobby.
-
-  * <in-game menu screenshot>
