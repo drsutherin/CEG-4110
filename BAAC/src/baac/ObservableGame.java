@@ -5,6 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import gui.GameBoardWindow;
 import gui.InGameMenuWindow;
+import gui.InGameToolbarWindow;
 import gui.MenuButtonStatus;
 
 /**
@@ -20,6 +21,7 @@ public class ObservableGame extends Peer implements Runnable {
 	String tableID;			// Received from server
 	GameBoardWindow gameGUI;
 	InGameMenuWindow gameMenu;
+	InGameToolbarWindow toolWindow;
 	
 	Boolean activeThread = true; //the thread will be active until this is switched off
 	Mediator mediator;
@@ -46,6 +48,8 @@ public class ObservableGame extends Peer implements Runnable {
 	 */
 	public void setTableID(String tableNumber){
 		tableID = tableNumber;
+		player1 = "-1";
+		player2 = "-1";
 	}	
 	
 	
@@ -55,7 +59,7 @@ public class ObservableGame extends Peer implements Runnable {
 	 */
 	public void run() {
 		gameGUI = new GameBoardWindow(this);
-
+		toolWindow = new InGameToolbarWindow();
 		while(activeThread){
 			//send message to server
 			String outgoingMessage;
@@ -99,6 +103,15 @@ public class ObservableGame extends Peer implements Runnable {
 		}	
 	}
 	
+	public void sendToMediator(String message) {
+		try {
+			sendToServer.put(message);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
 	/**
 	 * Shutdown thread
 	 */
@@ -120,6 +133,10 @@ public class ObservableGame extends Peer implements Runnable {
             	//split the string into three parts based on first two spaces
             	inMessage = message.split(" ", 3);
             	if(inMessage[1].equals(tableID)){
+            		
+            		//request a who on table for this table
+            		sendToMediator("109 " + Player.getUsername() + " " + tableID + " <EOM>");
+            		
             		String boardString = inMessage[2];
             		sendBoardToGUI(boardString);
             	}
@@ -165,6 +182,7 @@ public class ObservableGame extends Peer implements Runnable {
     						gameGUI.setOpponent(p2);
     					}
     				}
+    				toolWindow.setPlayerColors(player2, player1);
     			}
     			break;
             default:
@@ -175,8 +193,8 @@ public class ObservableGame extends Peer implements Runnable {
    }
 	
 	/******************************************************/
-	/*Helper Methods for sending updates to GUI*/
-/******************************************************/
+	/*	  *Helper Methods for sending updates to GUI	  */
+	/******************************************************/
 
 
 	public void sendBoardToGUI(String state){
@@ -194,20 +212,20 @@ public class ObservableGame extends Peer implements Runnable {
 	 * Gracefully end process
 	 */
 	public void stopGame(){
-		//stop getting updates from server
-		mediator.removePeerClass(this);
-		
 		//set the run flag end on next loop
 		activeThread = false;
 		
-		//clear both queues, otherwise might end up in an error condition
+		//clear both queues
 		sendToServer.clear();
 		receiveFromServer.clear();
 		
+		//stop getting updates from server
+		mediator.removePeerClass(this);
+		
+		toolWindow.closeWindow();
+		gameGUI.closeWindow();
 	}
 		
-	
-	
 	/*************************/
 	/** Handle GUI Functions**/
 	/*************************/
