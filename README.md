@@ -1,5 +1,5 @@
 # (Baby Got) Blood and Ashes Checkers
-(Baby Got) BAAC is an application for playing checkers online.  Following this guide will get you up and running so you can play!
+(Baby Got) BAAC is an application for playing checkers online.  Following this guide will get you up and running so you can play! 
 
 ## Table of Contents
 1. [Installation](install.md)
