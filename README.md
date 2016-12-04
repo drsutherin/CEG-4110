@@ -126,3 +126,5 @@ Since Java is a pass-by-reference language, all classes will be passed the BAAC 
 * "Night sass"
 * "Porn?"
 * "Who wants to play a game with themselves so I can watch?"
+* "Just to make sure I'm clear on the rules of checkers, you do take pieces by moving on top of the other right?"
+
