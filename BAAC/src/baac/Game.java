@@ -247,44 +247,79 @@ public class Game extends Peer implements Runnable {
 				gameGUI.updateBoard(boardState);
 			}
 
+			isTurn = true;
+			// voce.SpeechInterface.init("src/voce", true, true,
+			// "src/voce/gram", "every");
+
+			boolean gameQuit = false;
+			// voce.SpeechInterface.init("src/voce", true, true,
+			// "src/voce/gram", "every");
+
+			// voce.SpeechInterface.destroy();
+			if (movesPlayed > 0) {
+				gameGUI.updateBoard(boardState);
+			}
+
 			gameGUI.setTurn(Turn.YOURS);
 			
 			//Remove all speech on the buffer before listening
-			//while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
-				//voce.SpeechInterface.popRecognizedString();
-			//}
-			//while (!quit) {
-				//try {
-					//Thread.sleep(200);
-				//} catch (InterruptedException e) {
-
-				//}
-
-				//while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
-
-					//String s = voce.SpeechInterface.popRecognizedString();
-
-					// Checks the listener work "computer"
-					//if (s.indexOf("computer") == 0) {
-
-						//s = s.replaceAll("one", "1");
-					//	s = s.replaceAll("two", "2");
-						//s = s.replaceAll("three", "3");
-						//s = s.replaceAll("four", "4");
-						//s = s.replaceAll("five", "5");
-						//s = s.replaceAll("six", "6");
-						//s = s.replaceAll("seven", "7");
-						//s = s.replaceAll("eight", "8");
-						//s = s.replaceAll(" ", "");
-						//s = s.replaceAll("move", " move ");
-						//s = s.replaceAll("computer", "");
-
-						//System.out.println("You said: " + s);
-						//voce.SpeechInterface.synthesize(s);
-						//quit = true;
-					//}
-				//}
-			//}
+//			while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
+//				voce.SpeechInterface.popRecognizedString();
+//			}
+//			while (!gameQuit) {
+//				try {
+//					Thread.sleep(200);
+//				} catch (InterruptedException e) {
+//
+//				}
+//				if (!this.isTurn){
+//					gameQuit = true;
+//				}
+//				while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
+//
+//					String s = voce.SpeechInterface.popRecognizedString();
+//
+//					// Checks the listener work "computer"
+//					if (s.indexOf("computer") == 0) {
+//						s = s.replaceAll(" ", "");
+//						s = s.replaceAll("one", " 1");
+//						s = s.replaceAll("two", " 2");
+//						s = s.replaceAll("three", " 3");
+//						s = s.replaceAll("four", " 4");
+//						s = s.replaceAll("five", " 5");
+//						s = s.replaceAll("six", " 6");
+//						s = s.replaceAll("seven", " 7");
+//						s = s.replaceAll("eight", " 8");
+//						s = s.replaceAll("alfa", " A");
+//						s = s.replaceAll("bravo", " B");
+//						s = s.replaceAll("charlie", " C");
+//						s = s.replaceAll("delta", " D");
+//						s = s.replaceAll("echo", " E");
+//						s = s.replaceAll("foxtrot", " F");
+//						
+//						s = s.replaceAll("golf", " G");
+//						s = s.replaceAll("hotel", " H");
+//						
+//						
+//
+//						
+//						
+//						s = s.replaceAll(" ", "");
+//						s = s.replaceAll("move", " ");
+//						s = s.replaceAll("computer", "");
+//
+//						System.out.println("You said: " + s);
+//						String [] voiceMessage = s.split(" ");
+//								
+//						//voce.SpeechInterface.synthesize(s);
+//						if (voiceMessage.length == 2){
+//							gameQuit = true;
+//							this.clientMoveRequest(s.split(" "));
+//						}
+//						
+//					}
+//				}
+//			}
 			break;
 		case ServerMessage.ILLEGAL:
 			JOptionPane.showMessageDialog(frame, "Invalid move. Please try again.", "Invalid Move",
@@ -410,6 +445,7 @@ public class Game extends Peer implements Runnable {
 		String currentPosition = String.valueOf(currentRow) + "," + String.valueOf(currentColumn);
 		String newPosition = String.valueOf(newRow) + "," + String.valueOf(newColumn);
 		String move = "106 " + username + " " + currentPosition + " " + newPosition + "<EOM>";
+		this.isTurn = false;
 		placeMessageInIntermediateQueue(move);
 	}
 
