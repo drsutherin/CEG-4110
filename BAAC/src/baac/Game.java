@@ -236,34 +236,21 @@ public class Game extends Peer implements Runnable {
 			break;
 		case ServerMessage.YOUR_TURN:
 			isTurn = true;
-			// voce.SpeechInterface.init("src/voce", true, true,
-			// "src/voce/gram", "every");
 
 			boolean quit = false;
-			// voce.SpeechInterface.init("src/voce", true, true,
-			// "src/voce/gram", "every");
-
-			// voce.SpeechInterface.destroy();
 			if (movesPlayed > 0) {
 				gameGUI.updateBoard(boardState);
 			}
 
 			isTurn = true;
-			// voce.SpeechInterface.init("src/voce", true, true,
-			// "src/voce/gram", "every");
-
 			boolean gameQuit = false;
-			// voce.SpeechInterface.init("src/voce", true, true,
-			// "src/voce/gram", "every");
-
-			// voce.SpeechInterface.destroy();
 			if (movesPlayed > 0) {
 				gameGUI.updateBoard(boardState);
 			}
 
 			gameGUI.setTurn(Turn.YOURS);
-			
-			//Remove all speech on the buffer before listening
+
+			// Remove all speech on the buffer before listening
 			while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
 				voce.SpeechInterface.popRecognizedString();
 			}
@@ -273,7 +260,7 @@ public class Game extends Peer implements Runnable {
 				} catch (InterruptedException e) {
 
 				}
-				if (!this.isTurn){
+				if (!this.isTurn) {
 					gameQuit = true;
 				}
 				while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
@@ -282,21 +269,18 @@ public class Game extends Peer implements Runnable {
 					s = s.replaceAll("fox trot", "foxtrot");
 					boolean frequencyTest = false;
 					int frequencyCount = 0;
-					String [] frequencyArray = s.split(" ");
+					String[] frequencyArray = s.split(" ");
 					for (int i = 0; i < frequencyArray.length; i++) {
-						if (frequencyArray[i].equals("computer")){
+						if (frequencyArray[i].equals("computer")) {
 							frequencyCount++;
-							
+
 						}
 					}
-					if (frequencyCount == 1){
+					if (frequencyCount == 1) {
 						frequencyTest = true;
 					}
-					System.out.print(s);
-					// Checks the listener work "computer"
 					if ((s.indexOf("computer") == 0) && (new StringTokenizer(s).countTokens() == 5) && frequencyTest) {
 						s = s.replaceAll("computer ", "");
-						//s = s.replaceAll(" ", "");
 						s = s.replaceAll("one", "8");
 						s = s.replaceAll("two", "7");
 						s = s.replaceAll("three", "6");
@@ -305,39 +289,26 @@ public class Game extends Peer implements Runnable {
 						s = s.replaceAll("six", "3");
 						s = s.replaceAll("seven", "2");
 						s = s.replaceAll("eight", "1");
-						
 						s = s.replaceAll("alfa ", "A");
 						s = s.replaceAll("bravo ", "B");
 						s = s.replaceAll("charlie ", "C");
 						s = s.replaceAll("delta ", "D");
 						s = s.replaceAll("echo ", "E");
 						s = s.replaceAll("foxtrot ", "F");
-						
 						s = s.replaceAll("golf ", "G");
 						s = s.replaceAll("hotel ", "H");
-						
-						
-
-//						if (s.length() == 12){
-//							s = s.replaceAll(" ", "");
-//							System.out.println(s);
-//						s = s.replaceAll("computer", "");
-//						s = s.replaceAll(" ", "");
-//						System.out.println(s);
-//						s = s.substring(0, 1) + " " + s.substring(2, 3);
-						//s = s.replaceAll("move", " ");
-						
 
 						System.out.println("You said: " + s);
-						String [] voiceMessage = s.split(" ");
-								
-					//voce.SpeechInterface.synthesize(s);
-						if (voiceMessage.length == 2){
+						String[] voiceMessage = s.split(" ");
+
+						// voce.SpeechInterface.synthesize(s);
+						if (voiceMessage.length == 2) {
 							gameQuit = true;
 							this.clientMoveRequest(s.split(" "));
+							gameGUI.updateBoard(boardState);
 						}
-						//}
-						
+						// }
+
 					}
 				}
 			}
@@ -347,6 +318,70 @@ public class Game extends Peer implements Runnable {
 					JOptionPane.ERROR_MESSAGE);
 			gameGUI.updateBoard(boardState);
 			gameGUI.setTurn(Turn.YOURS);
+			this.isTurn = true;
+
+			// Remove all speech on the buffer before listening
+			while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
+				voce.SpeechInterface.popRecognizedString();
+			}
+				gameQuit = false;
+				while (!gameQuit) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+
+					}
+					if (!this.isTurn) {
+						gameQuit = true;
+					}
+					while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
+
+						String s = voce.SpeechInterface.popRecognizedString();
+						s = s.replaceAll("fox trot", "foxtrot");
+						boolean frequencyTest = false;
+						int frequencyCount = 0;
+						String[] frequencyArray = s.split(" ");
+						for (int i = 0; i < frequencyArray.length; i++) {
+							if (frequencyArray[i].equals("computer")) {
+								frequencyCount++;
+
+							}
+						}
+						if (frequencyCount == 1) {
+							frequencyTest = true;
+						}
+						// Checks the listener work "computer"
+						if ((s.indexOf("computer") == 0) && (new StringTokenizer(s).countTokens() == 5)
+								&& frequencyTest) {
+							s = s.replaceAll("computer ", "");
+							s = s.replaceAll("one", "8");
+							s = s.replaceAll("two", "7");
+							s = s.replaceAll("three", "6");
+							s = s.replaceAll("four", "5");
+							s = s.replaceAll("five", "4");
+							s = s.replaceAll("six", "3");
+							s = s.replaceAll("seven", "2");
+							s = s.replaceAll("eight", "1");
+							s = s.replaceAll("alfa ", "A");
+							s = s.replaceAll("bravo ", "B");
+							s = s.replaceAll("charlie ", "C");
+							s = s.replaceAll("delta ", "D");
+							s = s.replaceAll("echo ", "E");
+							s = s.replaceAll("foxtrot ", "F");
+							s = s.replaceAll("golf ", "G");
+							s = s.replaceAll("hotel ", "H");
+
+							System.out.println("You said: " + s);
+							String[] voiceMessage = s.split(" ");
+
+							if (voiceMessage.length == 2) {
+								gameQuit = true;
+								this.clientMoveRequest(s.split(" "));
+								gameGUI.updateBoard(boardState);
+							}
+						}
+					}
+				}
 			
 		default:
 			noMatch = true;
