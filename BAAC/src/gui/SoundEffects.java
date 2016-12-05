@@ -24,7 +24,7 @@ public class SoundEffects{
 			e2.printStackTrace();
 		}
 		try {
-			click = AudioSystem.getClip();
+			click = AudioSystem.getClip(null);
 			click.open(clickSound);
 			click.start();
 		} catch (LineUnavailableException e2) {
@@ -45,7 +45,7 @@ public class SoundEffects{
 			e2.printStackTrace();
 		}
 		try {
-			fanfare = AudioSystem.getClip();
+			fanfare = AudioSystem.getClip(null);
 			fanfare.open(fanfareSound);
 			fanfare.start();
 		} catch (LineUnavailableException e2) {
@@ -66,7 +66,7 @@ public class SoundEffects{
 			e2.printStackTrace();
 		}
 		try {
-			pop = AudioSystem.getClip();
+			pop = AudioSystem.getClip(null);
 			pop.open(popSound);
 			pop.start();
 		} catch (LineUnavailableException e2) {
