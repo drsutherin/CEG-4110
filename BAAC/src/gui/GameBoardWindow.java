@@ -82,7 +82,7 @@ public class GameBoardWindow extends Observable {
 
 		JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-		Dimension buttonSize = new Dimension(80,80);
+		Dimension buttonSize = new Dimension(60,60);
 		
 		// Create the board
 		String position;
@@ -90,23 +90,50 @@ public class GameBoardWindow extends Observable {
 		JPanel thisRow;
 		JButton thisButton;
 		Color c;
-		for (int i = 1; i < 9; i++)	{
+
+		int q = 1;
+		for (int i = 0; i < 9; i++)	{
 			thisRow = new JPanel();
 			container.add(thisRow);
-			for (int j = 65; j < 73; j++) {
-				col = (char) j;
-				if ((i % 2 == 1 && j % 2 == 1) || (i % 2 == 0 && j % 2 == 0))	{
-					c = java.awt.Color.RED;
-				}
-				else	{
-					c = java.awt.Color.BLACK;
-				}
-				thisButton = buttonFactory(c, buttonSize);
-				position = col + String.valueOf(i);
-				thisButton.setName(position);
+			if (i == 0)	{
+				thisButton = buttonFactory(Color.LIGHT_GRAY, buttonSize);
+				thisButton.setName("");
+				thisButton.setText("");
 				thisRow.add(thisButton);
-				boardSpacesDict.put(position,thisButton);
-				boardSpacesVector.add(thisButton);
+				for (int k = 65; k < 73; k++) {
+					char label = (char) k;
+					// create column labels
+					thisButton = buttonFactory(Color.LIGHT_GRAY, buttonSize);
+					thisButton.setName("" + label);
+					thisButton.setText("" + label);
+					thisRow.add(thisButton);
+				}
+			}
+			else {
+				for (int j = 64; j < 73; j++) {
+					if (j == 64) {
+						thisButton = buttonFactory(Color.LIGHT_GRAY, buttonSize);
+						thisButton.setName("" + String.valueOf(q));
+						thisButton.setText("" + String.valueOf(q));
+						thisRow.add(thisButton);
+						q++;
+					}
+					else {
+						col = (char) j;
+						if ((i % 2 == 1 && j % 2 == 1) || (i % 2 == 0 && j % 2 == 0))	{
+							c = java.awt.Color.RED;
+						}
+						else	{
+							c = java.awt.Color.BLACK;
+						}
+						thisButton = buttonFactory(c, buttonSize);
+						position = col + String.valueOf(i);
+						thisButton.setName(position);
+						thisRow.add(thisButton);
+						boardSpacesDict.put(position,thisButton);
+						boardSpacesVector.add(thisButton);
+					}
+				}
 			}
 		}
 		frame.getContentPane().add(container);
