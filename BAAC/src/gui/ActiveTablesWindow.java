@@ -28,6 +28,7 @@ public class ActiveTablesWindow {
 		tablesList = new JList<String>();
 		tablesVector = new Vector<String>();
 		frame = new JFrame("Active Tables");
+		frame.setLocation(150,100);
 		panel = new JPanel();
 		setupGUI();
 	}

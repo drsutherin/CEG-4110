@@ -34,7 +34,8 @@ public class InGameToolbarWindow {
 	 */
 	public void setupGUI() {
 		frame = new JFrame("Main Menu");
-		
+		frame.setLocation(150,300);
+
 		panel = new JPanel();
 		panel.setSize(300,400);
 		//panel.setLayout(new BoxLayout(panel, JFrame.EXIT_ON_CLOSE));

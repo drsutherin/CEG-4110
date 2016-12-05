@@ -49,6 +49,7 @@ public class MainMenuWindow extends Observable {
 	 */
 	public void setupGUI() {
 		frame = new JFrame("Main Menu");
+		frame.setLocation(350,100);
 		Dimension gap = new Dimension(2,2);
 		JPanel panel = new JPanel();
 		panel.setSize(800,800);

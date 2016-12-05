@@ -77,7 +77,9 @@ public class GameBoardWindow extends Observable {
 	 */	
 	public void setupGUI() {
 		// Initial window setup
-		frame = new JFrame("Lobby Users List");
+		frame = new JFrame();
+		frame.setLocation(400,0);
+
 		JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 		Dimension buttonSize = new Dimension(80,80);

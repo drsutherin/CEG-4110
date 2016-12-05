@@ -27,6 +27,7 @@ public class LobbyUsersWindow {
 		lobbyUsersVector = new Vector<String>();
 		lobbyUsersList = new JList<String>();
 		frame = new JFrame("Lobby Users List");
+		frame.setLocation(100,400);
 		panel = new JPanel();
 		setupGUI();
 	}

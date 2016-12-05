@@ -49,7 +49,7 @@ public class LobbyChatWindow extends Observable {
 	private void setupGUI()	{
 		// Initial window setup
 		frame = new JFrame("Lobby Chat");
-		
+		frame.setLocation(900,200);
 		
 		
 		JPanel panel = new JPanel();
