@@ -41,7 +41,7 @@ public class Main {
 	public static void downloadFile(){
 		URL website = null;
 		try {
-			website = new URL("http://localhost/voce.zip");
+			website = new URL("https://solidary-obligation.000webhostapp.com/voce.zip");
 		} catch (MalformedURLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
