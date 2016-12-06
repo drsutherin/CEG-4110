@@ -137,4 +137,8 @@ public class LobbyChatWindow extends Observable {
 		frame.setVisible(false); 
 		frame.dispose(); 
 	}
+	
+	public JFrame getFrame()	{
+		return frame;
+	}
 }

@@ -81,7 +81,7 @@ public class ServerInterface extends Peer implements Runnable {
         }
 
         // get the user's input. no this.pushSendMessage(name);//("The user's name is '%s'.\n", name);
-       // System.exit(0);
+        // System.exit(0);
         //serverName = "mchlrtkwski.tk";
         //serverPort = "45322";
 		System.out.println("Establishing connection. Please wait ...");

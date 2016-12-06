@@ -311,13 +311,14 @@ public class BAAC extends Peer implements Runnable {
 				Thread gameThread = new Thread(theGame);
 				Player.setUserStatus(Status.PLAYING);
 				gameThread.start();
+				lobbyChat.getChatWindow().getFrame().setVisible(false);
 				// Create an ingame menu
 				inGameMenu = new InGameMenuWindow(this);
 				exitLobby();
 				break;
 			case ServerMessage.TBL_LEFT:
 				// leave the in game menu
-
+				lobbyChat.getChatWindow().getFrame().setVisible(true);
 				theGame.stopGame();
 				inGameMenu.closeWindow();
 				break;
