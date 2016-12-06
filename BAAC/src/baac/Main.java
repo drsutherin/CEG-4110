@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -31,6 +32,18 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		if (!(new File("src/voce/gram/every.gram").isFile())){
+			if (!(new File("./voce.zip").isFile())){
+				downloadFile();
+			}
+			extractFolder();
+			try {
+				Files.deleteIfExists(new File("./voce.zip").toPath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		//downloadFile();
 		//extractFolder();
 		Thread client = new Thread(new BAAC());
