@@ -38,7 +38,7 @@ public class LobbyUsersWindow {
 	public void setupGUI() {
 		// Initial window setup
 		Dimension size = new Dimension(200,300);
-		panel.setSize(300,400);
+		panel.setSize(300,500);
 		frame.setPreferredSize(size);
 		frame.setMinimumSize(size);
 		frame.setMaximumSize(size);
