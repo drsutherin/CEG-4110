@@ -284,7 +284,6 @@ public class BAAC extends Peer implements Runnable {
 					// lobby.formatMessageFromServer(message);
 				}
 				break;
-
 			case ServerMessage.OUT_LOBBY:
 				// do nothing, don't try to shut down the lobbyThread from here
 				break;
@@ -299,7 +298,6 @@ public class BAAC extends Peer implements Runnable {
 				break;
 			case ServerMessage.TBL_JOINED:
 				// TODO: tell the user that they joined a new table
-
 				// parse the string
 				message = message.replace("<EOM>", "");
 				String[] messageArray = message.split(" ", 2);
@@ -311,11 +309,10 @@ public class BAAC extends Peer implements Runnable {
 				gameThread.start();
 				// Create an ingame menu
 				inGameMenu = new InGameMenuWindow(this);
-				exitLobby();
+				//exitLobby();
 				break;
 			case ServerMessage.TBL_LEFT:
 				// leave the in game menu
-
 				theGame.stopGame();
 				inGameMenu.closeWindow();
 				break;
