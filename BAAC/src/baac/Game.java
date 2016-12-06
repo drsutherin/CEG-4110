@@ -256,7 +256,8 @@ public class Game extends Peer implements Runnable {
 			}
 			while (!gameQuit) {
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(6000);
+					//System.out.println("I am here");
 				} catch (InterruptedException e) {
 
 				}
@@ -279,16 +280,21 @@ public class Game extends Peer implements Runnable {
 					if (frequencyCount == 1) {
 						frequencyTest = true;
 					}
-					if ((s.indexOf("computer") == 0) && (new StringTokenizer(s).countTokens() == 5) && frequencyTest) {
+					if (s.contains("computer")){
+						s = s.substring(s.indexOf("computer"), s.length());
+					}
+					System.out.println("You said: " + s);
+					if ((s.indexOf("computer") == 0) && (new StringTokenizer(s).countTokens() >= 5) && frequencyTest) {
+						
 						s = s.replaceAll("computer ", "");
-						s = s.replaceAll("one", "8");
-						s = s.replaceAll("two", "7");
-						s = s.replaceAll("three", "6");
-						s = s.replaceAll("four", "5");
-						s = s.replaceAll("five", "4");
-						s = s.replaceAll("six", "3");
-						s = s.replaceAll("seven", "2");
-						s = s.replaceAll("eight", "1");
+						s = s.replaceAll("won", "1");
+						s = s.replaceAll("too", "2");
+						s = s.replaceAll("three", "3");
+						s = s.replaceAll("for", "4");
+						s = s.replaceAll("five", "5");
+						s = s.replaceAll("six", "6");
+						s = s.replaceAll("seven", "7");
+						s = s.replaceAll("ate", "8");
 						s = s.replaceAll("alfa ", "A");
 						s = s.replaceAll("bravo ", "B");
 						s = s.replaceAll("charlie ", "C");
@@ -298,11 +304,11 @@ public class Game extends Peer implements Runnable {
 						s = s.replaceAll("golf ", "G");
 						s = s.replaceAll("hotel ", "H");
 
-						System.out.println("You said: " + s);
+						//System.out.println("You said: " + s);
 						String[] voiceMessage = s.split(" ");
 
 						// voce.SpeechInterface.synthesize(s);
-						if (voiceMessage.length == 2) {
+						if (voiceMessage.length >= 2) {
 							gameQuit = true;
 							this.clientMoveRequest(s.split(" "));
 							gameGUI.updateBoard(boardState);
@@ -327,15 +333,16 @@ public class Game extends Peer implements Runnable {
 				gameQuit = false;
 				while (!gameQuit) {
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(6000);
 					} catch (InterruptedException e) {
 
 					}
 					if (!this.isTurn) {
 						gameQuit = true;
 					}
+					
 					while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
-
+						
 						String s = voce.SpeechInterface.popRecognizedString();
 						s = s.replaceAll("fox trot", "foxtrot");
 						boolean frequencyTest = false;
@@ -350,18 +357,22 @@ public class Game extends Peer implements Runnable {
 						if (frequencyCount == 1) {
 							frequencyTest = true;
 						}
+						if (s.contains("computer")){
+							s = s.substring(s.indexOf("computer"), s.length());
+						}
 						// Checks the listener work "computer"
-						if ((s.indexOf("computer") == 0) && (new StringTokenizer(s).countTokens() == 5)
+						System.out.println("You said: " + s);
+						if ((s.indexOf("computer") == 0) && (new StringTokenizer(s).countTokens() >= 5)
 								&& frequencyTest) {
 							s = s.replaceAll("computer ", "");
-							s = s.replaceAll("one", "8");
-							s = s.replaceAll("two", "7");
-							s = s.replaceAll("three", "6");
-							s = s.replaceAll("four", "5");
-							s = s.replaceAll("five", "4");
-							s = s.replaceAll("six", "3");
-							s = s.replaceAll("seven", "2");
-							s = s.replaceAll("eight", "1");
+							s = s.replaceAll("won", "1");
+							s = s.replaceAll("too", "2");
+							s = s.replaceAll("three", "3");
+							s = s.replaceAll("for", "4");
+							s = s.replaceAll("five", "5");
+							s = s.replaceAll("six", "6");
+							s = s.replaceAll("seven", "7");
+							s = s.replaceAll("ate", "8");
 							s = s.replaceAll("alfa ", "A");
 							s = s.replaceAll("bravo ", "B");
 							s = s.replaceAll("charlie ", "C");
@@ -374,7 +385,7 @@ public class Game extends Peer implements Runnable {
 							System.out.println("You said: " + s);
 							String[] voiceMessage = s.split(" ");
 
-							if (voiceMessage.length == 2) {
+							if (voiceMessage.length >= 2) {
 								gameQuit = true;
 								this.clientMoveRequest(s.split(" "));
 								gameGUI.updateBoard(boardState);

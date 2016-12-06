@@ -6,12 +6,12 @@
 
 grammar digits;
 
-public <numbers> = (Alfa one | Alfa two | Alfa three | Alfa four | Alfa five | Alfa six | Alfa seven | Alfa eight |
-					Bravo one| Bravo two| Bravo three| Bravo four| Bravo five| Bravo six| Bravo seven | Bravo eight |
-					Charlie one | Charlie two | Charlie three| Charlie four | Charlie five| Charlie six | Charlie seven| Charlie eight |
-					Delta one | Delta two | Delta three | Delta four | Delta five | Delta six | Delta seven | Delta eight |
-					Echo one | Echo two | Echo three | Echo four | Echo five | Echo six | Echo seven | Echo eight |
-					Fox trot one | Fox trot two | Fox trot three | Fox trot four | Fox trot five | Fox trot six | Fox trot seven | Fox trot eight |
-					Golf one | Golf two | Golf three | Golf four |Golf five | Golf six | Golf seven | Golf eight |
-					Hotel one| Hotel two| Hotel three | Hotel four | Hotel five | Hotel six | Hotel seven | Hotel eight |
+public <numbers> = (Alfa won | Alfa too | Alfa three | Alfa for | Alfa five | Alfa six | Alfa seven | Alfa ate |
+					Bravo won| Bravo too| Bravo three| Bravo for| Bravo five| Bravo six| Bravo seven | Bravo ate |
+					Charlie won | Charlie too | Charlie three| Charlie for | Charlie five| Charlie six | Charlie seven| Charlie ate |
+					Delta won | Delta too | Delta three | Delta for | Delta five | Delta six | Delta seven | Delta ate |
+					Echo won | Echo too | Echo three | Echo for | Echo five | Echo six | Echo seven | Echo ate |
+					Fox trot won | Fox trot too | Fox trot three | Fox trot for | Fox trot five | Fox trot six | Fox trot seven | Fox trot ate |
+					Golf won | Golf too | Golf three | Golf for |Golf five | Golf six | Golf seven | Golf ate |
+					Hotel won| Hotel too| Hotel three | Hotel for | Hotel five | Hotel six | Hotel seven | Hotel ate |
 					computer) * ;
