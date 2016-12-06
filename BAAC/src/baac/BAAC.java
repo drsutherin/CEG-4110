@@ -27,6 +27,7 @@ public class BAAC extends Peer implements Runnable {
 	Vector<PrivateChat> privateChatList; // Contains all active private chats
 	Vector<String> activeUsers;
 	Vector<String[]> activeTables; // [0]=table id, [1]=player1, [2]=player2
+	Vector<String> allActiveUsers;
 	Vector<Vector<String>> activeTableStatus;
 	String message = "";
 	Scanner in = new Scanner(System.in);
@@ -70,6 +71,7 @@ public class BAAC extends Peer implements Runnable {
 																		// this);
 		activeUsers = new Vector<String>();
 		activeTables = new Vector<String[]>();
+		allActiveUsers = new Vector<String>();
 		activeTableStatus = new Vector<Vector<String>>();
 		privateChatList = new Vector<PrivateChat>();
 		// instantiate string to hold the players on the table
@@ -284,6 +286,7 @@ public class BAAC extends Peer implements Runnable {
 					// lobby.formatMessageFromServer(message);
 				}
 				break;
+
 			case ServerMessage.OUT_LOBBY:
 				// do nothing, don't try to shut down the lobbyThread from here
 				break;
@@ -298,6 +301,7 @@ public class BAAC extends Peer implements Runnable {
 				break;
 			case ServerMessage.TBL_JOINED:
 				// TODO: tell the user that they joined a new table
+
 				// parse the string
 				message = message.replace("<EOM>", "");
 				String[] messageArray = message.split(" ", 2);
@@ -309,10 +313,11 @@ public class BAAC extends Peer implements Runnable {
 				gameThread.start();
 				// Create an ingame menu
 				inGameMenu = new InGameMenuWindow(this);
-				//exitLobby();
+				exitLobby();
 				break;
 			case ServerMessage.TBL_LEFT:
 				// leave the in game menu
+
 				theGame.stopGame();
 				inGameMenu.closeWindow();
 				break;
@@ -326,6 +331,9 @@ public class BAAC extends Peer implements Runnable {
 				// System.out.println(users.toStringString());
 				for (int i = 0; i < users.length; i++) {
 					activeUsers.add(users[i]);
+					if (!allActiveUsers.contains(users[i])){
+						allActiveUsers.add(users[i]);
+					}
 				}
 				// send gui info for displaying who is in the lobby
 				lobbyUsersWindow.updateList(activeUsers);
@@ -335,6 +343,9 @@ public class BAAC extends Peer implements Runnable {
 				user = user.replace(" <EOM>", "");
 				user = user.replace("<EOM>", "");
 				activeUsers.add(user);
+				if (!allActiveUsers.contains(user)){
+					allActiveUsers.add(user);
+				}
 				// update gui elements for who is in the lobby
 				lobbyUsersWindow.updateList(activeUsers);
 				break;
@@ -358,9 +369,18 @@ public class BAAC extends Peer implements Runnable {
 						thisTable[i] = "free seat";
 					} else {
 						thisTable[i] = split[i];
+						if (!allActiveUsers.contains(thisTable[i])){
+							allActiveUsers.add(thisTable[i]);
+						}
 					}
 				}
 				// activeTableStatus.add(statusHold);
+				
+				for (int i = 0; i < activeTables.size(); i++){
+					if (activeTables.get(i)[0].equals(thisTable[0])){
+						activeTables.remove(i);
+					}	
+				}
 				activeTables.add(thisTable);
 				activeTablesWindow.add(thisTable);
 				break;
@@ -388,6 +408,7 @@ public class BAAC extends Peer implements Runnable {
 				user = user.replace(" <EOM>", "");
 				user = user.replace("<EOM>", "");
 				activeUsers.remove(user);
+				allActiveUsers.remove(user);
 				// indicate that a user has left the lobby
 				lobbyUsersWindow.updateList(activeUsers);
 				break;
@@ -576,9 +597,9 @@ public class BAAC extends Peer implements Runnable {
 			String chatBuddy = null;
 			Vector<String> usersNotMe = new Vector<String>();
 			//add all users that are not the current user to a vector
-			for (int i = 0; i < activeUsers.size(); i++){
-				if (!activeUsers.get(i).equals(Player.getUsername())){
-					usersNotMe.add(activeUsers.get(i));
+			for (int i = 0; i < allActiveUsers.size(); i++){
+				if (!allActiveUsers.get(i).equals(Player.getUsername())){
+					usersNotMe.add(allActiveUsers.get(i));
 				}
 			}
 			//if there are other users show the dialog, otherwise show a message saying there are no other users
