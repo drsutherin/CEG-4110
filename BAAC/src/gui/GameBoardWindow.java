@@ -96,13 +96,14 @@ public class GameBoardWindow extends Observable {
 			thisRow = new JPanel();
 			container.add(thisRow);
 			if (i == 0)	{
+				// create column labels
+				// add an empty button in the top left corner
 				thisButton = buttonFactory(Color.LIGHT_GRAY, buttonSize);
 				thisButton.setName("");
 				thisButton.setText("");
 				thisRow.add(thisButton);
 				for (int k = 65; k < 73; k++) {
 					char label = (char) k;
-					// create column labels
 					thisButton = buttonFactory(Color.LIGHT_GRAY, buttonSize);
 					thisButton.setName("" + label);
 					thisButton.setText("" + label);
@@ -112,6 +113,7 @@ public class GameBoardWindow extends Observable {
 			else {
 				for (int j = 64; j < 73; j++) {
 					if (j == 64) {
+						// create the row labels
 						thisButton = buttonFactory(Color.LIGHT_GRAY, buttonSize);
 						thisButton.setName("" + String.valueOf(q));
 						thisButton.setText("" + String.valueOf(q));
@@ -119,6 +121,7 @@ public class GameBoardWindow extends Observable {
 						q++;
 					}
 					else {
+						// Add colored buttons to make checkers board
 						col = (char) j;
 						if ((i % 2 == 1 && j % 2 == 1) || (i % 2 == 0 && j % 2 == 0))	{
 							c = java.awt.Color.RED;
