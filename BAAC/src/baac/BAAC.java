@@ -316,8 +316,7 @@ public class BAAC extends Peer implements Runnable {
 				exitLobby();
 				break;
 			case ServerMessage.TBL_LEFT:
-				// leave the in game menu
-				//lobbyChat.getChatWindow().getFrame().setVisible(true
+				reEnterLobby();
 				theGame.stopGame();
 				inGameMenu.closeWindow();
 				break;
@@ -654,13 +653,13 @@ public class BAAC extends Peer implements Runnable {
 	 * 
 	 * @param newStatus
 	 */
-	private void exitLobby() {
-		lobbyChat.shutdown();
-		lobbyChat = null;
-		mainMenu.closeWindow();
-		mainMenu = null;
-		lobbyUsersWindow.closeWindow();
-		activeTablesWindow.closeWindow();
+	public void exitLobby() {
+		lobbyChat.displayOff();
+		mainMenu.displayOff();
+	}
+	public void reEnterLobby(){
+		lobbyChat.displayOn();
+		mainMenu.displayOn();
 	}
 
 }

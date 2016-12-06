@@ -2,6 +2,7 @@ package baac;
 
 import java.awt.Color;
 import java.util.Observable;
+import java.util.StringTokenizer;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,7 +21,7 @@ import gui.InGameToolbarWindow;
  *
  */
 public class Game extends Peer implements Runnable {
-
+	boolean gameQuit = false;
 	String player1, player2, opponent;
 	GameStatus status;
 	Boolean isTurn;
@@ -241,150 +242,148 @@ public class Game extends Peer implements Runnable {
 
 			gameGUI.setTurn(Turn.YOURS);
 
-//			// Remove all speech on the buffer before listening
-//			//while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
-//			//	voce.SpeechInterface.popRecognizedString();
-//			//}
-//			//while (!gameQuit) {
-//			//	try {
-//			//		Thread.sleep(6000);
-//			//		//System.out.println("I am here");
-//			//	} catch (InterruptedException e) {
-//
-//			//	}
-//			//	if (!this.isTurn) {
-//			//		gameQuit = true;
-//			//	}
-//			//	while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
-//			//
-//			//		String s = voce.SpeechInterface.popRecognizedString();
-//			//		s = s.replaceAll("fox trot", "foxtrot");
-////					boolean frequencyTest = false;
-////					int frequencyCount = 0;
-////					String[] frequencyArray = s.split(" ");
-////					for (int i = 0; i < frequencyArray.length; i++) {
-////						if (frequencyArray[i].equals("computer")) {
-////							frequencyCount++;
-////
-////						}
-////					}
-////					if (frequencyCount == 1) {
-////						frequencyTest = true;
-////					}
-////					if (s.contains("computer")){
-////						s = s.substring(s.indexOf("computer"), s.length());
-////					}
-////					System.out.println("You said: " + s);
-////					if ((s.indexOf("computer") == 0) && (new StringTokenizer(s).countTokens() >= 5) && frequencyTest) {
-////						
-////						s = s.replaceAll("computer ", "");
-////						s = s.replaceAll("won", "1");
-////						s = s.replaceAll("too", "2");
-////						s = s.replaceAll("three", "3");
-////						s = s.replaceAll("for", "4");
-////						s = s.replaceAll("five", "5");
-////						s = s.replaceAll("six", "6");
-////						s = s.replaceAll("seven", "7");
-////						s = s.replaceAll("ate", "8");
-////						s = s.replaceAll("alfa ", "A");
-////						s = s.replaceAll("bravo ", "B");
-////						s = s.replaceAll("charlie ", "C");
-////						s = s.replaceAll("delta ", "D");
-////						s = s.replaceAll("echo ", "E");
-////						s = s.replaceAll("foxtrot ", "F");
-////						s = s.replaceAll("golf ", "G");
-////						s = s.replaceAll("hotel ", "H");
-////
-////						//System.out.println("You said: " + s);
-////						String[] voiceMessage = s.split(" ");
-////
-////						// voce.SpeechInterface.synthesize(s);
-////						if (voiceMessage.length >= 2) {
-////							gameQuit = true;
-////							this.clientMoveRequest(s.split(" "));
-////							gameGUI.updateBoard(boardState);
-////						}
-////						// }
-////
-////					}
-////				}
-////			}
-////			break;
-////		case ServerMessage.ILLEGAL:
-////			JOptionPane.showMessageDialog(frame, "Invalid move. Please try again.", "Invalid Move",
-////					JOptionPane.ERROR_MESSAGE);
-////			gameGUI.updateBoard(boardState);
-////			gameGUI.setTurn(Turn.YOURS);
-////			this.isTurn = true;
-////
-////			// Remove all speech on the buffer before listening
-////			while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
-////				voce.SpeechInterface.popRecognizedString();
-////			}
-////				gameQuit = false;
-////				while (!gameQuit) {
-////					try {
-////						Thread.sleep(6000);
-////					} catch (InterruptedException e) {
-////
-////					}
-////					if (!this.isTurn) {
-////						gameQuit = true;
-////					}
-////					
-////					while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
-////						
-////						String s = voce.SpeechInterface.popRecognizedString();
-////						s = s.replaceAll("fox trot", "foxtrot");
-////						boolean frequencyTest = false;
-////						int frequencyCount = 0;
-////						String[] frequencyArray = s.split(" ");
-////						for (int i = 0; i < frequencyArray.length; i++) {
-////							if (frequencyArray[i].equals("computer")) {
-////								frequencyCount++;
-////
-////							}
-////						}
-////						if (frequencyCount == 1) {
-////							frequencyTest = true;
-////						}
-////						if (s.contains("computer")){
-////							s = s.substring(s.indexOf("computer"), s.length());
-////						}
-////						// Checks the listener work "computer"
-////						System.out.println("You said: " + s);
-////						if ((s.indexOf("computer") == 0) && (new StringTokenizer(s).countTokens() >= 5)
-////								&& frequencyTest) {
-////							s = s.replaceAll("computer ", "");
-////							s = s.replaceAll("won", "1");
-////							s = s.replaceAll("too", "2");
-////							s = s.replaceAll("three", "3");
-////							s = s.replaceAll("for", "4");
-////							s = s.replaceAll("five", "5");
-////							s = s.replaceAll("six", "6");
-////							s = s.replaceAll("seven", "7");
-////							s = s.replaceAll("ate", "8");
-////							s = s.replaceAll("alfa ", "A");
-////							s = s.replaceAll("bravo ", "B");
-////							s = s.replaceAll("charlie ", "C");
-////							s = s.replaceAll("delta ", "D");
-////							s = s.replaceAll("echo ", "E");
-////							s = s.replaceAll("foxtrot ", "F");
-////							s = s.replaceAll("golf ", "G");
-////							s = s.replaceAll("hotel ", "H");
-////
-////							System.out.println("You said: " + s);
-////							String[] voiceMessage = s.split(" ");
-////
-////							if (voiceMessage.length >= 2) {
-////								gameQuit = true;
-////								this.clientMoveRequest(s.split(" "));
-////								gameGUI.updateBoard(boardState);
-////							}
-////						}
-////					}
-////				}
-////			
+			// Remove all speech on the buffer before listening
+			while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
+				voce.SpeechInterface.popRecognizedString();
+			}
+			while (!gameQuit) {
+				try {
+					Thread.sleep(6000);
+					//System.out.println("I am here");
+				} catch (InterruptedException e) {
+
+				}
+				if (!this.isTurn) {
+					gameQuit = true;
+				}
+				while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
+			
+					String s = voce.SpeechInterface.popRecognizedString();
+					s = s.replaceAll("fox trot", "foxtrot");
+					boolean frequencyTest = false;
+					int frequencyCount = 0;
+					String[] frequencyArray = s.split(" ");
+					for (int i = 0; i < frequencyArray.length; i++) {
+						if (frequencyArray[i].equals("computer")) {
+							frequencyCount++;
+
+						}
+					}
+					if (frequencyCount == 1) {
+						frequencyTest = true;
+					}
+					if (s.contains("computer")){
+						s = s.substring(s.indexOf("computer"), s.length());
+					}
+				System.out.println("You said: " + s);
+					if ((s.indexOf("computer") == 0) && (new StringTokenizer(s).countTokens() >= 5) && frequencyTest) {
+						
+						s = s.replaceAll("computer ", "");
+						s = s.replaceAll("won", "1");
+					s = s.replaceAll("too", "2");
+						s = s.replaceAll("three", "3");
+						s = s.replaceAll("for", "4");
+						s = s.replaceAll("five", "5");						s = s.replaceAll("six", "6");
+					s = s.replaceAll("seven", "7");
+						s = s.replaceAll("ate", "8");
+						s = s.replaceAll("alfa ", "A");
+						s = s.replaceAll("bravo ", "B");
+						s = s.replaceAll("charlie ", "C");
+						s = s.replaceAll("delta ", "D");
+						s = s.replaceAll("echo ", "E");
+					s = s.replaceAll("foxtrot ", "F");
+						s = s.replaceAll("golf ", "G");
+					s = s.replaceAll("hotel ", "H");
+
+					//System.out.println("You said: " + s);
+						String[] voiceMessage = s.split(" ");
+
+						// voce.SpeechInterface.synthesize(s);
+						if (voiceMessage.length >= 2) {
+						gameQuit = true;
+							this.clientMoveRequest(s.split(" "));
+							gameGUI.updateBoard(boardState);
+						}
+					// }
+
+					}
+				}
+			}
+		break;
+		case ServerMessage.ILLEGAL:
+			JOptionPane.showMessageDialog(frame, "Invalid move. Please try again.", "Invalid Move",
+					JOptionPane.ERROR_MESSAGE);
+			gameGUI.updateBoard(boardState);
+			gameGUI.setTurn(Turn.YOURS);
+			this.isTurn = true;
+
+			// Remove all speech on the buffer before listening
+			while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
+				voce.SpeechInterface.popRecognizedString();
+			}
+				gameQuit = false;
+				while (!gameQuit) {
+					try {
+						Thread.sleep(6000);
+					} catch (InterruptedException e) {
+
+				}
+					if (!this.isTurn) {
+						gameQuit = true;
+					}
+					
+					while (voce.SpeechInterface.getRecognizerQueueSize() > 0) {
+						
+						String s = voce.SpeechInterface.popRecognizedString();
+						s = s.replaceAll("fox trot", "foxtrot");
+						boolean frequencyTest = false;
+						int frequencyCount = 0;
+						String[] frequencyArray = s.split(" ");
+						for (int i = 0; i < frequencyArray.length; i++) {
+							if (frequencyArray[i].equals("computer")) {
+								frequencyCount++;
+
+							}
+						}
+						if (frequencyCount == 1) {
+							frequencyTest = true;
+						}
+						if (s.contains("computer")){
+							s = s.substring(s.indexOf("computer"), s.length());
+						}
+						// Checks the listener work "computer"
+						System.out.println("You said: " + s);
+						if ((s.indexOf("computer") == 0) && (new StringTokenizer(s).countTokens() >= 5)
+								&& frequencyTest) {
+						s = s.replaceAll("computer ", "");
+							s = s.replaceAll("won", "1");
+							s = s.replaceAll("too", "2");
+							s = s.replaceAll("three", "3");
+							s = s.replaceAll("for", "4");
+							s = s.replaceAll("five", "5");
+							s = s.replaceAll("six", "6");
+							s = s.replaceAll("seven", "7");
+							s = s.replaceAll("ate", "8");
+							s = s.replaceAll("alfa ", "A");
+							s = s.replaceAll("bravo ", "B");
+							s = s.replaceAll("charlie ", "C");
+							s = s.replaceAll("delta ", "D");
+							s = s.replaceAll("echo ", "E");
+							s = s.replaceAll("foxtrot ", "F");
+							s = s.replaceAll("golf ", "G");
+							s = s.replaceAll("hotel ", "H");
+
+							System.out.println("You said: " + s);
+							String[] voiceMessage = s.split(" ");
+
+							if (voiceMessage.length >= 2) {
+								gameQuit = true;
+								this.clientMoveRequest(s.split(" "));
+							gameGUI.updateBoard(boardState);
+							}
+						}
+					}
+				}			
 		default:
 			noMatch = true;
 			break;
