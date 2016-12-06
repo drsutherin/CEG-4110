@@ -99,4 +99,26 @@ public class SoundEffects{
 			e1.printStackTrace();
 		}
 	}
+	
+	public void clang()	{
+		AudioInputStream clangSound = null;
+		Clip clang = null;
+		try {
+			clangSound = AudioSystem.getAudioInputStream(getClass().getResource("clang.wav"));
+		} catch (UnsupportedAudioFileException | IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		try {
+			clang = AudioSystem.getClip(null);
+			clang.open(clangSound);
+			clang.start();
+		} catch (LineUnavailableException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 }
