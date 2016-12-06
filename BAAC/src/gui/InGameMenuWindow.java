@@ -60,6 +60,14 @@ public class InGameMenuWindow extends Observable {
 		});
 		panel.add(exitButton);
 		
+		JButton rageQuitButton = new JButton("Rage Quit");
+		rageQuitButton.addActionListener(e -> {
+			lastPressed = MenuButtonStatus.RAGE_QUIT;
+			setChanged();
+			notifyObservers();
+		});
+		panel.add(rageQuitButton);
+		
 		// Display the window.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
 		frame.setSize(300, 400);

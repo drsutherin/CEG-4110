@@ -632,6 +632,11 @@ public class BAAC extends Peer implements Runnable {
 			queueUpToSendToServer("108 " + Player.getUsername());
 
 			break;
+		case RAGE_QUIT:
+			for (String user : allActiveUsers){
+				if (!user.equals(Player.getUsername()))
+					queueUpToSendToServer("108 " + user);
+			}
 		}
 	}
 
