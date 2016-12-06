@@ -1,7 +1,5 @@
 package gui;
 import javax.swing.*;
-
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.Vector;
 

@@ -24,9 +24,6 @@ public class LobbyChat extends Peer implements Runnable {
 	private PeerMediator mediator;
 	private boolean shutdown = false;
 	
-	
-	private Status playerStatus = Player.getUserStatus();
-	
 	LobbyChatWindow chatWindow;
 	
 	/***

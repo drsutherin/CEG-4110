@@ -6,7 +6,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import gui.GameBoardWindow;
 import gui.InGameMenuWindow;
 import gui.InGameToolbarWindow;
-import gui.MenuButtonStatus;
 
 /**
  * ObservableGame controls logic for observing a game and owns the GUI
@@ -124,7 +123,6 @@ public class ObservableGame extends Peer implements Runnable {
 	 * Directs message to the proper class method for further processing.
 	 */
 	public void scanMessageFromServer(String message){
-		boolean noMatch = false;
 		String inMessage[];
 		String messageCode = message.substring(0, 3);
         switch (messageCode) {

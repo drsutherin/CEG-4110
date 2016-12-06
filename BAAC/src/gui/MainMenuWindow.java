@@ -1,18 +1,7 @@
 package gui;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Observable;
-
-import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -67,9 +56,9 @@ public class MainMenuWindow extends Observable {
 		titleLabel.setIcon(new ImageIcon(getClass().getResource("title2.png")));
 		logoLabel.setIcon(new ImageIcon(getClass().getResource("logo.png")));
 		sparkles.setIcon(new ImageIcon(getClass().getResource("sparkle.gif")));
-		titleLabel.setAlignmentX(titleLabel.CENTER_ALIGNMENT);
+		titleLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		panel.add(titleLabel);
-		logoLabel.setAlignmentX(logoLabel.CENTER_ALIGNMENT);
+		logoLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		
 		panel.add(logoLabel);
 		logoLabel.add(sparkles);
@@ -87,7 +76,7 @@ public class MainMenuWindow extends Observable {
 			setChanged();
 			notifyObservers();
 		});
-		startButton.setAlignmentX(startButton.CENTER_ALIGNMENT);
+		startButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		panel.add(startButton);
 		
 		panel.add(Box.createRigidArea(gap));
@@ -102,7 +91,7 @@ public class MainMenuWindow extends Observable {
 			setChanged();
 			notifyObservers();
 		});
-		joinButton.setAlignmentX(joinButton.CENTER_ALIGNMENT);
+		joinButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		panel.add(joinButton);
 		
 		panel.add(Box.createRigidArea(gap));
@@ -118,7 +107,7 @@ public class MainMenuWindow extends Observable {
 			setChanged();
 			notifyObservers();
 		});
-		observeButton.setAlignmentX(observeButton.CENTER_ALIGNMENT);
+		observeButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		panel.add(observeButton);
 		
 		panel.add(Box.createRigidArea(gap));
@@ -135,7 +124,7 @@ public class MainMenuWindow extends Observable {
 			notifyObservers();
 		});
 		
-		chatButton.setAlignmentX(chatButton.CENTER_ALIGNMENT);
+		chatButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		panel.add(chatButton);
 		panel.add(Box.createRigidArea(gap));
 
@@ -158,7 +147,7 @@ public class MainMenuWindow extends Observable {
 			}
 			System.exit(0);
 		});
-		exitButton.setAlignmentX(exitButton.CENTER_ALIGNMENT);
+		exitButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		panel.add(exitButton);
 		panel.add(Box.createRigidArea(gap));
 		

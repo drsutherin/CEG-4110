@@ -54,7 +54,6 @@ public class BAAC extends Peer implements Runnable {
 	private MainMenuWindow mainMenu;
 	private ActiveTablesWindow activeTablesWindow;
 	private LobbyUsersWindow lobbyUsersWindow;
-	private InGameToolbarWindow gameToolbarWindow;
 
 	/**
 	 * Constructor for BAAC a) add self to mediator peer list so it will recieve
@@ -256,10 +255,10 @@ public class BAAC extends Peer implements Runnable {
 			case ServerMessage.MSG:
 				
 				String[] messageSplit = message.split(" ");
-				String sender, receiver, msg;
+				String sender, receiver;
 				sender = messageSplit[1];
 				receiver = messageSplit[2];
-				msg = messageSplit[3];
+				//msg = messageSplit[3];
 
 				if (receiver.equals("1")) {
 					// checks the list of private chats. If the sender is
@@ -318,7 +317,7 @@ public class BAAC extends Peer implements Runnable {
 				break;
 			case ServerMessage.TBL_LEFT:
 				// leave the in game menu
-				lobbyChat.getChatWindow().getFrame().setVisible(true);
+				//lobbyChat.getChatWindow().getFrame().setVisible(true
 				theGame.stopGame();
 				inGameMenu.closeWindow();
 				break;

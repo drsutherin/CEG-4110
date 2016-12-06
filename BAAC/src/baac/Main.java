@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
@@ -15,8 +14,6 @@ import java.nio.file.Files;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import chat.LobbyChat;
 
 
 //http://stackoverflow.com/questions/9324933/what-is-a-good-java-library-to-zip-unzip-files
@@ -127,6 +124,7 @@ public class Main {
 	                dest.flush();
 	                dest.close();
 	                is.close();
+	                zip.close();
 	            }
 
 

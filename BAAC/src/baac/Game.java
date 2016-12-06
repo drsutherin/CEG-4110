@@ -2,17 +2,9 @@ package baac;
 
 import java.awt.Color;
 import java.util.Observable;
-import java.util.StringTokenizer;
 import java.util.concurrent.LinkedBlockingQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
-// For audio playback
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-
 import gui.GameBoardWindow;
 import gui.GameBoardWindow.Turn;
 import gui.InGameToolbarWindow;
@@ -175,14 +167,14 @@ public class Game extends Peer implements Runnable {
 		case ServerMessage.GAME_WIN:
 			status = GameStatus.player_win;
 			JOptionPane.showMessageDialog(frame, "You Win!", "Winner!", JOptionPane.INFORMATION_MESSAGE);
-			gameGUI.closeWindow();
-			client.enterLobby();
+			//gameGUI.closeWindow();
+			//client.enterLobby();
 			break;
 		case ServerMessage.GAME_LOSE:
 			status = GameStatus.player_lose;
 			JOptionPane.showMessageDialog(frame, "You Lose...", "Loss", JOptionPane.WARNING_MESSAGE);
-			gameGUI.closeWindow();
-			client.enterLobby();
+			//gameGUI.closeWindow();
+			//client.enterLobby();
 			break;
 		case ServerMessage.WHO_ON_TBL:
 			// <code><tableID><player1><players2> <-- p1 or p2 may be -1 if
@@ -237,13 +229,12 @@ public class Game extends Peer implements Runnable {
 		case ServerMessage.YOUR_TURN:
 			isTurn = true;
 
-			boolean quit = false;
 			if (movesPlayed > 0) {
 				gameGUI.updateBoard(boardState);
 			}
 
 			isTurn = true;
-			boolean gameQuit = false;
+			//boolean gameQuit = false;
 			if (movesPlayed > 0) {
 				gameGUI.updateBoard(boardState);
 			}

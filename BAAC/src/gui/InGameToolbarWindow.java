@@ -1,8 +1,5 @@
 package gui;
 import java.awt.Dimension;
-import java.util.Observable;
-
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,7 +12,6 @@ import javax.swing.JPanel;
  ********************************************************************************/
 
 public class InGameToolbarWindow {
-	private MenuButtonStatus lastPressed = null;
 	JFrame frame;
 	JPanel panel;
 	JButton redPlayer, blackPlayer;

@@ -1,6 +1,5 @@
 package baac;
 
-import java.util.Vector;
 /**
  * * Threadsafe Singleton Class for player:
   * player info: ```username```

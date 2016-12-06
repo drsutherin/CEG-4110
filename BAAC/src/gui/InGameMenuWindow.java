@@ -7,8 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import baac.BAAC;
-import baac.Game;
-import baac.ObservableGame;
 
 /*********************************************************************************
  * The InGameMenuWindow allows a player to select their actions from a GUI window
