@@ -166,7 +166,12 @@ public class LobbyChat extends Peer implements Runnable {
 			// TODO Auto-generated catch block
 		}
 	}
-	
+	public void displayOn(){
+		chatWindow.displayOn();
+	}
+	public void displayOff(){
+		chatWindow.dislpayOff();
+	}
 	public void shutdown(){
 		shutdown = true;
 		chatWindow.closeWindow();

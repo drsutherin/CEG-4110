@@ -320,6 +320,7 @@ public class BAAC extends Peer implements Runnable {
 
 				theGame.stopGame();
 				inGameMenu.closeWindow();
+				reEnterLobby();
 				break;
 			case ServerMessage.WHO_IN_LOBBY:
 				// System.out.println("Users in lobby are:");
@@ -654,13 +655,13 @@ public class BAAC extends Peer implements Runnable {
 	 * 
 	 * @param newStatus
 	 */
-	private void exitLobby() {
-		lobbyChat.shutdown();
-		lobbyChat = null;
-		mainMenu.closeWindow();
-		mainMenu = null;
-		lobbyUsersWindow.closeWindow();
-		activeTablesWindow.closeWindow();
+	public void exitLobby() {
+		lobbyChat.displayOff();
+		mainMenu.displayOff();
+	}
+	public void reEnterLobby(){
+		lobbyChat.displayOn();
+		mainMenu.displayOn();
 	}
 
 }

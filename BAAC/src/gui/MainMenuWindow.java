@@ -204,8 +204,11 @@ public class MainMenuWindow extends Observable {
 		theButton.setForeground(Color.red);
 	}
 	
-	/**
-	 * This method plays a click sound effect
-	 */
+	public void displayOff(){
+		frame.setVisible(false);
+	}
+	public void displayOn(){
+		frame.setVisible(true);
+	}
 
 }

@@ -144,7 +144,7 @@ public class GameBoardWindow extends Observable {
 		frame.getContentPane().add(container);
 
 		// Display the window.
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// will need to remove close/minimize buttons
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);	// will need to remove close/minimize buttons
 		frame.setSize(300, 400);
 		frame.setTitle("Game Board");
 		frame.pack();
