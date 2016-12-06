@@ -77,4 +77,26 @@ public class SoundEffects{
 			e1.printStackTrace();
 		}
 	}
+	
+	public void draw()	{
+		AudioInputStream drawSound = null;
+		Clip draw = null;
+		try {
+			drawSound = AudioSystem.getAudioInputStream(getClass().getResource("draw.wav"));
+		} catch (UnsupportedAudioFileException | IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		try {
+			draw = AudioSystem.getClip(null);
+			draw.open(drawSound);
+			draw.start();
+		} catch (LineUnavailableException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 }

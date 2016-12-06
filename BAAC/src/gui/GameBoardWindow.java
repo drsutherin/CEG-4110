@@ -40,6 +40,7 @@ public class GameBoardWindow extends Observable {
 	Turn turn;
 	JFrame frame;
 	String opponent;
+	SoundEffects sounds;
 	
 	/**
 	 * Instantiating a GameBoardWindow creates the GUI immediately
@@ -52,6 +53,7 @@ public class GameBoardWindow extends Observable {
 		boardSpacesVector = new Vector<JButton>();
 		ready = moving = false;
 		turn = null;
+		sounds = new SoundEffects();
 		addObserver(g);
 		setupGUI();
 	}
@@ -223,6 +225,7 @@ public class GameBoardWindow extends Observable {
 				clicks = 0;
 			}
 		}
+		sounds.click();
 	}
 	
 	/**
@@ -317,8 +320,9 @@ public class GameBoardWindow extends Observable {
 					handleClick(b);
 				});
 			}
-			JFrame frame = new JFrame("Your turn");
-	        JOptionPane.showMessageDialog(frame, "It's your turn");
+			sounds.draw();
+//			JFrame frame = new JFrame("Your turn");
+//	        JOptionPane.showMessageDialog(frame, "It's your turn");
 		}
 	}
 	
