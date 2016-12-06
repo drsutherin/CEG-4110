@@ -94,6 +94,8 @@ public class ServerInterface extends Peer implements Runnable {
 			System.out.println("Host unknown: " + uhe.getMessage());
 		} catch (IOException ioe) {
 			System.out.println("Unexpected exception: " + ioe.getMessage());
+			System.out.println("Exiting BAAC...");
+			System.exit(1);
 		}
 	}
 
