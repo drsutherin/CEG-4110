@@ -28,10 +28,9 @@ import gui.InGameToolbarWindow;
  *
  */
 public class Game extends Peer implements Runnable {
-
+	boolean gameQuit, isTurn;
 	String player1, player2, opponent;
 	GameStatus status;
-	Boolean isTurn;
 	private InGameToolbarWindow gameToolbarWindow;
 	byte[][] boardState = new byte[8][8]; // Same format as sent from server
 											// (see CheckersServerDocumentation)
@@ -237,13 +236,12 @@ public class Game extends Peer implements Runnable {
 		case ServerMessage.YOUR_TURN:
 			isTurn = true;
 
-			boolean quit = false;
 			if (movesPlayed > 0) {
 				gameGUI.updateBoard(boardState);
 			}
 
 			isTurn = true;
-			boolean gameQuit = false;
+			gameQuit = false;
 			if (movesPlayed > 0) {
 				gameGUI.updateBoard(boardState);
 			}
@@ -443,6 +441,8 @@ public class Game extends Peer implements Runnable {
 	 * Gracefully end process
 	 */
 	public void stopGame() {
+		gameQuit = true;
+		isTurn = false;
 		// stop getting updates from server
 		mediator.removePeerClass(this);
 
