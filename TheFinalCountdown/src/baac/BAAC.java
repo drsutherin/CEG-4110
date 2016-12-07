@@ -314,13 +314,13 @@ public class BAAC extends Peer implements Runnable {
 				lobbyChat.getChatWindow().getFrame().setVisible(false);
 				// Create an ingame menu
 				inGameMenu = new InGameMenuWindow(this);
-				//exitLobby();
+				exitLobby();
 				break;
 			case ServerMessage.TBL_LEFT:
 				// leave the in game menu
-				lobbyChat.getChatWindow().getFrame().setVisible(true);
 				theGame.stopGame();
 				inGameMenu.closeWindow();
+				reEnterLobby();	
 				break;
 			case ServerMessage.WHO_IN_LOBBY:
 				// System.out.println("Users in lobby are:");
@@ -655,13 +655,13 @@ public class BAAC extends Peer implements Runnable {
 	 * 
 	 * @param newStatus
 	 */
-	private void exitLobby() {
-		lobbyChat.shutdown();
-		lobbyChat = null;
-		mainMenu.closeWindow();
-		mainMenu = null;
-		lobbyUsersWindow.closeWindow();
-		activeTablesWindow.closeWindow();
+	public void exitLobby() {
+		lobbyChat.displayOff();
+		mainMenu.displayOff();
+	}
+	public void reEnterLobby(){
+		lobbyChat.displayOn();
+		mainMenu.displayOn();
 	}
 
 }
