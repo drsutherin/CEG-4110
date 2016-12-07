@@ -71,7 +71,7 @@ public class ServerInterface extends Peer implements Runnable {
         JFrame frame = new JFrame("InputDialog Example #1");
 
         // prompt the user to enter their name
-        String serverName = JOptionPane.showInputDialog(frame, "Server Name or IP Adress", "mchlrtkwski.tk");
+        String serverName = JOptionPane.showInputDialog(frame, "Server Name or IP Adress", "130.108.28.165");
         String serverPort = JOptionPane.showInputDialog(frame, "Port Number", "45322");
 
         // Don't allow people to not select a server
