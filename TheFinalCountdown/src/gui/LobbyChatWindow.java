@@ -24,7 +24,7 @@ public class LobbyChatWindow extends Observable {
 	private Vector<String> rawMessages;
 	private JList<String>messagesList;	
 	private JFrame frame;
-	private boolean mute = false
+	private boolean mute = false;
 	private SoundEffects sound = new SoundEffects();
 	private JButton sendButton = new JButton("Send");
 	private KeyStroke keyStroke;
