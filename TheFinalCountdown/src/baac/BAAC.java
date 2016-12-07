@@ -314,7 +314,7 @@ public class BAAC extends Peer implements Runnable {
 				lobbyChat.getChatWindow().getFrame().setVisible(false);
 				// Create an ingame menu
 				inGameMenu = new InGameMenuWindow(this);
-				exitLobby();
+				//exitLobby();
 				break;
 			case ServerMessage.TBL_LEFT:
 				// leave the in game menu
