@@ -11,6 +11,11 @@ The group project for CEG 4110: Intro to Software Engineering
 ## Project Goal
 Develop a checkers game playing client in Java. The software will communicate with a game server Dr. Doran has written and will run in his office. We will use the client to log-in, chat, play, and observe other games on the server.
 
+# Download BAAC now!
+Version 1.0 is available for download [here](https://drive.google.com/open?id=0B_RrKIVEXTyBRWwxeDJTNXAwMVk)
+### User Manual
+The user manual can be found at https://drsutherin.gitbooks.io/baac-manual/content
+
 # Packages
 
 This document defines the packages/modules the BAAC client will implement. Large
