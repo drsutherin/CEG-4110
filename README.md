@@ -2,10 +2,10 @@
 The group project for CEG 4110: Intro to Software Engineering
 
 ## Team Members
-* Zuli Rhodes
-* Jon Rosen
-* Michael Rutkowski
-* David Sutherin
+* Zuli "Chairman Struggles" Rhodes
+* Jon "Chief Executive of Distractions" Rosen
+* Michael "The IT Guy" Rutkowski
+* David "The Voice" Sutherin
 
 
 ## Project Goal

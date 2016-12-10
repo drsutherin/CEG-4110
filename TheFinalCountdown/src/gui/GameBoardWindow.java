@@ -24,7 +24,7 @@ import baac.ObservableGame;
 /*********************************************************************************
  * The GameBoardWindow is the GUI which the user will interact with to control
  * their moves during the game
- * 
+ *
  * D. Sutherin, November 2016
  ********************************************************************************/
 
@@ -41,7 +41,7 @@ public class GameBoardWindow extends Observable {
 	JFrame frame;
 	String opponent;
 	SoundEffects sounds;
-	
+
 	/**
 	 * Instantiating a GameBoardWindow creates the GUI immediately
 	 * @param g is the Game to be displayed
@@ -57,7 +57,7 @@ public class GameBoardWindow extends Observable {
 		addObserver(g);
 		setupGUI();
 	}
-	
+
 	/**
 	 * Instantiating a GameBoardWindow creates the GUI immediately
 	 * @param g is the Game to be displayed
@@ -72,11 +72,11 @@ public class GameBoardWindow extends Observable {
 		addObserver(g);
 		setupGUI();
 	}
-	
-	
+
+
 	/**
 	 * setupGUI defines the initial setup of the LobbyUsersWindow
-	 */	
+	 */
 	public void setupGUI() {
 		// Initial window setup
 		frame = new JFrame();
@@ -85,7 +85,7 @@ public class GameBoardWindow extends Observable {
 		JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 		Dimension buttonSize = new Dimension(60,60);
-		
+
 		// Create the board
 		String position;
 		char col;
@@ -151,7 +151,7 @@ public class GameBoardWindow extends Observable {
 		//playGameStart();
 		frame.setVisible(true);
 	}
-	
+
 	/**
 	 * Creates buttons to correspond to game board spaces
 	 * @param c is the color of the button/space
@@ -167,7 +167,7 @@ public class GameBoardWindow extends Observable {
 		newButton.setPreferredSize(d);
 		return newButton;
 	}
-	
+
 	/**
 	 * Handles button clicks during play
 	 * First click is piece to move, second click is where to move it
@@ -175,7 +175,7 @@ public class GameBoardWindow extends Observable {
 	 */
 	public void handleClick(JButton b){
 		String name = b.getName();
-		
+
 		// Initial code for testing clicks
 //		System.out.println("You clicked " + name);
 //		if (b.getBackground() == Color.RED)	{
@@ -190,7 +190,7 @@ public class GameBoardWindow extends Observable {
 //		else	{
 //			b.setBackground(Color.BLACK);
 //		}
-		
+
 		// Create the string array corresponding to the move based on user clicks
 		// Clicks should always be 0 or 1
 		if (clicks == 0){
@@ -203,6 +203,7 @@ public class GameBoardWindow extends Observable {
 				move[0] = "";
 				clicks = 0;
 			}
+			// Negates the second click if the user clicked it twice
 			else if (move[1] == name)	{
 				move[1] = "";
 				clicks = 1;
@@ -220,6 +221,7 @@ public class GameBoardWindow extends Observable {
 				setChanged();
 				notifyObservers();
 			}
+			// Otherwise, negate both clicks and reset the click count
 			else	{
 				move[0] = move[1] = "";
 				clicks = 0;
@@ -227,7 +229,7 @@ public class GameBoardWindow extends Observable {
 		}
 		sounds.click();
 	}
-	
+
 	/**
 	 * Populates the game board with pieces with the Player's color at the bottom
 	 * @param c is the color that the user has been assigned by the server
@@ -240,7 +242,7 @@ public class GameBoardWindow extends Observable {
 			for (JButton b : boardSpacesVector){
 				col = (int) b.getName().charAt(0);
 				row = Character.getNumericValue(b.getName().charAt(1));
-				
+
 				// if in row 1 or 3 & even column, add black piece
 				if ((row == 1 || row == 3) && (col % 2 == 0))	{
 					b.setIcon(new ImageIcon(getClass().getResource("black.png")));
@@ -264,7 +266,7 @@ public class GameBoardWindow extends Observable {
 			for (JButton b : boardSpacesVector){
 				col = (int) b.getName().charAt(0);
 				row = Character.getNumericValue(b.getName().charAt(1));
-				
+
 				// if in row 1 or 3 & odd column, add black piece
 				if ((row == 1 || row == 3) && (col % 2 == 0))	{
 					b.setIcon(new ImageIcon(getClass().getResource("red.png")));
@@ -283,9 +285,9 @@ public class GameBoardWindow extends Observable {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Sets the event handlers for all of the game board buttons based on
 	 * whether it's the user's turn or not
@@ -293,7 +295,7 @@ public class GameBoardWindow extends Observable {
 	 */
 	public void setTurn(Turn t)	{
 		turn = t;
-		
+
 		if (turn == Turn.THEIRS){
 			for (JButton b : boardSpacesVector) {
 				// Remove all event listeners on the buttons
@@ -325,7 +327,7 @@ public class GameBoardWindow extends Observable {
 //	        JOptionPane.showMessageDialog(frame, "It's your turn");
 		}
 	}
-	
+
 	/**
 	 * Allows the Game class to check whether the user is ready
 	 * @return ready corresponds to whether the user is ready to play
@@ -333,7 +335,7 @@ public class GameBoardWindow extends Observable {
 	public boolean getReadyFlag(){
 		return ready;
 	}
-	
+
 	/**
 	 * Allows the Game class to set the user's ready status
 	 * @param b is the user's new status
@@ -341,7 +343,7 @@ public class GameBoardWindow extends Observable {
 	public void setReadyFlag(boolean b)	{
 		ready = b;
 	}
-	
+
 	/**
 	 * Allows the Game class to check whether the user is trying to send a move
 	 * @return moving corresponds to whether the user is ready to move
@@ -349,7 +351,7 @@ public class GameBoardWindow extends Observable {
 	public boolean getMoveFlag(){
 		return moving;
 	}
-	
+
 	/**
 	 * Allows the Game class to set the user's moving status
 	 * @param b is the user's new status
@@ -357,8 +359,8 @@ public class GameBoardWindow extends Observable {
 	public void setMoveFlag(boolean b){
 		moving = b;
 	}
-	
-	
+
+
 	/**
 	 * Allows the Game class to get the last move
 	 * @return move is a string array where [0]=original position [1]=new position
@@ -366,12 +368,12 @@ public class GameBoardWindow extends Observable {
 	public String[] getMove()	{
 		return move;
 	}
-	
+
 	/**
 	 * Updates the positions of all pieces on the board
-	 * @param b is a byte array corresponding to board locations as represented by the server 
+	 * @param b is a byte array corresponding to board locations as represented by the server
 	 */
-	
+
 	// TODO: Opponent's pieces aren't updating correctly
 	public void updateBoard(byte[][] b)	{
 		int k = 0;
@@ -379,11 +381,11 @@ public class GameBoardWindow extends Observable {
 		for (int i = 0; i < 8; i++){
 			for (int j = 0; j < 8; j++){
 				current = boardSpacesVector.get(k);
-				
+
 				// @Zuli:
 				// I just changed this switch to use an int instead of switch(byte[i][j]),
 				// but I haven't tested it yet -Dave, 11/22
-				
+
 				// TODO: debug this switch
 				int piece = b[i][j];
 				switch (piece)	{
@@ -405,18 +407,18 @@ public class GameBoardWindow extends Observable {
 				}
 				k++;
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * Closes the GameBoardWindow
 	 */
 	public void closeWindow(){
-		frame.setVisible(false); 
-		frame.dispose(); 
+		frame.setVisible(false);
+		frame.dispose();
 	}
-	
+
 	/**
 	 * Sets the opponent for the game when Game receives WHO_ON_TBL
 	 * @param s is the name of the opponent, "-1" means waiting for opponent, anything else is assumed to be a valid username
@@ -436,5 +438,5 @@ public class GameBoardWindow extends Observable {
 			}
 		}
 	}
-	
+
 }
